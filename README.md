@@ -8,7 +8,7 @@
 | 入口 | 用途 |
 |---|---|
 | [`indices/directions.md`](indices/directions.md) | 按研究方向查找论文、方法、对比报告与复现记录 |
-| [`indices/papers.md`](indices/papers.md) | 论文清单：状态、方向、代码、复现进度 |
+| [`indices/papers.md`](indices/papers.md) | 论文清单：状态、方向、Git 地址、是否开源、是否开源训练、复现进度 |
 | [`indices/methods.md`](indices/methods.md) | 方法族索引：同类方法、关键差异、适用场景 |
 | [`indices/comparisons.md`](indices/comparisons.md) | 横向对比报告索引 |
 | [`papers/_template.md`](papers/_template.md) | 单篇论文分析模板 |
@@ -107,6 +107,10 @@ year:
 venue: ""
 arxiv: ""
 code: ""
+github: ""
+open_source: unknown      # true | false | unknown
+license: ""
+training_open_source: "unknown"  # true | false | unknown | "\\": 公开仓库主要是推理/demo/模型代码，未提供训练代码
 direction: []
 method_family: []
 tasks: []
@@ -151,6 +155,7 @@ rg "method_family:|feed-forward|3DGS|test-time" papers comparisons
 ## 维护原则
 
 - **索引优先**：新增 paper / comparison / reproduction 后，同步更新 `indices/`。
+- **代码状态显式记录**：`indices/papers.md` 必须维护 Git 地址、是否开源、是否开源训练；公开仓库若只是推理/demo/模型代码而非训练代码，在“是否开源训练”列写 `\`。
 - **结论先行**：每份分析开头给出 3-5 条可复用结论，再展开证据。
 - **证据与推断分开**：明确哪些来自论文/代码/实验，哪些是个人判断。
 - **复现诚实记录**：失败、环境不一致、指标无法对齐都要保留。
@@ -159,4 +164,6 @@ rg "method_family:|feed-forward|3DGS|test-time" papers comparisons
 
 ## 当前已有资料
 
+- [`papers/3d-reconstruction/2026-lingbot-map.md`](papers/3d-reconstruction/2026-lingbot-map.md)：LingBot-Map / Geometric Context Transformer for Streaming 3D Reconstruction 论文分析。
+- [`comparisons/3d-reconstruction/streaming-3d-reconstruction.md`](comparisons/3d-reconstruction/streaming-3d-reconstruction.md)：Streaming 3D Reconstruction 方法对比：LingBot-Map / Stream3R / Wint3R / TTT3R / CUT3R 等。
 - [`reports/feedforward_3d_reconstruction_compare.md`](reports/feedforward_3d_reconstruction_compare.md)：前馈式三维重建方法对比：MapAnything / OmniVGGT / HunyuanWorld-Mirror。

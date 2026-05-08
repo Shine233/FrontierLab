@@ -6,6 +6,10 @@ venue: ""
 arxiv: ""
 paper_url: ""
 code: ""
+github: ""
+open_source: unknown
+license: ""
+training_open_source: "unknown"  # true | false | unknown | "\\": 公开仓库主要是推理/demo/模型代码，未提供训练代码
 direction: []
 method_family: []
 tasks: []
@@ -71,6 +75,9 @@ updated: 2026-05-08
 
 ## 7. 复现判断
 
+- Git 地址：
+- 是否开源：
+- 是否开源训练：
 - 代码可用性：
 - 权重可用性：
 - 数据可获得性：

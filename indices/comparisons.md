@@ -3,6 +3,7 @@
 | Topic | Direction | Methods | Status | Report | Key takeaway |
 |---|---|---|---|---|---|
 | 前馈式三维重建方法对比 | 3d-reconstruction / robotics-autonomous-driving | MapAnything / OmniVGGT / HunyuanWorld-Mirror | completed | [`reports/feedforward_3d_reconstruction_compare.md`](../reports/feedforward_3d_reconstruction_compare.md) | MapAnything 更适合作为自动驾驶/机器人 metric 3D 重建主候选；HunyuanWorld-Mirror 适合多先验与 3DGS/NVS 分支；OmniVGGT 适合作为轻量 baseline。 |
+| Streaming 3D Reconstruction 方法对比 | 3d-reconstruction / robotics-autonomous-driving | LingBot-Map / Stream3R / Wint3R / TTT3R / CUT3R / InfiniteVGGT | initial-completed | [`comparisons/3d-reconstruction/streaming-3d-reconstruction.md`](../comparisons/3d-reconstruction/streaming-3d-reconstruction.md) | LingBot-Map 是当前长视频 streaming 3D reconstruction 主候选；GCA 在 Oxford Spires dense 和多数据集 pose/reconstruction 上显著优于 streaming baselines，但训练/eval benchmark 尚未开源。 |
 
 ## 新增对比时的最小信息
 

@@ -6,9 +6,11 @@
 
 关注：前馈式三维重建、多视图几何、metric reconstruction、3DGS/NVS、自动驾驶/机器人场景重建。
 
+- Paper：[`LingBot-Map / Geometric Context Transformer for Streaming 3D Reconstruction`](../papers/3d-reconstruction/2026-lingbot-map.md)
 - 对比报告：[`前馈式三维重建方法对比：MapAnything / OmniVGGT / HunyuanWorld-Mirror`](../reports/feedforward_3d_reconstruction_compare.md)
-- 相关方法族：feed-forward 3D reconstruction、geometry-prior prompting、3D Gaussian Splatting 初始化、多视图 metric depth / point map。
-- 复现状态：待补充。
+- 对比报告：[`Streaming 3D Reconstruction 方法横向对比`](../comparisons/3d-reconstruction/streaming-3d-reconstruction.md)
+- 相关方法族：feed-forward 3D reconstruction、streaming 3D reconstruction、geometric context attention、geometry-prior prompting、3D Gaussian Splatting 初始化、多视图 metric depth / point map。
+- 复现状态：LingBot-Map inference 复现 planned；MapAnything / HunyuanWorld-Mirror planned。
 
 ## world-models
 
@@ -30,9 +32,10 @@
 
 关注：机器人、自动驾驶、感知/规划/控制结合、真实尺度与传感器先验。
 
-- Paper：待补充。
-- 对比：待补充。
-- 复现：待补充。
+- Paper：[`LingBot-Map / Geometric Context Transformer for Streaming 3D Reconstruction`](../papers/3d-reconstruction/2026-lingbot-map.md)
+- 对比：[`Streaming 3D Reconstruction 方法横向对比`](../comparisons/3d-reconstruction/streaming-3d-reconstruction.md)
+- 关联：LingBot-Map 更适合作为连续视频在线建图/VO 候选；MapAnything/HunyuanWorld-Mirror 更适合多先验/metric reconstruction 或重渲染分支。
+- 复现：LingBot-Map inference-level sanity check planned。
 
 ## generation-diffusion
 
