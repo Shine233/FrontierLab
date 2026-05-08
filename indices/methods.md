@@ -44,6 +44,26 @@
 - LingBot-Map 可输出/渲染点云和轨迹，但不是 3DGS/NVS 主模型；可作为在线建图前端或几何初始化来源候选。
 - 待补充：Gaussian Splatting 相关方法、动态 3DGS、驾驶场景 4D 表示。
 
+## DINO family / self-supervised visual foundation models
+
+核心问题：不用人工标签，训练可迁移的图像级与 patch 级视觉表征；在 scaling 时同时保持 global 和 dense feature 质量。
+
+| Method | 定位 | Git 地址 | 是否开源 | 是否开源训练 | 强项 | 风险 | 相关资料 |
+|---|---|---|---|---|---|---|---|
+| DINO v1 | 自监督 ViT 语义涌现与 self-distillation 教学起点 | [facebookresearch/dino](https://github.com/facebookresearch/dino) | 是（Apache-2.0） | 是 | teacher-student、multi-crop、防塌缩机制清楚；attention object masks 易理解 | 代码环境较旧；不是最新强 backbone | [paper](../papers/vision-foundation-models/2021-dino.md), [对比](../comparisons/vision-foundation-models/dino-family.md) |
+| DINOv2 | 通用 frozen visual backbone baseline | [facebookresearch/dinov2](https://github.com/facebookresearch/dinov2) | 是（Apache-2.0） | 是（训练代码开源；LVD-142M 不可完整复刻） | curated data scaling、DINO+iBOT+KoLeo、蒸馏模型生态成熟 | 完整大规模数据不可复刻；dense/high-res 上限弱于 v3 | [paper](../papers/vision-foundation-models/2023-dinov2.md), [对比](../comparisons/vision-foundation-models/dino-family.md) |
+| DINOv3 | 高上限 dense/high-resolution vision foundation model | [facebookresearch/dinov3](https://github.com/facebookresearch/dinov3) | 是（DINOv3 License，需审查） | 是（训练代码/配置开源；旗舰私有数据不可复刻） | Gram anchoring 修复 dense feature degradation；ViT-7B、LVD-1689M、SAT-493M、多尺寸蒸馏 | 自定义 license；权重申请/私有数据/超大算力；完整训练不可复刻 | [paper](../papers/vision-foundation-models/2025-dinov3.md), [对比](../comparisons/vision-foundation-models/dino-family.md) |
+
+建议固定对比维度：global vs dense feature、训练数据可得性、训练代码开源度、权重/许可证、输入分辨率适配、下游任务、推理成本、与 CLIP/SAM/3D backbones 的互补关系。
+
+## Dense visual foundation features
+
+核心问题：提供可冻结使用的 patch/像素级表征，用于 segmentation、depth、tracking、3D correspondence、robotics perception 等。
+
+- 已有关联：DINOv3、DINOv2；后续可加入 SAM/SAM2、SigLIP/PEspatial、AM-RADIO、Depth Anything、各类 3D foundation model backbones。
+- 当前结论：DINOv3 是 dense feature scaling 的重点候选；DINOv2 是更稳妥的工程 baseline；DINO v1 是机制教学起点。
+- 待补充：在自动驾驶/机器人/3D reconstruction 任务中，用 DINOv2/v3 patch features 做统一 probe。
+
 ## Test-time scaling / reasoning agents
 
 核心问题：通过搜索、采样、自验证、工具调用或 agent pipeline 提升推理质量。

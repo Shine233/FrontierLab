@@ -54,6 +54,9 @@ FrontierLab/
 用短横线小写命名，保持稳定，例如：
 
 - `3d-reconstruction`
+- `vision-foundation-models`
+- `self-supervised-learning`
+- `dense-vision`
 - `world-models`
 - `multimodal-learning`
 - `robotics-autonomous-driving`
@@ -164,6 +167,10 @@ rg "method_family:|feed-forward|3DGS|test-time" papers comparisons
 
 ## 当前已有资料
 
+- [`papers/vision-foundation-models/2021-dino.md`](papers/vision-foundation-models/2021-dino.md)：DINO v1 / Emerging Properties in Self-Supervised Vision Transformers 论文分析。
+- [`papers/vision-foundation-models/2023-dinov2.md`](papers/vision-foundation-models/2023-dinov2.md)：DINOv2 / Learning Robust Visual Features without Supervision 论文分析。
+- [`papers/vision-foundation-models/2025-dinov3.md`](papers/vision-foundation-models/2025-dinov3.md)：DINOv3 论文分析。
+- [`comparisons/vision-foundation-models/dino-family.md`](comparisons/vision-foundation-models/dino-family.md)：DINO 家族横向对比与初学者教学：v1 / v2 / v3。
 - [`papers/3d-reconstruction/2026-lingbot-map.md`](papers/3d-reconstruction/2026-lingbot-map.md)：LingBot-Map / Geometric Context Transformer for Streaming 3D Reconstruction 论文分析。
 - [`comparisons/3d-reconstruction/streaming-3d-reconstruction.md`](comparisons/3d-reconstruction/streaming-3d-reconstruction.md)：Streaming 3D Reconstruction 方法对比：LingBot-Map / Stream3R / Wint3R / TTT3R / CUT3R 等。
 - [`reports/feedforward_3d_reconstruction_compare.md`](reports/feedforward_3d_reconstruction_compare.md)：前馈式三维重建方法对比：MapAnything / OmniVGGT / HunyuanWorld-Mirror。
