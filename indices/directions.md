@@ -7,12 +7,13 @@
 关注：前馈式三维重建、多视图几何、metric reconstruction、3DGS/NVS、自动驾驶/机器人场景重建。
 
 - Paper：[`Depth Anything 3: Recovering the Visual Space from Any Views`](../papers/3d-reconstruction/2025-depth-anything-3.md)
+- Paper：[`Pi3 / π³: Permutation-Equivariant Visual Geometry Learning`](../papers/3d-reconstruction/2026-pi3.md)
 - Paper：[`LingBot-Map / Geometric Context Transformer for Streaming 3D Reconstruction`](../papers/3d-reconstruction/2026-lingbot-map.md)
 - 对比报告：[`前馈式三维重建方法对比：MapAnything / OmniVGGT / HunyuanWorld-Mirror`](../reports/feedforward_3d_reconstruction_compare.md)
 - 对比报告：[`Streaming 3D Reconstruction 方法横向对比`](../comparisons/3d-reconstruction/streaming-3d-reconstruction.md)
 - 对比报告：[`Any-view Visual Geometry Foundation Models 横向对比`](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md)
-- 相关方法族：any-view visual geometry foundation model、depth-ray representation、feed-forward 3D reconstruction、streaming 3D reconstruction、geometric context attention、geometry-prior prompting、3D Gaussian Splatting 初始化、多视图 metric depth / point map。
-- 复现状态：Depth Anything 3 / LingBot-Map inference 复现 planned；MapAnything / HunyuanWorld-Mirror planned。
+- 相关方法族：any-view visual geometry foundation model、permutation-equivariant visual geometry、reference-free reconstruction、depth-ray representation、feed-forward 3D reconstruction、streaming 3D reconstruction、geometric context attention、geometry-prior prompting、3D Gaussian Splatting 初始化、多视图 metric depth / point map。
+- 复现状态：Depth Anything 3 / Pi3 / LingBot-Map inference 复现 planned；MapAnything / HunyuanWorld-Mirror planned。
 
 ## vision-foundation-models
 
@@ -39,9 +40,10 @@
 
 - Paper：[`DINOv3`](../papers/vision-foundation-models/2025-dinov3.md)
 - Paper：[`Depth Anything 3`](../papers/3d-reconstruction/2025-depth-anything-3.md)
+- Paper：[`Pi3 / π³`](../papers/3d-reconstruction/2026-pi3.md)
 - 对比报告：[`DINO family`](../comparisons/vision-foundation-models/dino-family.md)
 - 对比报告：[`Any-view Visual Geometry Foundation Models`](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md)
-- 关联：DINOv3 的 Gram anchoring 是 dense feature scaling 重点候选；Depth Anything 3 是 dense depth/ray/geometry 输出重点候选；可后续与 SAM、SigLIP/PEspatial、DINOv2 registers、3D reconstruction backbones 横向比较。
+- 关联：DINOv3 的 Gram anchoring 是 dense feature scaling 重点候选；Depth Anything 3 是 dense depth/ray/geometry 输出重点候选；Pi3 是 reference-free local pointmap / pose 输出重点候选；可后续与 SAM、SigLIP/PEspatial、DINOv2 registers、3D reconstruction backbones 横向比较。
 
 ## world-models
 
@@ -64,11 +66,12 @@
 关注：机器人、自动驾驶、感知/规划/控制结合、真实尺度与传感器先验。
 
 - Paper：[`Depth Anything 3`](../papers/3d-reconstruction/2025-depth-anything-3.md)
+- Paper：[`Pi3 / π³`](../papers/3d-reconstruction/2026-pi3.md)
 - Paper：[`LingBot-Map / Geometric Context Transformer for Streaming 3D Reconstruction`](../papers/3d-reconstruction/2026-lingbot-map.md)
 - 对比：[`Streaming 3D Reconstruction 方法横向对比`](../comparisons/3d-reconstruction/streaming-3d-reconstruction.md)
 - 对比：[`Any-view Visual Geometry Foundation Models`](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md)
-- 关联：Depth Anything 3 更适合作为任意视角视觉几何/NVS backbone；LingBot-Map 更适合作为连续视频在线建图/VO 候选；MapAnything/HunyuanWorld-Mirror 更适合多先验/metric reconstruction 或重渲染分支。
-- 复现：Depth Anything 3 / LingBot-Map inference-level sanity check planned。
+- 关联：Depth Anything 3 更适合作为任意视角视觉几何/NVS backbone；Pi3 更适合作为无序多视图/reference-free robustness baseline；LingBot-Map 更适合作为连续视频在线建图/VO 候选；MapAnything/HunyuanWorld-Mirror 更适合多先验/metric reconstruction 或重渲染分支。
+- 复现：Depth Anything 3 / Pi3 / LingBot-Map inference-level sanity check planned。
 
 ## generation-diffusion
 
@@ -99,5 +102,6 @@
 关注：benchmark、数据集、指标、评测协议、复现实验可信度。
 
 - Paper / Benchmark：[`Depth Anything 3`](../papers/3d-reconstruction/2025-depth-anything-3.md)；DA3-BENCH 覆盖 HiRoom、ETH3D、DTU、7Scenes、ScanNet++ 的 pose/reconstruction evaluation。
+- Paper / Benchmark：[`Pi3 / π³`](../papers/3d-reconstruction/2026-pi3.md)；evaluation branch 覆盖 monocular/video depth、relative camera pose、multi-view point map reconstruction。
 - 对比：[`Any-view Visual Geometry Foundation Models`](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md)
 - 复现：Depth Anything 3 benchmark 子集 planned。

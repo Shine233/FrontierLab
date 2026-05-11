@@ -173,6 +173,7 @@ rg "method_family:|feed-forward|3DGS|test-time" papers comparisons
 - [`comparisons/vision-foundation-models/dino-family.md`](comparisons/vision-foundation-models/dino-family.md)：DINO 家族横向对比与初学者教学：v1 / v2 / v3。
 - [`papers/3d-reconstruction/2026-lingbot-map.md`](papers/3d-reconstruction/2026-lingbot-map.md)：LingBot-Map / Geometric Context Transformer for Streaming 3D Reconstruction 论文分析。
 - [`papers/3d-reconstruction/2025-depth-anything-3.md`](papers/3d-reconstruction/2025-depth-anything-3.md)：Depth Anything 3 / Recovering the Visual Space from Any Views 论文分析。
+- [`papers/3d-reconstruction/2026-pi3.md`](papers/3d-reconstruction/2026-pi3.md)：Pi3 / π³: Permutation-Equivariant Visual Geometry Learning 论文分析。
 - [`comparisons/3d-reconstruction/streaming-3d-reconstruction.md`](comparisons/3d-reconstruction/streaming-3d-reconstruction.md)：Streaming 3D Reconstruction 方法对比：LingBot-Map / Stream3R / Wint3R / TTT3R / CUT3R 等。
 - [`comparisons/3d-reconstruction/visual-geometry-foundation-models.md`](comparisons/3d-reconstruction/visual-geometry-foundation-models.md)：Any-view Visual Geometry Foundation Models 横向对比：DA3 / VGGT / Pi3 / MapAnything / LingBot-Map。
 - [`reports/feedforward_3d_reconstruction_compare.md`](reports/feedforward_3d_reconstruction_compare.md)：前馈式三维重建方法对比：MapAnything / OmniVGGT / HunyuanWorld-Mirror。

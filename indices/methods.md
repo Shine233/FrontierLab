@@ -55,7 +55,7 @@
 |---|---|---|---|---|---|---|---|
 | Depth Anything 3 | depth-ray any-view geometry 主候选 | [ByteDance-Seed/Depth-Anything-3](https://github.com/ByteDance-Seed/Depth-Anything-3) | 是（代码 Apache-2.0；权重许可证混合） | `\` | pose/depth/ray/point cloud/3DGS 统一；benchmark/evaluator/weights 完整 | 训练未开源；大模型权重非商用；动态和 metric scale 仍需外部约束 | [paper](../papers/3d-reconstruction/2025-depth-anything-3.md), [对比](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md) |
 | VGGT | 经典强视觉几何 baseline | 待补充 | 待补充 | 待补充 | 任意视角 pose/depth/3D points 强 baseline | DA3 论文中多项指标落后；许可证/训练开源需单独核验 | [对比](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md) |
-| Pi3 | unordered / affine-invariant geometry baseline | 待补充 | 待补充 | 待补充 | permutation-equivariant 机制有研究价值 | metric 工程落地需外部尺度锚定 | [对比](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md) |
+| Pi3 / π³ | unordered / reference-free geometry baseline | [yyfz/Pi3](https://github.com/yyfz/Pi3) | 是（代码 BSD 3-Clause；权重 CC BY-NC 4.0） | 是（training branch；完整训练数据/算力不可完整复刻） | permutation-equivariant、affine-invariant camera pose、scale-invariant local pointmap；对输入顺序和 reference view 选择鲁棒；Pi3X 支持条件注入和近似 metric scale | 原始 Pi3 不是 metric 主线；权重非商用；训练含 internal dataset；Pi3X 与论文主结果需分开验证 | [paper](../papers/3d-reconstruction/2026-pi3.md), [对比](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md) |
 | MapAnything | metric promptable visual geometry | [facebookresearch/map-anything](https://github.com/facebookresearch/map-anything) | 是 | 是 | camera/pose/depth prompts 更适合真实尺度和车载先验 | NVS/3DGS 不是主线；需处理动态物体 | [对比](../reports/feedforward_3d_reconstruction_compare.md) |
 
 ## DINO family / self-supervised visual foundation models
@@ -72,10 +72,10 @@
 
 ## Dense visual foundation features
 
-核心问题：提供可冻结使用的 patch/像素级表征，用于 segmentation、depth、tracking、3D correspondence、robotics perception 等。
+核心问题：提供可冻结使用的 patch/像素级表征或 dense geometry 输出，用于 segmentation、depth、tracking、3D correspondence、robotics perception 等。
 
-- 已有关联：DINOv3、DINOv2、Depth Anything 3；后续可加入 SAM/SAM2、SigLIP/PEspatial、AM-RADIO、各类 3D foundation model backbones。
-- 当前结论：DINOv3 是 dense feature scaling 的重点候选；Depth Anything 3 是 dense depth/ray/geometry 输出重点候选；DINOv2 是更稳妥的工程 baseline；DINO v1 是机制教学起点。
+- 已有关联：DINOv3、DINOv2、Depth Anything 3、Pi3；后续可加入 SAM/SAM2、SigLIP/PEspatial、AM-RADIO、各类 3D foundation model backbones。
+- 当前结论：DINOv3 是 dense feature scaling 的重点候选；Depth Anything 3 是 dense depth/ray/geometry 输出重点候选；Pi3 是 reference-free local pointmap / pose 输出重点候选；DINOv2 是更稳妥的工程 baseline；DINO v1 是机制教学起点。
 - 待补充：在自动驾驶/机器人/3D reconstruction 任务中，用 DINOv2/v3 patch features 做统一 probe。
 
 ## Test-time scaling / reasoning agents

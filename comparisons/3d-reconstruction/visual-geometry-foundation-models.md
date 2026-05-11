@@ -5,12 +5,12 @@ direction: [3d-reconstruction, dense-vision, robotics-autonomous-driving]
 methods: [Depth-Anything-3, VGGT, Pi3, MapAnything, LingBot-Map, Depth-Anything-2]
 status: initial-completed
 confidence: medium
-updated: 2026-05-09
+updated: 2026-05-11
 ---
 
 # Any-view Visual Geometry Foundation Models 横向对比
 
-> 证据范围：本对比以 Depth Anything 3 论文、公开 GitHub 仓库、README/model cards、DA3-BENCH 文档以及 FrontierLab 已有 MapAnything/LingBot-Map 资料为主；尚未独立复跑 benchmark。结论用于复现优先级和方法分工，不替代正式实验报告。
+> 证据范围：本对比以 Depth Anything 3 / Pi3 论文、公开 GitHub 仓库、README/model cards、DA3-BENCH 文档以及 FrontierLab 已有 MapAnything/LingBot-Map 资料为主；尚未独立复跑 benchmark。结论用于复现优先级和方法分工，不替代正式实验报告。
 
 ## 结论先行
 
@@ -19,7 +19,7 @@ updated: 2026-05-09
 | **any-view geometry 主候选** | **Depth Anything 3** | depth-ray representation 统一 depth/pose/point cloud；单 plain transformer 复用 DINOv2 预训练；公开 CLI/API/benchmark/weights；论文表中 pose、reconstruction、NVS 多项强于 VGGT/Pi3/MapAnything | 训练代码未开源；大模型权重 CC BY-NC 4.0；完整训练成本极高；动态场景仍需额外处理 |
 | **metric prompt 主候选** | **MapAnything** | 更强调 metric reconstruction 和 camera/pose/depth/point-map prompts；对自动驾驶已有标定、ego pose、LiDAR depth 更直接 | 不是 3DGS/NVS 主模型；需要外部动态物体处理；现有报告已覆盖，需与 DA3 实测分工 |
 | **经典强 baseline** | **VGGT** | 任意视角视觉几何强 baseline，生态和论文引用度高 | DA3 论文中多项指标被 DA3 超过；架构更重，训练/推理冗余更高 |
-| **unordered/scale-invariant baseline** | **Pi3** | permutation-equivariant / affine-invariant 视角有研究价值 | metric scale 和工程生态不如 MapAnything/DA3 直接 |
+| **reference-free 鲁棒性 baseline** | **Pi3** | permutation-equivariant / affine-invariant formulation 去掉固定参考帧；对输入顺序和 reference view 选择更稳；training/evaluation 分支已公开 | 原始 Pi3 不是 metric 主线；权重 CC BY-NC 4.0；完整训练含 internal dataset；Pi3X 与论文主结果需分开验证 |
 | **online visual mapping 主候选** | **LingBot-Map** | causal streaming、长视频、实时 pose/depth/point cloud 明确；与 DA3 的离线 any-view 范式互补 | 训练代码未开源；没有显式 loop closure；不是多先验 prompt 模型 |
 | **单目 depth baseline** | **Depth Anything 2** | 轻量、成熟、单图相对/metric depth 仍实用 | 不输出多视图一致 pose/ray/point cloud；不能替代 DA3 的 any-view geometry |
 
@@ -38,17 +38,17 @@ updated: 2026-05-09
 
 | 维度 | Depth Anything 3 | VGGT | Pi3 | MapAnything | LingBot-Map |
 |---|---|---|---|---|---|
-| 核心范式 | Plain transformer + depth-ray + dual-DPT | 多任务视觉几何 transformer | permutation-equivariant / affine-invariant geometry | metric promptable feed-forward reconstruction | causal streaming 3D reconstruction |
-| 输入 | 任意数量 RGB；可选 camera pose | 任意数量 RGB | 无序 RGB views | RGB + camera/pose/depth/point priors | RGB video stream |
-| 输出 | depth、ray、camera、point cloud、3DGS | camera、depth、3D points | camera/point geometry | metric pose/depth/point map | streaming pose/depth/point cloud |
+| 核心范式 | Plain transformer + depth-ray + dual-DPT | 多任务视觉几何 transformer | permutation-equivariant / affine-invariant geometry；reference-free local pointmap | metric promptable feed-forward reconstruction | causal streaming 3D reconstruction |
+| 输入 | 任意数量 RGB；可选 camera pose | 任意数量 RGB | 单图、视频或无序 RGB views；Pi3X 可选 camera/intrinsics/depth 条件 | RGB + camera/pose/depth/point priors | RGB video stream |
+| 输出 | depth、ray、camera、point cloud、3DGS | camera、depth、3D points | camera poses、local point maps、confidence、global point cloud | metric pose/depth/point map | streaming pose/depth/point cloud |
 | 是否 posed/unposed 兼容 | 是 | 是 | 是 | 是，且 prompt 更灵活 | 主要 unposed/streaming |
-| 是否 metric 主线 | 部分：DA3Metric/DA3Nested | 部分 | 偏 scale-invariant | 是 | 可估计轨迹/深度但更偏 VO/relative mapping |
+| 是否 metric 主线 | 部分：DA3Metric/DA3Nested | 部分 | 原始 Pi3 偏 scale-invariant；Pi3X 支持近似 metric scale | 是 | 可估计轨迹/深度但更偏 VO/relative mapping |
 | 是否 3DGS/NVS | 是，GS-DPT / DA3-Giant/Nested | 可作 backbone | 可作 backbone | 可导出衔接 | 不是主线 |
 | 是否 streaming | repo 有 DA3-Streaming 推理管线 | 需要长视频改造 | 需要长视频改造 | 非主线 | 是，核心目标 |
-| 代码许可证 | Apache-2.0 | 待按具体仓库核验 | 待补充 | 已有报告记录 | Apache-2.0 |
-| 权重许可证 | Base/Small/Metric/Mono Apache-2.0；Giant/Large/Nested CC BY-NC 4.0 | 待按模型卡核验 | 待补充 | 已有报告记录 | 仓库 Apache-2.0；权重许可证需按模型卡核验 |
-| 训练代码 | 未开源 | 待补充 | 待补充 | 是 | `\` |
-| 当前复现建议 | inference + DA3-BENCH 子集 | baseline 对照 | 机制对照 | metric prompt 对照 | streaming 对照 |
+| 代码许可证 | Apache-2.0 | 待按具体仓库核验 | main BSD 3-Clause；evaluation branch 写 academic BSD-2/commercial contact，需按分支核验 | 已有报告记录 | Apache-2.0 |
+| 权重许可证 | Base/Small/Metric/Mono Apache-2.0；Giant/Large/Nested CC BY-NC 4.0 | 待按模型卡核验 | Pi3 / Pi3X weights CC BY-NC 4.0 | 已有报告记录 | 仓库 Apache-2.0；权重许可证需按模型卡核验 |
+| 训练代码 | 未开源 | 待补充 | 是，training branch；完整训练数据/算力不可完整复刻 | 是 | `\` |
+| 当前复现建议 | inference + DA3-BENCH 子集 | baseline 对照 | inference + evaluation branch；重点测输入顺序鲁棒性与 Pi3/Pi3X 差异 | metric prompt 对照 | streaming 对照 |
 
 ## 3. DA3 相对 VGGT / Pi3 / MapAnything 的关键差异
 
@@ -61,9 +61,11 @@ updated: 2026-05-09
 
 ### 3.2 DA3 vs Pi3
 
-- Pi3 的研究点是 permutation-equivariant 和 affine/scale-invariant geometry，对 unordered views 机制研究重要。
+- Pi3 的研究点是 permutation-equivariant 和 affine/scale-invariant geometry，对 unordered views、reference-view bias、输入顺序鲁棒性研究重要。
 - DA3 更工程化：公开权重、API、CLI、benchmark evaluator、3DGS/NVS head，更适合快速做应用验证。
-- 自动驾驶/机器人里若需要 metric scale，Pi3 仍需外部尺度锚定；DA3Nested/Metric 与 MapAnything 更直接。
+- Pi3 代码生态已经补上 training/evaluation 分支，且 main 分支发布 Pi3X：convolutional head 降低 grid artifacts，支持 camera/intrinsics/depth 条件注入和近似 metric scale。
+- 自动驾驶/机器人里若需要严格 metric scale，原始 Pi3 仍需外部尺度锚定；DA3Nested/Metric、Pi3X、MapAnything 应放在同一小场景中实测。
+- 复现时不要混淆论文 Pi3 和工程更新 Pi3X：论文主要证据来自 reference-free formulation；Pi3X 是后续工程增强。
 
 ### 3.3 DA3 vs MapAnything
 
@@ -81,14 +83,16 @@ updated: 2026-05-09
 
 1. **DA3 inference sanity check**：`DA3-BASE` 或 `DA3-LARGE-1.1` 跑官方 SOH 示例，导出 depth / npz / glb，记录显存、速度、点云质量。
 2. **DA3-BENCH mini evaluation**：只下载 HiRoom 或 7Scenes，跑 `pose` mode，确认 evaluator 可用。
-3. **VGGT / MapAnything 横向小场景**：同一组多视图输入，比较 pose、depth、点云 F1 或 qualitative artifact。
-4. **DA3-Streaming 单独评估**：用 KITTI/TUM 或自有长视频测试 chunk size、overlap、VRAM、ATE；不要与 DA3 paper core metrics 混在一起。
-5. **许可证筛选**：商业相关实验优先使用 Apache 权重或仅记录 CC BY-NC 权重为 research-only。
+3. **Pi3 / Pi3X order robustness sanity check**：同一组多视图输入随机打乱顺序，比较 camera pose、point cloud、confidence 和 grid artifacts；记录 Pi3 与 Pi3X 的差异。
+4. **VGGT / MapAnything 横向小场景**：同一组多视图输入，比较 pose、depth、点云 F1 或 qualitative artifact。
+5. **DA3-Streaming 单独评估**：用 KITTI/TUM 或自有长视频测试 chunk size、overlap、VRAM、ATE；不要与 DA3 paper core metrics 混在一起。
+6. **许可证筛选**：商业相关实验优先使用 Apache 权重或仅记录 CC BY-NC 权重为 research-only。
 
 ## 5. 不确定性
 
 - 本对比尚未复跑 DA3-BENCH；所有 DA3 定量结论来自论文和官方 benchmark docs。
-- VGGT、Pi3 当前仓库/权重许可证未在本次任务逐项核验；后续若做正式复现实验，需要锁定 commit 和 model card。
+- VGGT 当前仓库/权重许可证未在本次任务逐项核验；后续若做正式复现实验，需要锁定 commit 和 model card。
+- Pi3 main README 与 evaluation branch README 的许可证措辞不同；商用或再发布前需逐分支核验。
 - DA3 README 提到 `-1.1` 权重修复 training bug；论文表格与 refreshed checkpoints 的精确对应关系需复跑确认。
 
 ## Sources
@@ -97,5 +101,8 @@ updated: 2026-05-09
 - Depth Anything 3 GitHub: <https://github.com/ByteDance-Seed/Depth-Anything-3>
 - Depth Anything 3 analysis note: [`../../papers/3d-reconstruction/2025-depth-anything-3.md`](../../papers/3d-reconstruction/2025-depth-anything-3.md)
 - DA3-BENCH: <https://huggingface.co/datasets/depth-anything/DA3-BENCH>
+- Pi3 analysis note: [`../../papers/3d-reconstruction/2026-pi3.md`](../../papers/3d-reconstruction/2026-pi3.md)
+- Pi3 GitHub: <https://github.com/yyfz/Pi3>
+- Pi3 OpenReview: <https://openreview.net/forum?id=DTQIjngDta>
 - LingBot-Map analysis note: [`../../papers/3d-reconstruction/2026-lingbot-map.md`](../../papers/3d-reconstruction/2026-lingbot-map.md)
 - Existing feed-forward comparison: [`../../reports/feedforward_3d_reconstruction_compare.md`](../../reports/feedforward_3d_reconstruction_compare.md)
