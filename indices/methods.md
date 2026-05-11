@@ -34,7 +34,7 @@
 
 核心问题：将 camera、pose、depth、point map、SLAM/LiDAR 投影等几何先验编码为 prompt/token/condition，增强重建或世界模型稳定性。
 
-- 已有关联：MapAnything、OmniVGGT、HunyuanWorld-Mirror。
+- 已有关联：MapAnything、Pi3/Pi3X、OmniVGGT、HunyuanWorld-Mirror。
 - LingBot-Map 当前不属于多先验 prompting 主线；它的 anchor/window/memory 是 streaming 状态设计，不是 raw LiDAR/IMU 或 depth prompt 融合。
 - 待补充：新 paper 或代码库。
 

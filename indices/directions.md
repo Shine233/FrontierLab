@@ -9,7 +9,7 @@
 - Paper：[`Depth Anything 3: Recovering the Visual Space from Any Views`](../papers/3d-reconstruction/2025-depth-anything-3.md)
 - Paper：[`Pi3 / π³: Permutation-Equivariant Visual Geometry Learning`](../papers/3d-reconstruction/2026-pi3.md)
 - Paper：[`LingBot-Map / Geometric Context Transformer for Streaming 3D Reconstruction`](../papers/3d-reconstruction/2026-lingbot-map.md)
-- 对比报告：[`前馈式三维重建方法对比：MapAnything / OmniVGGT / HunyuanWorld-Mirror`](../reports/feedforward_3d_reconstruction_compare.md)
+- 对比报告：[`前馈式三维重建方法对比：MapAnything / Pi3 / HunyuanWorld-Mirror / OmniVGGT`](../reports/feedforward_3d_reconstruction_compare.md)
 - 对比报告：[`Streaming 3D Reconstruction 方法横向对比`](../comparisons/3d-reconstruction/streaming-3d-reconstruction.md)
 - 对比报告：[`Any-view Visual Geometry Foundation Models 横向对比`](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md)
 - 相关方法族：any-view visual geometry foundation model、permutation-equivariant visual geometry、reference-free reconstruction、depth-ray representation、feed-forward 3D reconstruction、streaming 3D reconstruction、geometric context attention、geometry-prior prompting、3D Gaussian Splatting 初始化、多视图 metric depth / point map。

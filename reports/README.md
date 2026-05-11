@@ -4,4 +4,4 @@
 
 已有报告：
 
-- [`feedforward_3d_reconstruction_compare.md`](feedforward_3d_reconstruction_compare.md)：前馈式三维重建方法对比：MapAnything / OmniVGGT / HunyuanWorld-Mirror。
+- [`feedforward_3d_reconstruction_compare.md`](feedforward_3d_reconstruction_compare.md)：前馈式三维重建方法对比：MapAnything / Pi3 / HunyuanWorld-Mirror / OmniVGGT。

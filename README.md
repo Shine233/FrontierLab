@@ -176,4 +176,4 @@ rg "method_family:|feed-forward|3DGS|test-time" papers comparisons
 - [`papers/3d-reconstruction/2026-pi3.md`](papers/3d-reconstruction/2026-pi3.md)：Pi3 / π³: Permutation-Equivariant Visual Geometry Learning 论文分析。
 - [`comparisons/3d-reconstruction/streaming-3d-reconstruction.md`](comparisons/3d-reconstruction/streaming-3d-reconstruction.md)：Streaming 3D Reconstruction 方法对比：LingBot-Map / Stream3R / Wint3R / TTT3R / CUT3R 等。
 - [`comparisons/3d-reconstruction/visual-geometry-foundation-models.md`](comparisons/3d-reconstruction/visual-geometry-foundation-models.md)：Any-view Visual Geometry Foundation Models 横向对比：DA3 / VGGT / Pi3 / MapAnything / LingBot-Map。
-- [`reports/feedforward_3d_reconstruction_compare.md`](reports/feedforward_3d_reconstruction_compare.md)：前馈式三维重建方法对比：MapAnything / OmniVGGT / HunyuanWorld-Mirror。
+- [`reports/feedforward_3d_reconstruction_compare.md`](reports/feedforward_3d_reconstruction_compare.md)：前馈式三维重建方法对比：MapAnything / Pi3 / HunyuanWorld-Mirror / OmniVGGT。
