@@ -3,6 +3,8 @@
 > 更新时间：2026-05-11
 > 关注目标：**多模态输入、自动驾驶行车场景友好、真实尺度、模型/方法上限高、训练开源可复现**。  
 > 结论先行：若以“开源训练 + 真尺度 + 行车数据可扩展 + 长序列/大规模推理”为核心，**MapAnything 当前最接近主干候选**；若以“多先验提示 + 多任务输出 + 3DGS/NVS 生态”为核心，**HunyuanWorld-Mirror 是强候选但许可证与训练复杂度需重点评估**；**Pi3 / Pi3X 已公开 training/evaluation 分支和权重，是必须加入的 reference-free / unordered baseline**，但原始 Pi3 不是 metric 主线，权重非商用；**OmniVGGT 更像 VGGT 的几何先验适配器/机器人场景增强版**，适合做轻量 adapter 对照。
+>
+> 2026-05-18 补充：[`VGGT-Ω`](../papers/3d-reconstruction/2026-vggt-omega.md) 是 VGGT scaling / dynamic feed-forward reconstruction 的强 RGB-only backbone 候选，论文在静态+动态 camera/depth benchmark 上大幅超过 VGGT/Pi3/DA3/MegaSaM，并提供 register scene tokens 用于 VLA/语言对齐；但公开仓库主要是 inference/demo/model code、HF 权重 gated、FAIR Noncommercial Research License，且不提供 metric prompt-first 训练路线。更完整横向位置见 [`Any-view Visual Geometry Foundation Models`](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md)。
 
 ---
 

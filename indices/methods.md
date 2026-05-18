@@ -10,6 +10,7 @@
 | Method | 定位 | Git 地址 | 是否开源 | 是否开源训练 | 强项 | 风险 | 相关资料 |
 |---|---|---|---|---|---|---|---|
 | Depth Anything 3 | any-view visual geometry backbone / feed-forward reconstruction 候选 | [ByteDance-Seed/Depth-Anything-3](https://github.com/ByteDance-Seed/Depth-Anything-3) | 是（代码 Apache-2.0；权重许可证混合） | `\` | depth-ray representation 统一 pose/depth/ray/point cloud；公开 CLI/API/benchmark/权重；DA3-Large 性价比高 | 训练代码未开源；Giant/Large/Nested 权重 CC BY-NC 4.0；完整训练成本极高；动态场景需额外处理 | [paper](../papers/3d-reconstruction/2025-depth-anything-3.md), [visual geometry 对比](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md) |
+| VGGT-Ω | dynamic/RGB-only feed-forward geometry backbone | [facebookresearch/vggt-omega](https://github.com/facebookresearch/vggt-omega) | 是（FAIR Noncommercial Research License；HF 权重 gated） | `\` | 静态+动态 camera/depth benchmark 强；DINOv3 + register attention 可扩展；scene/register tokens 可用于 VLA/语言对齐；长帧数推理显存表公开 | 公开仓库没有训练/eval/data pipeline；10B 论文上限未见公开权重；非商用许可；不是 metric prompt-first 框架 | [paper](../papers/3d-reconstruction/2026-vggt-omega.md), [visual geometry 对比](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md) |
 | MapAnything | 主 backbone 候选 | [facebookresearch/map-anything](https://github.com/facebookresearch/map-anything) | 是 | 是 | metric scale、混合几何先验、长序列、多数据训练生态 | 动态物体需额外处理；非 raw LiDAR/Radar 输入 | [对比](../reports/feedforward_3d_reconstruction_compare.md) |
 | OmniVGGT | VGGT 几何先验增强 baseline | [Livioni/OmniVGGT-official](https://github.com/Livioni/OmniVGGT-official) | 是 | 待核验 | 轻量、易做 RGB+depth/camera prior 对照 | 生态较薄，长序列/大场景不是核心卖点；训练完整性需核验 | [对比](../reports/feedforward_3d_reconstruction_compare.md) |
 | HunyuanWorld-Mirror | any-prior 世界重建与 3DGS/NVS 分支 | [Tencent-Hunyuan/HunyuanWorld-Mirror](https://github.com/Tencent-Hunyuan/HunyuanWorld-Mirror) | 是（非商用/受限许可） | 是 | 多先验、输出丰富、适合渲染/资产生成 | 工程重，许可证需审查 | [对比](../reports/feedforward_3d_reconstruction_compare.md) |
@@ -54,6 +55,7 @@
 | Method | 定位 | Git 地址 | 是否开源 | 是否开源训练 | 强项 | 风险 | 相关资料 |
 |---|---|---|---|---|---|---|---|
 | Depth Anything 3 | depth-ray any-view geometry 主候选 | [ByteDance-Seed/Depth-Anything-3](https://github.com/ByteDance-Seed/Depth-Anything-3) | 是（代码 Apache-2.0；权重许可证混合） | `\` | pose/depth/ray/point cloud/3DGS 统一；benchmark/evaluator/weights 完整 | 训练未开源；大模型权重非商用；动态和 metric scale 仍需外部约束 | [paper](../papers/3d-reconstruction/2025-depth-anything-3.md), [对比](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md) |
+| VGGT-Ω | VGGT scaling / dynamic feed-forward reconstruction 强 baseline | [facebookresearch/vggt-omega](https://github.com/facebookresearch/vggt-omega) | 是（FAIR Noncommercial Research License；HF 权重 gated） | `\` | DINOv3 初始化、register attention、动态视频数据和自监督训练；论文在 3 个静态+3 个动态 benchmark 上强于 VGGT/Pi3/DA3/MegaSaM；scene tokens 可作为空间表征 | 公开仓库主要是 inference/demo/model code；训练数据和 10B 结果不可复刻；非商用许可；缺少几何先验 prompt 接口 | [paper](../papers/3d-reconstruction/2026-vggt-omega.md), [对比](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md) |
 | VGGT | 经典强视觉几何 baseline | 待补充 | 待补充 | 待补充 | 任意视角 pose/depth/3D points 强 baseline | DA3 论文中多项指标落后；许可证/训练开源需单独核验 | [对比](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md) |
 | Pi3 / π³ | unordered / reference-free geometry baseline | [yyfz/Pi3](https://github.com/yyfz/Pi3) | 是（代码 BSD 3-Clause；权重 CC BY-NC 4.0） | 是（training branch；完整训练数据/算力不可完整复刻） | permutation-equivariant、affine-invariant camera pose、scale-invariant local pointmap；对输入顺序和 reference view 选择鲁棒；Pi3X 支持条件注入和近似 metric scale | 原始 Pi3 不是 metric 主线；权重非商用；训练含 internal dataset；Pi3X 与论文主结果需分开验证 | [paper](../papers/3d-reconstruction/2026-pi3.md), [对比](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md) |
 | MapAnything | metric promptable visual geometry | [facebookresearch/map-anything](https://github.com/facebookresearch/map-anything) | 是 | 是 | camera/pose/depth prompts 更适合真实尺度和车载先验 | NVS/3DGS 不是主线；需处理动态物体 | [对比](../reports/feedforward_3d_reconstruction_compare.md) |
@@ -74,8 +76,8 @@
 
 核心问题：提供可冻结使用的 patch/像素级表征或 dense geometry 输出，用于 segmentation、depth、tracking、3D correspondence、robotics perception 等。
 
-- 已有关联：DINOv3、DINOv2、Depth Anything 3、Pi3；后续可加入 SAM/SAM2、SigLIP/PEspatial、AM-RADIO、各类 3D foundation model backbones。
-- 当前结论：DINOv3 是 dense feature scaling 的重点候选；Depth Anything 3 是 dense depth/ray/geometry 输出重点候选；Pi3 是 reference-free local pointmap / pose 输出重点候选；DINOv2 是更稳妥的工程 baseline；DINO v1 是机制教学起点。
+- 已有关联：DINOv3、DINOv2、VGGT-Ω、Depth Anything 3、Pi3；后续可加入 SAM/SAM2、SigLIP/PEspatial、AM-RADIO、各类 3D foundation model backbones。
+- 当前结论：DINOv3 是 dense feature scaling 的重点候选；VGGT-Ω 是 reconstruction-as-spatial-pretraining / register scene token 重点候选；Depth Anything 3 是 dense depth/ray/geometry 输出重点候选；Pi3 是 reference-free local pointmap / pose 输出重点候选；DINOv2 是更稳妥的工程 baseline；DINO v1 是机制教学起点。
 - 待补充：在自动驾驶/机器人/3D reconstruction 任务中，用 DINOv2/v3 patch features 做统一 probe。
 
 ## Test-time scaling / reasoning agents
