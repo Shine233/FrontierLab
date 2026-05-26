@@ -35,7 +35,8 @@
 
 核心问题：将 camera、pose、depth、point map、SLAM/LiDAR 投影等几何先验编码为 prompt/token/condition，增强重建或世界模型稳定性。
 
-- 已有关联：MapAnything、Pi3/Pi3X、OmniVGGT、HunyuanWorld-Mirror。
+- 已有关联：MapAnything、Pi3/Pi3X、OmniVGGT、HunyuanWorld-Mirror、Xiaomi Auto World Model / JointWM。
+- Xiaomi Auto World Model 中的几何先验不是简单输入 depth/camera prompt，而是 WorldRec 将 scene tokens rasterize 为目标视角 rendered priors，再作为 WorldGen 的额外条件，约束长时序生成。
 - LingBot-Map 当前不属于多先验 prompting 主线；它的 anchor/window/memory 是 streaming 状态设计，不是 raw LiDAR/IMU 或 depth prompt 融合。
 - 待补充：新 paper 或代码库。
 
@@ -43,10 +44,22 @@
 
 核心问题：从图像和几何先验构建可重渲染场景表示，用于 novel view synthesis、仿真、数据生成或世界资产。
 
-- 已有关联：Depth Anything 3、HunyuanWorld-Mirror；MapAnything 可通过导出衔接 3DGS。
+- 已有关联：Depth Anything 3、HunyuanWorld-Mirror、Xiaomi Auto World Model / JointWM；MapAnything 可通过导出衔接 3DGS。
 - Depth Anything 3 可通过 GS-DPT / DA3-Giant / DA3Nested 做 feed-forward 3DGS / NVS，论文中 DA3 backbone 在 DL3DV、Tanks and Temples、MegaDepth NVS benchmark 上强于 VGGT/Fast3R/MV-DUSt3R backbone。
+- Xiaomi Auto World Model 的 WorldRec 用 sparse 3D scene queries 聚合跨视角/跨时间特征并解码 Gaussian 属性，论文报告 Waymo PSNR 28.48 / SSIM 0.861、nuScenes zero-shot PSNR 26.54 / SSIM 0.821；但代码、权重和训练数据未公开。
 - LingBot-Map 可输出/渲染点云和轨迹，但不是 3DGS/NVS 主模型；可作为在线建图前端或几何初始化来源候选。
 - 待补充：Gaussian Splatting 相关方法、动态 3DGS、驾驶场景 4D 表示。
+
+## Driving world models / reconstruction-generation hybrid
+
+核心问题：同时具备显式场景表征和长时序生成能力，用于自动驾驶 closed-loop simulation、data synthesis、end-to-end training。
+
+| Method | 定位 | Git 地址 | 是否开源 | 是否开源训练 | 强项 | 风险 | 相关资料 |
+|---|---|---|---|---|---|---|---|
+| Xiaomi Auto World Model / JointWM | WorldRec + WorldGen 联合自动驾驶世界模型 | [project](https://JointWM.github.io)（无公开 GitHub） | 否（仅论文/项目页公开） | 否 | sparse-query feed-forward 3DGS + causal DiT generation；WorldRec rendered priors 约束 WorldGen；论文报告 10s clip 约 10s 重建、WorldGen 81 frames / 0.19s/frame / FVD 64.97 | 无代码/权重/训练数据；JointWM 稳定性主要是 qualitative；缺少几何/闭环数值协议和许可证信息 | [paper](../papers/world-models/2026-xiaomi-auto-world-model.md) |
+| HunyuanWorld-Mirror | any-prior world reconstruction / 3DGS / NVS 分支 | [Tencent-Hunyuan/HunyuanWorld-Mirror](https://github.com/Tencent-Hunyuan/HunyuanWorld-Mirror) | 是（非商用/受限许可） | 是 | 多先验、输出丰富、适合渲染/资产生成 | 工程重，许可证需审查 | [对比](../reports/feedforward_3d_reconstruction_compare.md) |
+
+待补充：MagicDrive / MagicDrive-V2 / Epona / Genesis / GAIA-2 / NeoVerse / WorldSplat / STORM / DGGT 等，建议按“显式 3D 场景、生成能力、未来预测、几何一致性、长时序稳定性、开源度、闭环可用性”固定维度比较。
 
 ## Any-view visual geometry foundation models
 

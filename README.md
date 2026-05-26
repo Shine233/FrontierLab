@@ -175,6 +175,7 @@ rg "method_family:|feed-forward|3DGS|test-time" papers comparisons
 - [`papers/3d-reconstruction/2025-depth-anything-3.md`](papers/3d-reconstruction/2025-depth-anything-3.md)：Depth Anything 3 / Recovering the Visual Space from Any Views 论文分析。
 - [`papers/3d-reconstruction/2026-vggt-omega.md`](papers/3d-reconstruction/2026-vggt-omega.md)：VGGT-Ω 论文分析：VGGT scaling、register attention、动态视频重建与空间 token 表征。
 - [`papers/3d-reconstruction/2026-pi3.md`](papers/3d-reconstruction/2026-pi3.md)：Pi3 / π³: Permutation-Equivariant Visual Geometry Learning 论文分析。
+- [`papers/world-models/2026-xiaomi-auto-world-model.md`](papers/world-models/2026-xiaomi-auto-world-model.md)：Xiaomi Auto World Model / JointWM 论文分析：WorldRec 稀疏 3D query 前馈 3DGS、WorldGen 因果 DiT、重建-生成联合自动驾驶世界模型。
 - [`comparisons/3d-reconstruction/streaming-3d-reconstruction.md`](comparisons/3d-reconstruction/streaming-3d-reconstruction.md)：Streaming 3D Reconstruction 方法对比：LingBot-Map / Stream3R / Wint3R / TTT3R / CUT3R 等。
 - [`comparisons/3d-reconstruction/visual-geometry-foundation-models.md`](comparisons/3d-reconstruction/visual-geometry-foundation-models.md)：Any-view Visual Geometry Foundation Models 横向对比：DA3 / VGGT-Ω / VGGT / Pi3 / MapAnything / LingBot-Map。
 - [`reports/feedforward_3d_reconstruction_compare.md`](reports/feedforward_3d_reconstruction_compare.md)：前馈式三维重建方法对比：MapAnything / Pi3 / HunyuanWorld-Mirror / OmniVGGT。
