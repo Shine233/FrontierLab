@@ -85,6 +85,20 @@
 
 建议固定对比维度：global vs dense feature、训练数据可得性、训练代码开源度、权重/许可证、输入分辨率适配、下游任务、推理成本、与 CLIP/SAM/3D backbones 的互补关系。
 
+## Feed-forward visual relocalization / pose regression
+
+核心问题：给定 query image 与目标场景的 mapping/database 信息，尽量通过单次或少量前向推理估计 6DoF camera pose，并明确区分是否需要每个新场景训练或显式地图。
+
+| Method | 定位 | Git 地址 | 是否开源 | 是否开源训练 | 强项 | 风险 | 相关资料 |
+|---|---|---|---|---|---|---|---|
+| Reloc3r | scene-agnostic RPR 可跑 baseline | [ffrivera0/reloc3r](https://github.com/ffrivera0/reloc3r) | 是（CC BY-NC-SA 4.0） | 是 | 公开训练/eval/demo/weights；无需新场景训练；速度快；Reloc-VGGT 直接 baseline | Late fusion / motion averaging 对共线、弱 overlap、retrieval outlier、尺度退化敏感 | [paper](../papers/visual-localization/2025-reloc3r.md), [对比](../comparisons/visual-localization/feed-forward-visual-relocalization.md) |
+| Reloc-VGGT | VGGT early multi-view fusion 高上限路线 | [dtc111111/Reloc-VGGT](https://github.com/dtc111111/Reloc-VGGT) | 否（截至 2026-06-04 仓库仅占位 README） | 否 | Source pose token + query/source early fusion；论文显示 7Scenes/Cambridge 优于 Reloc3r | 无代码/权重/license；无法复现；VGGT backbone 推理成本可能高 | [paper](../papers/visual-localization/2026-reloc-vggt.md), [对比](../comparisons/visual-localization/feed-forward-visual-relocalization.md) |
+| MARePo | map-conditioned APR/SCR hybrid | [nianticlabs/marepo](https://github.com/nianticlabs/marepo) | 是（Niantic non-commercial license） | 是 | Metric scene coordinate map 条件化直接 pose regression；公开训练/测试/model links；强 APR baseline | 需要每个新场景 ACE-style coordinate head；非商用；不是 no-scene-training | [paper](../papers/visual-localization/2024-marepo.md), [对比](../comparisons/visual-localization/feed-forward-visual-relocalization.md) |
+| FastForward | map-light feed-forward camera localization | [project](https://nianticspatial.github.io/fastforward/)（未见公开 GitHub） | 否（暂未公开代码） | 否 | Posed mapping features -> 2D-3D correspondences -> PnP；比 direct RPR 更可解释，论文报告 Wayspots/Indoor6/Cambridge 强 | 当前无代码/权重/license；仍需 retrieval、feature cache、PnP/RANSAC | [对比](../comparisons/visual-localization/feed-forward-visual-relocalization.md) |
+| ACE | scene coordinate regression 强 baseline | [nianticlabs/ace](https://github.com/nianticlabs/ace) | 是（Niantic non-commercial license） | 是 | 每场景分钟级 train head；scene coordinates + RANSAC/PnP 精度强；MARePo 直接前置方法 | 每个场景训练；非商用；不是 pose regression-only | [对比](../comparisons/visual-localization/feed-forward-visual-relocalization.md) |
+
+建议固定对比维度：是否需要新场景训练、mapping/database 形态、是否输出 correspondences、scale 来源、retrieval/top-K、query latency、mapping time、许可证、训练开源度、7Scenes/Cambridge/Wayspots 指标。
+
 ## Dense visual foundation features
 
 核心问题：提供可冻结使用的 patch/像素级表征或 dense geometry 输出，用于 segmentation、depth、tracking、3D correspondence、robotics perception 等。

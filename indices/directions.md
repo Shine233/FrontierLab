@@ -11,11 +11,24 @@
 - Paper：[`Pi3 / π³: Permutation-Equivariant Visual Geometry Learning`](../papers/3d-reconstruction/2026-pi3.md)
 - Paper：[`LingBot-Map / Geometric Context Transformer for Streaming 3D Reconstruction`](../papers/3d-reconstruction/2026-lingbot-map.md)
 - Paper：[`Xiaomi Auto World Model / JointWM`](../papers/world-models/2026-xiaomi-auto-world-model.md)
+- Paper：[`Reloc-VGGT`](../papers/visual-localization/2026-reloc-vggt.md)
+- Paper：[`Reloc3r`](../papers/visual-localization/2025-reloc3r.md)
 - 对比报告：[`前馈式三维重建方法对比：MapAnything / Pi3 / HunyuanWorld-Mirror / OmniVGGT`](../reports/feedforward_3d_reconstruction_compare.md)
 - 对比报告：[`Streaming 3D Reconstruction 方法横向对比`](../comparisons/3d-reconstruction/streaming-3d-reconstruction.md)
 - 对比报告：[`Any-view Visual Geometry Foundation Models 横向对比`](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md)
-- 相关方法族：any-view visual geometry foundation model、dynamic feed-forward reconstruction、register attention、reconstruction as spatial pretraining、permutation-equivariant visual geometry、reference-free reconstruction、depth-ray representation、feed-forward 3D reconstruction、streaming 3D reconstruction、geometric context attention、sparse-scene-query 3DGS、geometry-prior prompting、3D Gaussian Splatting 初始化、多视图 metric depth / point map。
-- 复现状态：VGGT-Ω / Depth Anything 3 / Pi3 / LingBot-Map inference 复现 planned；MapAnything / HunyuanWorld-Mirror planned；Xiaomi Auto World Model 因代码/权重未公开暂 blocked。
+- 相关方法族：any-view visual geometry foundation model、dynamic feed-forward reconstruction、register attention、reconstruction as spatial pretraining、permutation-equivariant visual geometry、reference-free reconstruction、depth-ray representation、feed-forward 3D reconstruction、streaming 3D reconstruction、geometric context attention、feed-forward visual relocalization、relative pose regression、sparse-scene-query 3DGS、geometry-prior prompting、3D Gaussian Splatting 初始化、多视图 metric depth / point map。
+- 复现状态：VGGT-Ω / Depth Anything 3 / Pi3 / LingBot-Map / Reloc3r inference 复现 planned；MapAnything / HunyuanWorld-Mirror planned；Reloc-VGGT 与 Xiaomi Auto World Model 因代码/权重未公开暂 blocked。
+
+## visual-localization
+
+关注：视觉重定位、relative/absolute pose regression、scene coordinate regression、map-free / map-light localization、feed-forward camera localization。
+
+- Paper：[`Reloc-VGGT: Visual Re-localization with Geometry Grounded Transformer`](../papers/visual-localization/2026-reloc-vggt.md)
+- Paper：[`Reloc3r: Large-Scale Training of Relative Camera Pose Regression`](../papers/visual-localization/2025-reloc3r.md)
+- Paper：[`MARePo / Map-Relative Pose Regression for Visual Re-Localization`](../papers/visual-localization/2024-marepo.md)
+- 对比报告：[`前馈式视觉重定位方法横向对比`](../comparisons/visual-localization/feed-forward-visual-relocalization.md)
+- 相关方法族：feed-forward visual relocalization、relative pose regression、motion averaging、VGGT early multi-view fusion、map-relative pose regression、scene-coordinate-conditioned APR、ACE/SCR、image-to-scene correspondence + PnP、map-light localization。
+- 复现状态：Reloc3r / MARePo planned；Reloc-VGGT blocked-code-unavailable；FastForward 暂仅项目页/论文，等待代码 release。
 
 ## vision-foundation-models
 
@@ -75,10 +88,14 @@
 - Paper：[`Pi3 / π³`](../papers/3d-reconstruction/2026-pi3.md)
 - Paper：[`LingBot-Map / Geometric Context Transformer for Streaming 3D Reconstruction`](../papers/3d-reconstruction/2026-lingbot-map.md)
 - Paper：[`Xiaomi Auto World Model / JointWM`](../papers/world-models/2026-xiaomi-auto-world-model.md)
+- Paper：[`Reloc-VGGT`](../papers/visual-localization/2026-reloc-vggt.md)
+- Paper：[`Reloc3r`](../papers/visual-localization/2025-reloc3r.md)
+- Paper：[`MARePo`](../papers/visual-localization/2024-marepo.md)
 - 对比：[`Streaming 3D Reconstruction 方法横向对比`](../comparisons/3d-reconstruction/streaming-3d-reconstruction.md)
 - 对比：[`Any-view Visual Geometry Foundation Models`](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md)
-- 关联：VGGT-Ω 更适合作为强 RGB-only/video geometry backbone 和空间 token 表征候选；Depth Anything 3 更适合作为任意视角视觉几何/NVS backbone；Pi3 更适合作为无序多视图/reference-free robustness baseline；LingBot-Map 更适合作为连续视频在线建图/VO 候选；Xiaomi Auto World Model 更适合作为自动驾驶重建-生成联合世界模型参考；MapAnything/HunyuanWorld-Mirror 更适合多先验/metric reconstruction 或重渲染分支。
-- 复现：VGGT-Ω / Depth Anything 3 / Pi3 / LingBot-Map inference-level sanity check planned；Xiaomi Auto World Model 当前 blocked。
+- 对比：[`前馈式视觉重定位方法横向对比`](../comparisons/visual-localization/feed-forward-visual-relocalization.md)
+- 关联：VGGT-Ω 更适合作为强 RGB-only/video geometry backbone 和空间 token 表征候选；Depth Anything 3 更适合作为任意视角视觉几何/NVS backbone；Pi3 更适合作为无序多视图/reference-free robustness baseline；LingBot-Map 更适合作为连续视频在线建图/VO 候选；Reloc3r/Reloc-VGGT/FastForward 适合作为无每场景训练的重定位候选；MARePo/ACE 适合作为有 scene map 条件的 metric localization 对照；Xiaomi Auto World Model 更适合作为自动驾驶重建-生成联合世界模型参考；MapAnything/HunyuanWorld-Mirror 更适合多先验/metric reconstruction 或重渲染分支。
+- 复现：VGGT-Ω / Depth Anything 3 / Pi3 / LingBot-Map / Reloc3r / MARePo inference-level sanity check planned；Reloc-VGGT 与 Xiaomi Auto World Model 当前 blocked。
 
 ## generation-diffusion
 
@@ -113,5 +130,7 @@
 - Paper / Benchmark：[`Depth Anything 3`](../papers/3d-reconstruction/2025-depth-anything-3.md)；DA3-BENCH 覆盖 HiRoom、ETH3D、DTU、7Scenes、ScanNet++ 的 pose/reconstruction evaluation。
 - Paper / Benchmark：[`Pi3 / π³`](../papers/3d-reconstruction/2026-pi3.md)；evaluation branch 覆盖 monocular/video depth、relative camera pose、multi-view point map reconstruction。
 - Paper / Benchmark：[`Xiaomi Auto World Model / JointWM`](../papers/world-models/2026-xiaomi-auto-world-model.md)；论文报告 Waymo / nuScenes 的 WorldRec PSNR、SSIM，以及 nuScenes WorldGen FID、FVD、frames、inference time；缺少可复跑代码和几何/闭环数值协议。
+- Paper / Benchmark：[`Reloc-VGGT`](../papers/visual-localization/2026-reloc-vggt.md)、[`Reloc3r`](../papers/visual-localization/2025-reloc3r.md)、[`MARePo`](../papers/visual-localization/2024-marepo.md)；视觉重定位评测覆盖 ScanNet1500、CO3Dv2、7-Scenes、Cambridge、Wayspots、Map-Free 等，指标包括 AUC@5/10/20、median pose error、threshold accuracy、mapping/query time。
 - 对比：[`Any-view Visual Geometry Foundation Models`](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md)
+- 对比：[`前馈式视觉重定位方法横向对比`](../comparisons/visual-localization/feed-forward-visual-relocalization.md)
 - 复现：Depth Anything 3 benchmark 子集 planned。

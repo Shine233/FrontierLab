@@ -60,6 +60,7 @@ FrontierLab/
 - `world-models`
 - `multimodal-learning`
 - `robotics-autonomous-driving`
+- `visual-localization`
 - `generation-diffusion`
 - `reasoning-agents`
 - `efficient-training-inference`
@@ -176,6 +177,10 @@ rg "method_family:|feed-forward|3DGS|test-time" papers comparisons
 - [`papers/3d-reconstruction/2026-vggt-omega.md`](papers/3d-reconstruction/2026-vggt-omega.md)：VGGT-Ω 论文分析：VGGT scaling、register attention、动态视频重建与空间 token 表征。
 - [`papers/3d-reconstruction/2026-pi3.md`](papers/3d-reconstruction/2026-pi3.md)：Pi3 / π³: Permutation-Equivariant Visual Geometry Learning 论文分析。
 - [`papers/world-models/2026-xiaomi-auto-world-model.md`](papers/world-models/2026-xiaomi-auto-world-model.md)：Xiaomi Auto World Model / JointWM 论文分析：WorldRec 稀疏 3D query 前馈 3DGS、WorldGen 因果 DiT、重建-生成联合自动驾驶世界模型。
+- [`papers/visual-localization/2026-reloc-vggt.md`](papers/visual-localization/2026-reloc-vggt.md)：Reloc-VGGT 论文分析：VGGT early multi-view fusion、source pose token、sparse mask attention；当前代码未发布。
+- [`papers/visual-localization/2025-reloc3r.md`](papers/visual-localization/2025-reloc3r.md)：Reloc3r 论文分析：scene-agnostic relative pose regression、motion averaging、视觉重定位可跑 baseline。
+- [`papers/visual-localization/2024-marepo.md`](papers/visual-localization/2024-marepo.md)：MARePo 论文分析：map-relative pose regression、ACE scene coordinate map 条件化 APR/SCR 混合路线。
 - [`comparisons/3d-reconstruction/streaming-3d-reconstruction.md`](comparisons/3d-reconstruction/streaming-3d-reconstruction.md)：Streaming 3D Reconstruction 方法对比：LingBot-Map / Stream3R / Wint3R / TTT3R / CUT3R 等。
 - [`comparisons/3d-reconstruction/visual-geometry-foundation-models.md`](comparisons/3d-reconstruction/visual-geometry-foundation-models.md)：Any-view Visual Geometry Foundation Models 横向对比：DA3 / VGGT-Ω / VGGT / Pi3 / MapAnything / LingBot-Map。
+- [`comparisons/visual-localization/feed-forward-visual-relocalization.md`](comparisons/visual-localization/feed-forward-visual-relocalization.md)：前馈式视觉重定位方法对比：Reloc-VGGT / Reloc3r / MARePo / FastForward / ACE / MASt3R。
 - [`reports/feedforward_3d_reconstruction_compare.md`](reports/feedforward_3d_reconstruction_compare.md)：前馈式三维重建方法对比：MapAnything / Pi3 / HunyuanWorld-Mirror / OmniVGGT。
