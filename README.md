@@ -177,6 +177,10 @@ rg "method_family:|feed-forward|3DGS|test-time" papers comparisons
 - [`papers/3d-reconstruction/2026-vggt-omega.md`](papers/3d-reconstruction/2026-vggt-omega.md)：VGGT-Ω 论文分析：VGGT scaling、register attention、动态视频重建与空间 token 表征。
 - [`papers/3d-reconstruction/2026-pi3.md`](papers/3d-reconstruction/2026-pi3.md)：Pi3 / π³: Permutation-Equivariant Visual Geometry Learning 论文分析。
 - [`papers/world-models/2026-xiaomi-auto-world-model.md`](papers/world-models/2026-xiaomi-auto-world-model.md)：Xiaomi Auto World Model / JointWM 论文分析：WorldRec 稀疏 3D query 前馈 3DGS、WorldGen 因果 DiT、重建-生成联合自动驾驶世界模型。
+- [`papers/world-models/2026-x-world.md`](papers/world-models/2026-x-world.md)：X-World 论文分析：XPeng 可控自车中心 7 相机世界模型，面向闭环评测、online RL、场景编辑与数据合成。
+- [`papers/efficient-training-inference/2026-x-cache.md`](papers/efficient-training-inference/2026-x-cache.md)：X-Cache 论文分析：few-step AR 世界模型跨 chunk block residual caching，报告约 71% skip 与 2.6-2.7x DiT 加速。
+- [`papers/world-models/2026-x-foresight.md`](papers/world-models/2026-x-foresight.md)：X-Foresight 论文分析：预测式世界模型接入 VLA/LDM，chunk-wise 长 horizon 未来视觉与动作预测。
+- [`comparisons/world-models/xpeng-x-series-world-models.md`](comparisons/world-models/xpeng-x-series-world-models.md)：XPeng X 系列自动驾驶世界模型横向对比：X-World / X-Cache / X-Foresight。
 - [`papers/visual-localization/2026-reloc-vggt.md`](papers/visual-localization/2026-reloc-vggt.md)：Reloc-VGGT 论文分析：VGGT early multi-view fusion、source pose token、sparse mask attention；当前代码未发布。
 - [`papers/visual-localization/2025-reloc3r.md`](papers/visual-localization/2025-reloc3r.md)：Reloc3r 论文分析：scene-agnostic relative pose regression、motion averaging、视觉重定位可跑 baseline。
 - [`papers/visual-localization/2024-marepo.md`](papers/visual-localization/2024-marepo.md)：MARePo 论文分析：map-relative pose regression、ACE scene coordinate map 条件化 APR/SCR 混合路线。

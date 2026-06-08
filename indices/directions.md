@@ -67,9 +67,12 @@
 关注：世界模型、视频/交互预测、场景生成、仿真环境、机器人/自动驾驶闭环。
 
 - Paper：[`Xiaomi Auto World Model / JointWM`](../papers/world-models/2026-xiaomi-auto-world-model.md)
-- 关联：WorldRec 用稀疏 3D scene queries 做前馈式 3DGS 重建；WorldGen 用双向预训练 + 因果微调 + ODE distillation + DMD 做长时序驾驶视频生成；JointWM 用 WorldRec 渲染先验约束 WorldGen，面向 closed-loop simulation、data synthesis、end-to-end training。
-- 对比：待创建 driving world models / reconstruction-generation hybrid 横向对比。
-- 复现：Xiaomi Auto World Model 当前无公开 GitHub、权重或训练数据，复现 blocked。
+- Paper：[`X-World`](../papers/world-models/2026-x-world.md)
+- Paper：[`X-Foresight`](../papers/world-models/2026-x-foresight.md)
+- Paper：[`X-Cache`](../papers/efficient-training-inference/2026-x-cache.md)
+- 关联：JointWM 用 WorldRec 稀疏 3D scene queries + WorldGen 因果 DiT 做重建-生成联合；X-World 是 XPeng 可控 7 相机 action-conditioned streaming simulator；X-Cache 是 X-World few-step AR DiT 的 cross-chunk residual cache 推理加速；X-Foresight 把 predictive world modeling 接入 VLA/LDM，用长 horizon chunk 预测提升规划安全。
+- 对比：[`XPeng X 系列自动驾驶世界模型横向对比`](../comparisons/world-models/xpeng-x-series-world-models.md)。
+- 复现：Xiaomi Auto World Model / X-World / X-Cache / X-Foresight 当前均无公开 GitHub、权重或训练数据，复现 blocked。
 
 ## multimodal-learning
 
@@ -88,23 +91,30 @@
 - Paper：[`Pi3 / π³`](../papers/3d-reconstruction/2026-pi3.md)
 - Paper：[`LingBot-Map / Geometric Context Transformer for Streaming 3D Reconstruction`](../papers/3d-reconstruction/2026-lingbot-map.md)
 - Paper：[`Xiaomi Auto World Model / JointWM`](../papers/world-models/2026-xiaomi-auto-world-model.md)
+- Paper：[`X-World`](../papers/world-models/2026-x-world.md)
+- Paper：[`X-Cache`](../papers/efficient-training-inference/2026-x-cache.md)
+- Paper：[`X-Foresight`](../papers/world-models/2026-x-foresight.md)
 - Paper：[`Reloc-VGGT`](../papers/visual-localization/2026-reloc-vggt.md)
 - Paper：[`Reloc3r`](../papers/visual-localization/2025-reloc3r.md)
 - Paper：[`MARePo`](../papers/visual-localization/2024-marepo.md)
 - 对比：[`Streaming 3D Reconstruction 方法横向对比`](../comparisons/3d-reconstruction/streaming-3d-reconstruction.md)
 - 对比：[`Any-view Visual Geometry Foundation Models`](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md)
 - 对比：[`前馈式视觉重定位方法横向对比`](../comparisons/visual-localization/feed-forward-visual-relocalization.md)
-- 关联：VGGT-Ω 更适合作为强 RGB-only/video geometry backbone 和空间 token 表征候选；Depth Anything 3 更适合作为任意视角视觉几何/NVS backbone；Pi3 更适合作为无序多视图/reference-free robustness baseline；LingBot-Map 更适合作为连续视频在线建图/VO 候选；Reloc3r/Reloc-VGGT/FastForward 适合作为无每场景训练的重定位候选；MARePo/ACE 适合作为有 scene map 条件的 metric localization 对照；Xiaomi Auto World Model 更适合作为自动驾驶重建-生成联合世界模型参考；MapAnything/HunyuanWorld-Mirror 更适合多先验/metric reconstruction 或重渲染分支。
-- 复现：VGGT-Ω / Depth Anything 3 / Pi3 / LingBot-Map / Reloc3r / MARePo inference-level sanity check planned；Reloc-VGGT 与 Xiaomi Auto World Model 当前 blocked。
+- 对比：[`XPeng X 系列自动驾驶世界模型横向对比`](../comparisons/world-models/xpeng-x-series-world-models.md)
+- 关联：VGGT-Ω 更适合作为强 RGB-only/video geometry backbone 和空间 token 表征候选；Depth Anything 3 更适合作为任意视角视觉几何/NVS backbone；Pi3 更适合作为无序多视图/reference-free robustness baseline；LingBot-Map 更适合作为连续视频在线建图/VO 候选；Reloc3r/Reloc-VGGT/FastForward 适合作为无每场景训练的重定位候选；MARePo/ACE 适合作为有 scene map 条件的 metric localization 对照；Xiaomi Auto World Model 更适合作为自动驾驶重建-生成联合世界模型参考；X-World/X-Cache/X-Foresight 共同构成 XPeng 生成式仿真、推理加速、预测式 VLA 世界知识链路；MapAnything/HunyuanWorld-Mirror 更适合多先验/metric reconstruction 或重渲染分支。
+- 复现：VGGT-Ω / Depth Anything 3 / Pi3 / LingBot-Map / Reloc3r / MARePo inference-level sanity check planned；Reloc-VGGT、Xiaomi Auto World Model、X-World、X-Cache、X-Foresight 当前 blocked。
 
 ## generation-diffusion
 
 关注：扩散模型、视频生成、3D/4D 生成、可控生成与数据合成。
 
 - Paper：[`Xiaomi Auto World Model / JointWM`](../papers/world-models/2026-xiaomi-auto-world-model.md)
-- 关联：WorldGen 属于 autonomous-driving video generation / causal DiT world model；使用 bidirectional pretraining、Teacher Forcing、ODE distillation、DMD，报告 nuScenes FVD 64.97、FID 7.04、81 frames、0.19s/frame。
-- 对比：待补充 MagicDrive / MagicDrive-V2 / Epona / Genesis / GAIA-2 / WorldGen。
-- 复现：无公开代码/权重，暂 blocked。
+- Paper：[`X-World`](../papers/world-models/2026-x-world.md)
+- Paper：[`X-Cache`](../papers/efficient-training-inference/2026-x-cache.md)
+- Paper：[`X-Foresight`](../papers/world-models/2026-x-foresight.md)
+- 关联：WorldGen 属于 autonomous-driving video generation / causal DiT world model；X-World 基于 WAN 2.2 / DiT latent video 做 7 相机可控 streaming generation；X-Cache 是 few-step AR DiT 的 training-free inference cache；X-Foresight 用 X-World 初始化 diffusion Vision Renderer，将 LDM camera tokens 渲染成未来多相机图像。
+- 对比：[`XPeng X 系列自动驾驶世界模型横向对比`](../comparisons/world-models/xpeng-x-series-world-models.md)；待补 MagicDrive / MagicDrive-V2 / Epona / Genesis / GAIA-2 / WorldGen。
+- 复现：Xiaomi Auto World Model / X-World / X-Cache / X-Foresight 均无公开代码/权重，暂 blocked。
 
 ## reasoning-agents
 
@@ -118,9 +128,11 @@
 
 关注：训练效率、推理加速、量化、蒸馏、长上下文、系统优化。
 
-- Paper：待补充。
-- 对比：待补充。
-- 复现：待补充。
+- Paper：[`X-Cache`](../papers/efficient-training-inference/2026-x-cache.md)
+- Paper：[`X-Foresight`](../papers/world-models/2026-x-foresight.md)
+- 对比：[`XPeng X 系列自动驾驶世界模型横向对比`](../comparisons/world-models/xpeng-x-series-world-models.md)
+- 关联：X-Cache 针对 X-World few-step AR DiT 推理，以 cross-chunk block residual cache、action-aware fingerprint、KV-update protection 获得 2.6-2.7x DiT wall-clock speedup；X-Foresight 报告 BSA w/ mask 相对 FlashAttention-2 训练 step time 24.50s -> 15.40s。
+- 复现：X-Cache / X-Foresight 均缺少公开代码、权重和内部数据，复现 blocked。
 
 ## evaluation-benchmarks
 
@@ -130,6 +142,9 @@
 - Paper / Benchmark：[`Depth Anything 3`](../papers/3d-reconstruction/2025-depth-anything-3.md)；DA3-BENCH 覆盖 HiRoom、ETH3D、DTU、7Scenes、ScanNet++ 的 pose/reconstruction evaluation。
 - Paper / Benchmark：[`Pi3 / π³`](../papers/3d-reconstruction/2026-pi3.md)；evaluation branch 覆盖 monocular/video depth、relative camera pose、multi-view point map reconstruction。
 - Paper / Benchmark：[`Xiaomi Auto World Model / JointWM`](../papers/world-models/2026-xiaomi-auto-world-model.md)；论文报告 Waymo / nuScenes 的 WorldRec PSNR、SSIM，以及 nuScenes WorldGen FID、FVD、frames、inference time；缺少可复跑代码和几何/闭环数值协议。
+- Paper / Benchmark：[`X-World`](../papers/world-models/2026-x-world.md)；论文展示 24s 7 相机 long rollout、动作/动态体/静态元素/外观控制和闭环仿真应用，但缺少公开 benchmark 数值表。
+- Paper / Benchmark：[`X-Cache`](../papers/efficient-training-inference/2026-x-cache.md)；论文报告内部 X-World held-out split 的 block skip、DiT wall-clock、PSNR、SSIM、LPIPS 和 KV-update protection ablation。
+- Paper / Benchmark：[`X-Foresight`](../papers/world-models/2026-x-foresight.md)；论文报告 ADE/FDE、collision rate、CCES、FID/FVD 和 BSA 训练 step time，但均基于内部数据/指标。
 - Paper / Benchmark：[`Reloc-VGGT`](../papers/visual-localization/2026-reloc-vggt.md)、[`Reloc3r`](../papers/visual-localization/2025-reloc3r.md)、[`MARePo`](../papers/visual-localization/2024-marepo.md)；视觉重定位评测覆盖 ScanNet1500、CO3Dv2、7-Scenes、Cambridge、Wayspots、Map-Free 等，指标包括 AUC@5/10/20、median pose error、threshold accuracy、mapping/query time。
 - 对比：[`Any-view Visual Geometry Foundation Models`](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md)
 - 对比：[`前馈式视觉重定位方法横向对比`](../comparisons/visual-localization/feed-forward-visual-relocalization.md)

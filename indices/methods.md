@@ -56,10 +56,24 @@
 
 | Method | 定位 | Git 地址 | 是否开源 | 是否开源训练 | 强项 | 风险 | 相关资料 |
 |---|---|---|---|---|---|---|---|
+| X-World | XPeng 可控 7 相机 action-conditioned driving world simulator | [project](https://x-world-1.github.io)（无公开 GitHub） | 否（仅论文/项目页公开） | 否 | WAN 2.2/DiT latent video；ego action、dynamic agents、static elements、camera params、text 多条件控制；4-step causal streaming rollout；面向 closed-loop evaluation / online RL | 无代码/权重/训练数据/数值 benchmark；物理一致性和长尾泛化无法外部验证 | [paper](../papers/world-models/2026-x-world.md), [XPeng X 系列对比](../comparisons/world-models/xpeng-x-series-world-models.md) |
+| X-Foresight | VLA/LDM 内部预测式世界模型 | [project](https://x-foresight-1.github.io/en/)（无公开 GitHub） | 否（仅论文/项目页公开） | 否 | long-horizon chunk-wise AR 未来视觉/动作预测；CLEF + TIS；Vision Renderer 从 X-World 初始化；生产规模 collision 0.228% -> 0.191% | 内部数据/CCES/baseline 不透明；依赖未公开 X-World renderer；完整复现成本极高 | [paper](../papers/world-models/2026-x-foresight.md), [XPeng X 系列对比](../comparisons/world-models/xpeng-x-series-world-models.md) |
 | Xiaomi Auto World Model / JointWM | WorldRec + WorldGen 联合自动驾驶世界模型 | [project](https://JointWM.github.io)（无公开 GitHub） | 否（仅论文/项目页公开） | 否 | sparse-query feed-forward 3DGS + causal DiT generation；WorldRec rendered priors 约束 WorldGen；论文报告 10s clip 约 10s 重建、WorldGen 81 frames / 0.19s/frame / FVD 64.97 | 无代码/权重/训练数据；JointWM 稳定性主要是 qualitative；缺少几何/闭环数值协议和许可证信息 | [paper](../papers/world-models/2026-xiaomi-auto-world-model.md) |
 | HunyuanWorld-Mirror | any-prior world reconstruction / 3DGS / NVS 分支 | [Tencent-Hunyuan/HunyuanWorld-Mirror](https://github.com/Tencent-Hunyuan/HunyuanWorld-Mirror) | 是（非商用/受限许可） | 是 | 多先验、输出丰富、适合渲染/资产生成 | 工程重，许可证需审查 | [对比](../reports/feedforward_3d_reconstruction_compare.md) |
 
 待补充：MagicDrive / MagicDrive-V2 / Epona / Genesis / GAIA-2 / NeoVerse / WorldSplat / STORM / DGGT 等，建议按“显式 3D 场景、生成能力、未来预测、几何一致性、长时序稳定性、开源度、闭环可用性”固定维度比较。
+
+## Diffusion world model inference acceleration
+
+核心问题：在不明显损伤生成质量的前提下，降低 AR video diffusion / world simulator 的 DiT 推理延迟，满足 closed-loop interactive simulation。
+
+| Method | 定位 | Git 地址 | 是否开源 | 是否开源训练 | 强项 | 风险 | 相关资料 |
+|---|---|---|---|---|---|---|---|
+| X-Cache | few-step AR driving world model cross-chunk cache | [project](https://x-cache-1.github.io/en/)（无公开 GitHub） | 否（仅论文/项目页公开） | 否 | training-free；跨连续 generation chunks 缓存 DiT block residual；action-aware fingerprint；KV-update protection；报告 71% skip 和 2.6-2.7x DiT speedup | 无代码/模型/数据；只验证内部 22s clips；PSNR/SSIM/LPIPS 是相对 full-compute reference，不证明真实世界质量 | [paper](../papers/efficient-training-inference/2026-x-cache.md), [XPeng X 系列对比](../comparisons/world-models/xpeng-x-series-world-models.md) |
+| TeaCache / DeepCache / Delta-DiT / BWCache | diffusion cross-step cache 代表 | 待补充 | 待补充 | 待补充 | 利用多步 denoising step 间冗余 | X-Cache 论文认为 few-step AR world model 中 cross-step 冗余不足 | 待补充 |
+| FlowCache / SCOPE | AR video diffusion cache/extrapolation 代表 | 待补充 | 待补充 | 待补充 | 面向视频生成的缓存/调度 | 多依赖 denoising trajectory 或未来条件，不直接适配 closed-loop few-step world simulation | 待补充 |
+
+建议固定对比维度：缓存轴、是否 training-free、是否需要未来条件、few-step 适配、AR/KV cache 安全、动作条件敏感性、速度指标、质量指标、分布外保护。
 
 ## Any-view visual geometry foundation models
 
