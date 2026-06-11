@@ -180,7 +180,9 @@ rg "method_family:|feed-forward|3DGS|test-time" papers comparisons
 - [`papers/world-models/2026-x-world.md`](papers/world-models/2026-x-world.md)：X-World 论文分析：XPeng 可控自车中心 7 相机世界模型，面向闭环评测、online RL、场景编辑与数据合成。
 - [`papers/efficient-training-inference/2026-x-cache.md`](papers/efficient-training-inference/2026-x-cache.md)：X-Cache 论文分析：few-step AR 世界模型跨 chunk block residual caching，报告约 71% skip 与 2.6-2.7x DiT 加速。
 - [`papers/world-models/2026-x-foresight.md`](papers/world-models/2026-x-foresight.md)：X-Foresight 论文分析：预测式世界模型接入 VLA/LDM，chunk-wise 长 horizon 未来视觉与动作预测。
+- [`papers/world-models/2026-dreamzero.md`](papers/world-models/2026-dreamzero.md)：DreamZero 论文分析：World Action Model / video-diffusion robot policy，联合预测未来视频和动作，公开 DROID/AgiBot 权重、DROID 数据与训练脚本。
 - [`comparisons/world-models/xpeng-x-series-world-models.md`](comparisons/world-models/xpeng-x-series-world-models.md)：XPeng X 系列自动驾驶世界模型横向对比：X-World / X-Cache / X-Foresight。
+- [`comparisons/world-models/robot-world-action-models.md`](comparisons/world-models/robot-world-action-models.md)：Robot WAM / video-diffusion robot policies 横向对比：DreamZero / GR00T N1.x / pi_0 / V-JEPA 2 / Genie / X-Foresight。
 - [`papers/visual-localization/2026-reloc-vggt.md`](papers/visual-localization/2026-reloc-vggt.md)：Reloc-VGGT 论文分析：VGGT early multi-view fusion、source pose token、sparse mask attention；当前代码未发布。
 - [`papers/visual-localization/2025-reloc3r.md`](papers/visual-localization/2025-reloc3r.md)：Reloc3r 论文分析：scene-agnostic relative pose regression、motion averaging、视觉重定位可跑 baseline。
 - [`papers/visual-localization/2024-marepo.md`](papers/visual-localization/2024-marepo.md)：MARePo 论文分析：map-relative pose regression、ACE scene coordinate map 条件化 APR/SCR 混合路线。
