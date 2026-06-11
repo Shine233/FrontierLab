@@ -69,10 +69,12 @@
 - Paper：[`Xiaomi Auto World Model / JointWM`](../papers/world-models/2026-xiaomi-auto-world-model.md)
 - Paper：[`X-World`](../papers/world-models/2026-x-world.md)
 - Paper：[`X-Foresight`](../papers/world-models/2026-x-foresight.md)
+- Paper：[`DreamZero / World Action Models are Zero-shot Policies`](../papers/world-models/2026-dreamzero.md)
 - Paper：[`X-Cache`](../papers/efficient-training-inference/2026-x-cache.md)
-- 关联：JointWM 用 WorldRec 稀疏 3D scene queries + WorldGen 因果 DiT 做重建-生成联合；X-World 是 XPeng 可控 7 相机 action-conditioned streaming simulator；X-Cache 是 X-World few-step AR DiT 的 cross-chunk residual cache 推理加速；X-Foresight 把 predictive world modeling 接入 VLA/LDM，用长 horizon chunk 预测提升规划安全。
+- 关联：JointWM 用 WorldRec 稀疏 3D scene queries + WorldGen 因果 DiT 做重建-生成联合；X-World 是 XPeng 可控 7 相机 action-conditioned streaming simulator；X-Cache 是 X-World few-step AR DiT 的 cross-chunk residual cache 推理加速；X-Foresight 把 predictive world modeling 接入 VLA/LDM，用长 horizon chunk 预测提升规划安全；DreamZero 把 video diffusion backbone 转成 robot WAM，联合预测未来视频和动作。
 - 对比：[`XPeng X 系列自动驾驶世界模型横向对比`](../comparisons/world-models/xpeng-x-series-world-models.md)。
-- 复现：Xiaomi Auto World Model / X-World / X-Cache / X-Foresight 当前均无公开 GitHub、权重或训练数据，复现 blocked。
+- 对比：[`Robot WAM / video-diffusion robot policies 横向对比`](../comparisons/world-models/robot-world-action-models.md)。
+- 复现：DreamZero-DROID inference / fine-tune sanity check planned；Xiaomi Auto World Model / X-World / X-Cache / X-Foresight 当前均无公开 GitHub、权重或训练数据，复现 blocked。
 
 ## multimodal-learning
 
@@ -94,6 +96,7 @@
 - Paper：[`X-World`](../papers/world-models/2026-x-world.md)
 - Paper：[`X-Cache`](../papers/efficient-training-inference/2026-x-cache.md)
 - Paper：[`X-Foresight`](../papers/world-models/2026-x-foresight.md)
+- Paper：[`DreamZero / World Action Models are Zero-shot Policies`](../papers/world-models/2026-dreamzero.md)
 - Paper：[`Reloc-VGGT`](../papers/visual-localization/2026-reloc-vggt.md)
 - Paper：[`Reloc3r`](../papers/visual-localization/2025-reloc3r.md)
 - Paper：[`MARePo`](../papers/visual-localization/2024-marepo.md)
@@ -101,8 +104,9 @@
 - 对比：[`Any-view Visual Geometry Foundation Models`](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md)
 - 对比：[`前馈式视觉重定位方法横向对比`](../comparisons/visual-localization/feed-forward-visual-relocalization.md)
 - 对比：[`XPeng X 系列自动驾驶世界模型横向对比`](../comparisons/world-models/xpeng-x-series-world-models.md)
-- 关联：VGGT-Ω 更适合作为强 RGB-only/video geometry backbone 和空间 token 表征候选；Depth Anything 3 更适合作为任意视角视觉几何/NVS backbone；Pi3 更适合作为无序多视图/reference-free robustness baseline；LingBot-Map 更适合作为连续视频在线建图/VO 候选；Reloc3r/Reloc-VGGT/FastForward 适合作为无每场景训练的重定位候选；MARePo/ACE 适合作为有 scene map 条件的 metric localization 对照；Xiaomi Auto World Model 更适合作为自动驾驶重建-生成联合世界模型参考；X-World/X-Cache/X-Foresight 共同构成 XPeng 生成式仿真、推理加速、预测式 VLA 世界知识链路；MapAnything/HunyuanWorld-Mirror 更适合多先验/metric reconstruction 或重渲染分支。
-- 复现：VGGT-Ω / Depth Anything 3 / Pi3 / LingBot-Map / Reloc3r / MARePo inference-level sanity check planned；Reloc-VGGT、Xiaomi Auto World Model、X-World、X-Cache、X-Foresight 当前 blocked。
+- 对比：[`Robot WAM / video-diffusion robot policies 横向对比`](../comparisons/world-models/robot-world-action-models.md)
+- 关联：VGGT-Ω 更适合作为强 RGB-only/video geometry backbone 和空间 token 表征候选；Depth Anything 3 更适合作为任意视角视觉几何/NVS backbone；Pi3 更适合作为无序多视图/reference-free robustness baseline；LingBot-Map 更适合作为连续视频在线建图/VO 候选；Reloc3r/Reloc-VGGT/FastForward 适合作为无每场景训练的重定位候选；MARePo/ACE 适合作为有 scene map 条件的 metric localization 对照；Xiaomi Auto World Model 更适合作为自动驾驶重建-生成联合世界模型参考；X-World/X-Cache/X-Foresight 共同构成 XPeng 生成式仿真、推理加速、预测式 VLA 世界知识链路；DreamZero 更适合作为 robot WAM / video-diffusion policy 路线主候选；MapAnything/HunyuanWorld-Mirror 更适合多先验/metric reconstruction 或重渲染分支。
+- 复现：DreamZero-DROID inference / fine-tune sanity check planned；VGGT-Ω / Depth Anything 3 / Pi3 / LingBot-Map / Reloc3r / MARePo inference-level sanity check planned；Reloc-VGGT、Xiaomi Auto World Model、X-World、X-Cache、X-Foresight 当前 blocked。
 
 ## generation-diffusion
 
@@ -112,9 +116,11 @@
 - Paper：[`X-World`](../papers/world-models/2026-x-world.md)
 - Paper：[`X-Cache`](../papers/efficient-training-inference/2026-x-cache.md)
 - Paper：[`X-Foresight`](../papers/world-models/2026-x-foresight.md)
-- 关联：WorldGen 属于 autonomous-driving video generation / causal DiT world model；X-World 基于 WAN 2.2 / DiT latent video 做 7 相机可控 streaming generation；X-Cache 是 few-step AR DiT 的 training-free inference cache；X-Foresight 用 X-World 初始化 diffusion Vision Renderer，将 LDM camera tokens 渲染成未来多相机图像。
-- 对比：[`XPeng X 系列自动驾驶世界模型横向对比`](../comparisons/world-models/xpeng-x-series-world-models.md)；待补 MagicDrive / MagicDrive-V2 / Epona / Genesis / GAIA-2 / WorldGen。
-- 复现：Xiaomi Auto World Model / X-World / X-Cache / X-Foresight 均无公开代码/权重，暂 blocked。
+- Paper：[`DreamZero / World Action Models are Zero-shot Policies`](../papers/world-models/2026-dreamzero.md)
+- 关联：WorldGen 属于 autonomous-driving video generation / causal DiT world model；X-World 基于 WAN 2.2 / DiT latent video 做 7 相机可控 streaming generation；X-Cache 是 few-step AR DiT 的 training-free inference cache；X-Foresight 用 X-World 初始化 diffusion Vision Renderer，将 LDM camera tokens 渲染成未来多相机图像；DreamZero 用 video diffusion backbone 联合生成未来视频和机器人动作。
+- 对比：[`XPeng X 系列自动驾驶世界模型横向对比`](../comparisons/world-models/xpeng-x-series-world-models.md)。
+- 对比：[`Robot WAM / video-diffusion robot policies 横向对比`](../comparisons/world-models/robot-world-action-models.md)；待补 MagicDrive / MagicDrive-V2 / Epona / Genesis / GAIA-2 / WorldGen。
+- 复现：DreamZero-DROID planned；Xiaomi Auto World Model / X-World / X-Cache / X-Foresight 均无公开代码/权重，暂 blocked。
 
 ## reasoning-agents
 
@@ -145,7 +151,9 @@
 - Paper / Benchmark：[`X-World`](../papers/world-models/2026-x-world.md)；论文展示 24s 7 相机 long rollout、动作/动态体/静态元素/外观控制和闭环仿真应用，但缺少公开 benchmark 数值表。
 - Paper / Benchmark：[`X-Cache`](../papers/efficient-training-inference/2026-x-cache.md)；论文报告内部 X-World held-out split 的 block skip、DiT wall-clock、PSNR、SSIM、LPIPS 和 KV-update protection ablation。
 - Paper / Benchmark：[`X-Foresight`](../papers/world-models/2026-x-foresight.md)；论文报告 ADE/FDE、collision rate、CCES、FID/FVD 和 BSA 训练 step time，但均基于内部数据/指标。
+- Paper / Benchmark：[`DreamZero`](../papers/world-models/2026-dreamzero.md)；论文报告 AgiBot / DROID task progress、success rate、Flash latency 和 cross-embodiment transfer，公开 DROID 权重与数据但 AgiBot 主数据未公开。
 - Paper / Benchmark：[`Reloc-VGGT`](../papers/visual-localization/2026-reloc-vggt.md)、[`Reloc3r`](../papers/visual-localization/2025-reloc3r.md)、[`MARePo`](../papers/visual-localization/2024-marepo.md)；视觉重定位评测覆盖 ScanNet1500、CO3Dv2、7-Scenes、Cambridge、Wayspots、Map-Free 等，指标包括 AUC@5/10/20、median pose error、threshold accuracy、mapping/query time。
 - 对比：[`Any-view Visual Geometry Foundation Models`](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md)
 - 对比：[`前馈式视觉重定位方法横向对比`](../comparisons/visual-localization/feed-forward-visual-relocalization.md)
-- 复现：Depth Anything 3 benchmark 子集 planned。
+- 对比：[`Robot WAM / video-diffusion robot policies 横向对比`](../comparisons/world-models/robot-world-action-models.md)
+- 复现：DreamZero-DROID benchmark/sim sanity planned；Depth Anything 3 benchmark 子集 planned。

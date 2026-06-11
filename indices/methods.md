@@ -63,6 +63,20 @@
 
 待补充：MagicDrive / MagicDrive-V2 / Epona / Genesis / GAIA-2 / NeoVerse / WorldSplat / STORM / DGGT 等，建议按“显式 3D 场景、生成能力、未来预测、几何一致性、长时序稳定性、开源度、闭环可用性”固定维度比较。
 
+## Robot world action models / video-diffusion robot policies
+
+核心问题：把视频/世界动态先验转成真实机器人可执行动作，尤其关注未见环境、未见物体、未见任务和跨 embodiment transfer。
+
+| Method | 定位 | Git 地址 | 是否开源 | 是否开源训练 | 强项 | 风险 | 相关资料 |
+|---|---|---|---|---|---|---|---|
+| DreamZero | robot WAM / video-diffusion policy 主候选 | [dreamzero0/dreamzero](https://github.com/dreamzero0/dreamzero) | 是（代码 Apache-2.0；DROID/AgiBot 权重公开） | 是（DROID/AgiBot/YAM/DROID LoRA/full fine-tune 脚本公开；AgiBot 主数据未公开） | joint video-action denoising；未来视频作为视觉计划；DROID 数据/权重公开；Flash 路线降低 denoising steps | AgiBot 主数据和真实机器人 rollout 不可完全复刻；DROID 权重非商用；视频计划错误会直接带偏动作 | [paper](../papers/world-models/2026-dreamzero.md), [robot WAM 对比](../comparisons/world-models/robot-world-action-models.md) |
+| GR00T N1.x | 通用机器人/VLA policy baseline | 需按具体版本核验 | 待核验 | 待核验 | NVIDIA 机器人 foundation model 生态；DreamZero DROID 对照之一 | 需要逐版本核验开放范围、训练数据和评测协议 | [robot WAM 对比](../comparisons/world-models/robot-world-action-models.md) |
+| pi_0 / pi_0.5 | VLA/action expert baseline | 需按具体版本核验 | 待核验 | 待核验 | 常用公开机器人策略 baseline；DreamZero DROID 对照之一 | checkpoint、训练数据和 license 需回原始材料核验 | [robot WAM 对比](../comparisons/world-models/robot-world-action-models.md) |
+| V-JEPA 2 / Genie / video world models | latent/video world model 参照 | 待拆具体论文 | 待核验 | 待核验 | 可比较“未来预测/交互世界”是否直接参与控制 | 多数不直接输出机器人动作，不能和 DreamZero 指标等价比较 | [robot WAM 对比](../comparisons/world-models/robot-world-action-models.md) |
+| X-Foresight | 自动驾驶 predictive world model 参照 | [project](https://x-foresight-1.github.io/en/)（无公开 GitHub） | 否 | 否 | long-horizon chunk-wise future prediction 接入 VLA/LDM；规划安全指标有表格 | 内部数据/代码/权重未公开；任务域不是机器人 manipulation | [paper](../papers/world-models/2026-x-foresight.md), [robot WAM 对比](../comparisons/world-models/robot-world-action-models.md) |
+
+建议固定对比维度：是否显式预测未来视频、是否直接输出动作、训练数据公开度、权重/许可证、DROID/真实机器人指标、动作频率、硬件需求、跨 embodiment 数据、失败模式和最小复现路径。
+
 ## Diffusion world model inference acceleration
 
 核心问题：在不明显损伤生成质量的前提下，降低 AR video diffusion / world simulator 的 DiT 推理延迟，满足 closed-loop interactive simulation。
