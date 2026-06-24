@@ -140,3 +140,19 @@
 核心问题：通过搜索、采样、自验证、工具调用或 agent pipeline 提升推理质量。
 
 - 待补充。
+
+## Image matching / two-view feature matching
+
+核心问题：给定两张（或多张）图像，估计像素级或关键点级对应，服务相对位姿、homography、视觉定位与 SfM/三维重建；核心权衡是稠密（精度上限高、计算重）vs 稀疏（快、依赖检测器），以及单域训练 vs 跨域泛化。
+
+| Method | 定位 | Git 地址 | 是否开源 | 是否开源训练 | 强项 | 风险 | 相关资料 |
+|---|---|---|---|---|---|---|---|
+| RoMa v2 | 稠密匹配 SOTA / 高精度主路线 | [Parskatt/romav2](https://github.com/Parskatt/romav2) | 是（MIT；DINOv3 custom） | `\`（README 未提供，to verify） | DINOv3 + Attention matcher + 预测协方差；困难/跨域 EPE 大降、比 v1 快约 1.7×；ScanNet-1500 明显提升 | 训练代码疑未公开；依赖自定义 CUDA kernel；DINOv3 非 MIT；WxBS 极端模态略退 | [paper](../papers/image-matching/2025-romav2.md), [对比](../comparisons/image-matching/image-matching-methods.md) |
+| RoMa | 稠密匹配精度基准 / v2 对照 | [Parskatt/RoMa](https://github.com/Parskatt/RoMa) | 是（MIT；DINOv2 Apache-2.0） | 是 | 冻结 DINOv2 coarse + ConvNet fine；2024 SOTA；MegaDepth-1500 62.6/76.7/86.3、WxBS +36%；训练开源 | 稠密成本高（~199ms/对）；依赖有监督对应 | [paper](../papers/image-matching/2024-roma.md), [对比](../comparisons/image-matching/image-matching-methods.md) |
+| LightGlue | 稀疏匹配工程默认 | [cvg/LightGlue](https://github.com/cvg/LightGlue) | 是（Apache-2.0，组件许可混合） | `\`（训练在 glue-factory） | SuperGlue 后继，adaptive depth/width，比其快约 2–4×；易部署、训练快 | 依赖前端检测器；SuperPoint 权重受限；难对精度逊于 dense | [paper](../papers/image-matching/2023-lightglue.md), [对比](../comparisons/image-matching/image-matching-methods.md) |
+| GIM | 可泛化匹配自训练框架（架构无关） | [xuelunshen/gim](https://github.com/xuelunshen/gim) | 是（MIT） | 是（train-gim-* 分支） | 互联网视频自训练 + 标签传播；包裹 RoMa/DKM/LoFTR/LightGlue；ZEB 各 backbone +4.5~6.6 | 算力门槛高（5×8×A100）；训练视频未公开；依赖 teacher 标签质量 | [paper](../papers/image-matching/2024-gim.md), [对比](../comparisons/image-matching/image-matching-methods.md) |
+| LoMa | 稀疏 matcher + 数据/模型 scaling | [davnords/LoMa](https://github.com/davnords/LoMa) | 是（推理；MIT + LightGlue Apache-2.0） | 否（训练代码未发布） | RoMa 作者团队；LightGlue 式但更鲁棒；5 基准相对 ALIKED+LightGlue 大幅提升；含旋转不变 LoMa-R | 训练代码 + HardMatch 数据未公开；架构/消融/训练集 to verify | [paper](../papers/image-matching/2026-loma.md), [对比](../comparisons/image-matching/image-matching-methods.md) |
+
+建议固定对比维度：稠密 vs 稀疏、是否依赖检测器、backbone（DINOv2/v3）、训练开源度、许可证、跨域/零样本能力、MegaDepth-1500 / ScanNet-1500 / ZEB / EPE 指标、推理成本、与 3D 重建/定位 pipeline 的衔接。
+
+> 注：GIM 是训练/数据框架而非新架构，应放在「同一 backbone 加 GIM 前后」的维度比较，不与 RoMa v2 比绝对精度；RoMa 系列源自 DKM（kernelized dense matching）。
