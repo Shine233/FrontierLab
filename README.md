@@ -61,6 +61,7 @@ FrontierLab/
 - `multimodal-learning`
 - `robotics-autonomous-driving`
 - `visual-localization`
+- `image-matching`
 - `generation-diffusion`
 - `reasoning-agents`
 - `efficient-training-inference`
@@ -190,3 +191,9 @@ rg "method_family:|feed-forward|3DGS|test-time" papers comparisons
 - [`comparisons/3d-reconstruction/visual-geometry-foundation-models.md`](comparisons/3d-reconstruction/visual-geometry-foundation-models.md)：Any-view Visual Geometry Foundation Models 横向对比：DA3 / VGGT-Ω / VGGT / Pi3 / MapAnything / LingBot-Map。
 - [`comparisons/visual-localization/feed-forward-visual-relocalization.md`](comparisons/visual-localization/feed-forward-visual-relocalization.md)：前馈式视觉重定位方法对比：Reloc-VGGT / Reloc3r / MARePo / FastForward / ACE / MASt3R。
 - [`reports/feedforward_3d_reconstruction_compare.md`](reports/feedforward_3d_reconstruction_compare.md)：前馈式三维重建方法对比：MapAnything / Pi3 / HunyuanWorld-Mirror / OmniVGGT。
+- [`papers/image-matching/2024-roma.md`](papers/image-matching/2024-roma.md)：RoMa / Robust Dense Feature Matching 论文分析：DINOv2 coarse + ConvNet fine 的稠密 coarse-to-fine 匹配。
+- [`papers/image-matching/2025-romav2.md`](papers/image-matching/2025-romav2.md)：RoMa v2 论文分析：DINOv3 + Attention coarse matcher、两阶段训练、预测协方差、困难/跨域稠密匹配 SOTA。
+- [`papers/image-matching/2023-lightglue.md`](papers/image-matching/2023-lightglue.md)：LightGlue 论文分析：SuperGlue 后继，adaptive depth/width 稀疏匹配，速度大幅领先。
+- [`papers/image-matching/2024-gim.md`](papers/image-matching/2024-gim.md)：GIM 论文分析：从互联网视频自训练的可泛化匹配框架（架构无关），提出 ZEB 零样本基准。
+- [`papers/image-matching/2026-loma.md`](papers/image-matching/2026-loma.md)：LoMa 论文分析：LightGlue 式稀疏匹配 + 数据/模型 scaling；训练代码与 HardMatch 数据未公开。
+- [`comparisons/image-matching/image-matching-methods.md`](comparisons/image-matching/image-matching-methods.md)：图像匹配方法横向对比：RoMa / RoMa v2 / LightGlue / GIM / LoMa，重点标出相同数据集/指标的可比结果。

@@ -30,6 +30,20 @@
 - 相关方法族：feed-forward visual relocalization、relative pose regression、motion averaging、VGGT early multi-view fusion、map-relative pose regression、scene-coordinate-conditioned APR、ACE/SCR、image-to-scene correspondence + PnP、map-light localization。
 - 复现状态：Reloc3r / MARePo planned；Reloc-VGGT blocked-code-unavailable；FastForward 暂仅项目页/论文，等待代码 release。
 
+## image-matching
+
+关注：两视图/多视图图像与局部特征匹配、稠密 vs 稀疏匹配、detector-free 匹配、跨域/零样本泛化、匹配自训练框架、匹配前端服务 SfM / 视觉定位 / 三维重建。
+
+- Paper：[`RoMa: Robust Dense Feature Matching`](../papers/image-matching/2024-roma.md)
+- Paper：[`RoMa v2: Harder Better Faster Denser Feature Matching`](../papers/image-matching/2025-romav2.md)
+- Paper：[`LightGlue: Local Feature Matching at Light Speed`](../papers/image-matching/2023-lightglue.md)
+- Paper：[`GIM: Learning Generalizable Image Matcher From Internet Videos`](../papers/image-matching/2024-gim.md)
+- Paper：[`LoMa: Local Feature Matching Revisited`](../papers/image-matching/2026-loma.md)
+- 对比报告：[`图像匹配方法横向对比：RoMa / RoMa v2 / LightGlue / GIM / LoMa`](../comparisons/image-matching/image-matching-methods.md)
+- 相关方法族：dense feature matching、coarse-to-fine matching、DINOv2/DINOv3 frozen features、Gaussian Process / attention match decoder、predicted covariance、sparse feature matching、attention-based matcher、adaptive depth-width、self-training from videos、label propagation、matcher-agnostic wrapper、data-and-model scaling。
+- 重点可比结果：MegaDepth-1500 / ScanNet-1500 相对位姿 AUC@5/10/20、ZEB 零样本 Mean AUC@5、稠密匹配 EPE/PCK；详见对比报告第 3 节（已标出协议一致与不可跨论文比较的项）。
+- 复现状态：RoMa / LightGlue（+glue-factory）/ GIM 训练可复现，inference sanity check planned；RoMa v2 训练代码 README 未提供、LoMa 训练代码与 HardMatch 数据未公开，训练复现 blocked，推理 planned。
+
 ## vision-foundation-models
 
 关注：视觉基础模型、自监督视觉预训练、frozen backbone、ViT/ConvNeXt 表征、dense feature、跨任务迁移。
