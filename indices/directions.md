@@ -3,110 +3,110 @@
 <!-- AUTO:start -->
 ## 3d-reconstruction
 
-- [LightGlue](./papers/image-matching/2023-lightglue.md) （2023）
-- [GIM](./papers/image-matching/2024-gim.md) （2024）
-- [RoMa](./papers/image-matching/2024-roma.md) （2024）
-- [Depth Anything 3](./papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
-- [Reloc3r](./papers/visual-localization/2025-reloc3r.md) （2025）
-- [RoMa v2](./papers/image-matching/2025-romav2.md) （2025）
-- [LingBot-Map](./papers/3d-reconstruction/2026-lingbot-map.md) （2026）
-- [LoMa](./papers/image-matching/2026-loma.md) （2026）
-- [Pi3](./papers/3d-reconstruction/2026-pi3.md) （2026）
-- [Reloc-VGGT](./papers/visual-localization/2026-reloc-vggt.md) （2026）
-- [VGGT-Omega](./papers/3d-reconstruction/2026-vggt-omega.md) （2026）
-- [Xiaomi Auto World Model / JointWM](./papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
+- [LightGlue](.././papers/image-matching/2023-lightglue.md) （2023）
+- [GIM](.././papers/image-matching/2024-gim.md) （2024）
+- [RoMa](.././papers/image-matching/2024-roma.md) （2024）
+- [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
+- [Reloc3r](.././papers/visual-localization/2025-reloc3r.md) （2025）
+- [RoMa v2](.././papers/image-matching/2025-romav2.md) （2025）
+- [LingBot-Map](.././papers/3d-reconstruction/2026-lingbot-map.md) （2026）
+- [LoMa](.././papers/image-matching/2026-loma.md) （2026）
+- [Pi3](.././papers/3d-reconstruction/2026-pi3.md) （2026）
+- [Reloc-VGGT](.././papers/visual-localization/2026-reloc-vggt.md) （2026）
+- [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) （2026）
+- [Xiaomi Auto World Model / JointWM](.././papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
 
 ## dense-vision
 
-- [Depth Anything 3](./papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
-- [DINOv3](./papers/vision-foundation-models/2025-dinov3.md) （2025）
-- [Pi3](./papers/3d-reconstruction/2026-pi3.md) （2026）
-- [VGGT-Omega](./papers/3d-reconstruction/2026-vggt-omega.md) （2026）
+- [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
+- [DINOv3](.././papers/vision-foundation-models/2025-dinov3.md) （2025）
+- [Pi3](.././papers/3d-reconstruction/2026-pi3.md) （2026）
+- [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) （2026）
 
 ## efficient-training-inference
 
-- [X-Cache](./papers/efficient-training-inference/2026-x-cache.md) （2026）
+- [X-Cache](.././papers/efficient-training-inference/2026-x-cache.md) （2026）
 
 ## evaluation-benchmarks
 
-- [LightGlue](./papers/image-matching/2023-lightglue.md) （2023）
-- [GIM](./papers/image-matching/2024-gim.md) （2024）
-- [MARePo](./papers/visual-localization/2024-marepo.md) （2024）
-- [RoMa](./papers/image-matching/2024-roma.md) （2024）
-- [Depth Anything 3](./papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
-- [Reloc3r](./papers/visual-localization/2025-reloc3r.md) （2025）
-- [RoMa v2](./papers/image-matching/2025-romav2.md) （2025）
-- [DreamZero](./papers/world-models/2026-dreamzero.md) （2026）
-- [LoMa](./papers/image-matching/2026-loma.md) （2026）
-- [Pi3](./papers/3d-reconstruction/2026-pi3.md) （2026）
-- [Reloc-VGGT](./papers/visual-localization/2026-reloc-vggt.md) （2026）
-- [VGGT-Omega](./papers/3d-reconstruction/2026-vggt-omega.md) （2026）
-- [X-Foresight](./papers/world-models/2026-x-foresight.md) （2026）
-- [X-World](./papers/world-models/2026-x-world.md) （2026）
-- [Xiaomi Auto World Model / JointWM](./papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
+- [LightGlue](.././papers/image-matching/2023-lightglue.md) （2023）
+- [GIM](.././papers/image-matching/2024-gim.md) （2024）
+- [MARePo](.././papers/visual-localization/2024-marepo.md) （2024）
+- [RoMa](.././papers/image-matching/2024-roma.md) （2024）
+- [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
+- [Reloc3r](.././papers/visual-localization/2025-reloc3r.md) （2025）
+- [RoMa v2](.././papers/image-matching/2025-romav2.md) （2025）
+- [DreamZero](.././papers/world-models/2026-dreamzero.md) （2026）
+- [LoMa](.././papers/image-matching/2026-loma.md) （2026）
+- [Pi3](.././papers/3d-reconstruction/2026-pi3.md) （2026）
+- [Reloc-VGGT](.././papers/visual-localization/2026-reloc-vggt.md) （2026）
+- [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) （2026）
+- [X-Foresight](.././papers/world-models/2026-x-foresight.md) （2026）
+- [X-World](.././papers/world-models/2026-x-world.md) （2026）
+- [Xiaomi Auto World Model / JointWM](.././papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
 
 ## generation-diffusion
 
-- [DreamZero](./papers/world-models/2026-dreamzero.md) （2026）
-- [X-Cache](./papers/efficient-training-inference/2026-x-cache.md) （2026）
-- [X-Foresight](./papers/world-models/2026-x-foresight.md) （2026）
-- [X-World](./papers/world-models/2026-x-world.md) （2026）
-- [Xiaomi Auto World Model / JointWM](./papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
+- [DreamZero](.././papers/world-models/2026-dreamzero.md) （2026）
+- [X-Cache](.././papers/efficient-training-inference/2026-x-cache.md) （2026）
+- [X-Foresight](.././papers/world-models/2026-x-foresight.md) （2026）
+- [X-World](.././papers/world-models/2026-x-world.md) （2026）
+- [Xiaomi Auto World Model / JointWM](.././papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
 
 ## image-matching
 
-- [LightGlue](./papers/image-matching/2023-lightglue.md) （2023）
-- [GIM](./papers/image-matching/2024-gim.md) （2024）
-- [RoMa](./papers/image-matching/2024-roma.md) （2024）
-- [RoMa v2](./papers/image-matching/2025-romav2.md) （2025）
-- [LoMa](./papers/image-matching/2026-loma.md) （2026）
+- [LightGlue](.././papers/image-matching/2023-lightglue.md) （2023）
+- [GIM](.././papers/image-matching/2024-gim.md) （2024）
+- [RoMa](.././papers/image-matching/2024-roma.md) （2024）
+- [RoMa v2](.././papers/image-matching/2025-romav2.md) （2025）
+- [LoMa](.././papers/image-matching/2026-loma.md) （2026）
 
 ## robotics-autonomous-driving
 
-- [MARePo](./papers/visual-localization/2024-marepo.md) （2024）
-- [Depth Anything 3](./papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
-- [Reloc3r](./papers/visual-localization/2025-reloc3r.md) （2025）
-- [DreamZero](./papers/world-models/2026-dreamzero.md) （2026）
-- [LingBot-Map](./papers/3d-reconstruction/2026-lingbot-map.md) （2026）
-- [Pi3](./papers/3d-reconstruction/2026-pi3.md) （2026）
-- [Reloc-VGGT](./papers/visual-localization/2026-reloc-vggt.md) （2026）
-- [VGGT-Omega](./papers/3d-reconstruction/2026-vggt-omega.md) （2026）
-- [X-Cache](./papers/efficient-training-inference/2026-x-cache.md) （2026）
-- [X-Foresight](./papers/world-models/2026-x-foresight.md) （2026）
-- [X-World](./papers/world-models/2026-x-world.md) （2026）
-- [Xiaomi Auto World Model / JointWM](./papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
+- [MARePo](.././papers/visual-localization/2024-marepo.md) （2024）
+- [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
+- [Reloc3r](.././papers/visual-localization/2025-reloc3r.md) （2025）
+- [DreamZero](.././papers/world-models/2026-dreamzero.md) （2026）
+- [LingBot-Map](.././papers/3d-reconstruction/2026-lingbot-map.md) （2026）
+- [Pi3](.././papers/3d-reconstruction/2026-pi3.md) （2026）
+- [Reloc-VGGT](.././papers/visual-localization/2026-reloc-vggt.md) （2026）
+- [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) （2026）
+- [X-Cache](.././papers/efficient-training-inference/2026-x-cache.md) （2026）
+- [X-Foresight](.././papers/world-models/2026-x-foresight.md) （2026）
+- [X-World](.././papers/world-models/2026-x-world.md) （2026）
+- [Xiaomi Auto World Model / JointWM](.././papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
 
 ## self-supervised-learning
 
-- [DINO](./papers/vision-foundation-models/2021-dino.md) （2021）
-- [DINOv2](./papers/vision-foundation-models/2023-dinov2.md) （2023）
-- [DINOv3](./papers/vision-foundation-models/2025-dinov3.md) （2025）
+- [DINO](.././papers/vision-foundation-models/2021-dino.md) （2021）
+- [DINOv2](.././papers/vision-foundation-models/2023-dinov2.md) （2023）
+- [DINOv3](.././papers/vision-foundation-models/2025-dinov3.md) （2025）
 
 ## vision-foundation-models
 
-- [DINO](./papers/vision-foundation-models/2021-dino.md) （2021）
-- [DINOv2](./papers/vision-foundation-models/2023-dinov2.md) （2023）
-- [DINOv3](./papers/vision-foundation-models/2025-dinov3.md) （2025）
-- [VGGT-Omega](./papers/3d-reconstruction/2026-vggt-omega.md) （2026）
+- [DINO](.././papers/vision-foundation-models/2021-dino.md) （2021）
+- [DINOv2](.././papers/vision-foundation-models/2023-dinov2.md) （2023）
+- [DINOv3](.././papers/vision-foundation-models/2025-dinov3.md) （2025）
+- [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) （2026）
 
 ## visual-localization
 
-- [LightGlue](./papers/image-matching/2023-lightglue.md) （2023）
-- [GIM](./papers/image-matching/2024-gim.md) （2024）
-- [MARePo](./papers/visual-localization/2024-marepo.md) （2024）
-- [RoMa](./papers/image-matching/2024-roma.md) （2024）
-- [Reloc3r](./papers/visual-localization/2025-reloc3r.md) （2025）
-- [RoMa v2](./papers/image-matching/2025-romav2.md) （2025）
-- [LoMa](./papers/image-matching/2026-loma.md) （2026）
-- [Reloc-VGGT](./papers/visual-localization/2026-reloc-vggt.md) （2026）
+- [LightGlue](.././papers/image-matching/2023-lightglue.md) （2023）
+- [GIM](.././papers/image-matching/2024-gim.md) （2024）
+- [MARePo](.././papers/visual-localization/2024-marepo.md) （2024）
+- [RoMa](.././papers/image-matching/2024-roma.md) （2024）
+- [Reloc3r](.././papers/visual-localization/2025-reloc3r.md) （2025）
+- [RoMa v2](.././papers/image-matching/2025-romav2.md) （2025）
+- [LoMa](.././papers/image-matching/2026-loma.md) （2026）
+- [Reloc-VGGT](.././papers/visual-localization/2026-reloc-vggt.md) （2026）
 
 ## world-models
 
-- [DreamZero](./papers/world-models/2026-dreamzero.md) （2026）
-- [X-Cache](./papers/efficient-training-inference/2026-x-cache.md) （2026）
-- [X-Foresight](./papers/world-models/2026-x-foresight.md) （2026）
-- [X-World](./papers/world-models/2026-x-world.md) （2026）
-- [Xiaomi Auto World Model / JointWM](./papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
+- [DreamZero](.././papers/world-models/2026-dreamzero.md) （2026）
+- [X-Cache](.././papers/efficient-training-inference/2026-x-cache.md) （2026）
+- [X-Foresight](.././papers/world-models/2026-x-foresight.md) （2026）
+- [X-World](.././papers/world-models/2026-x-world.md) （2026）
+- [Xiaomi Auto World Model / JointWM](.././papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
 <!-- AUTO:end -->
 
 <!-- MANUAL:start -->

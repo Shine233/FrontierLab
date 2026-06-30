@@ -2,45 +2,45 @@
 
 ## 2026
 
-- [DreamZero](./papers/world-models/2026-dreamzero.md) — 
-- [LingBot-Map](./papers/3d-reconstruction/2026-lingbot-map.md) — 
-- [LoMa](./papers/image-matching/2026-loma.md) — 
-- [Pi3](./papers/3d-reconstruction/2026-pi3.md) — 
-- [Reloc-VGGT](./papers/visual-localization/2026-reloc-vggt.md) — 
-- [VGGT-Omega](./papers/3d-reconstruction/2026-vggt-omega.md) — 
-- [X-Cache](./papers/efficient-training-inference/2026-x-cache.md) — 
-- [X-Foresight](./papers/world-models/2026-x-foresight.md) — 
-- [X-World](./papers/world-models/2026-x-world.md) — 
-- [Xiaomi Auto World Model / JointWM](./papers/world-models/2026-xiaomi-auto-world-model.md) — 
+- [DreamZero](.././papers/world-models/2026-dreamzero.md) — 
+- [LingBot-Map](.././papers/3d-reconstruction/2026-lingbot-map.md) — 
+- [LoMa](.././papers/image-matching/2026-loma.md) — 
+- [Pi3](.././papers/3d-reconstruction/2026-pi3.md) — 
+- [Reloc-VGGT](.././papers/visual-localization/2026-reloc-vggt.md) — 
+- [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) — 
+- [X-Cache](.././papers/efficient-training-inference/2026-x-cache.md) — 
+- [X-Foresight](.././papers/world-models/2026-x-foresight.md) — 
+- [X-World](.././papers/world-models/2026-x-world.md) — 
+- [Xiaomi Auto World Model / JointWM](.././papers/world-models/2026-xiaomi-auto-world-model.md) — 
 
 方向分布：3d-reconstruction: 6, dense-vision: 2, efficient-training-inference: 1, evaluation-benchmarks: 8, generation-diffusion: 5, image-matching: 1, robotics-autonomous-driving: 9, vision-foundation-models: 1, visual-localization: 2, world-models: 5
 
 ## 2025
 
-- [Depth Anything 3](./papers/3d-reconstruction/2025-depth-anything-3.md) — 
-- [DINOv3](./papers/vision-foundation-models/2025-dinov3.md) — 
-- [Reloc3r](./papers/visual-localization/2025-reloc3r.md) — 
-- [RoMa v2](./papers/image-matching/2025-romav2.md) — 
+- [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) — 
+- [DINOv3](.././papers/vision-foundation-models/2025-dinov3.md) — 
+- [Reloc3r](.././papers/visual-localization/2025-reloc3r.md) — 
+- [RoMa v2](.././papers/image-matching/2025-romav2.md) — 
 
 方向分布：3d-reconstruction: 3, dense-vision: 2, evaluation-benchmarks: 3, image-matching: 1, robotics-autonomous-driving: 2, self-supervised-learning: 1, vision-foundation-models: 1, visual-localization: 2
 
 ## 2024
 
-- [GIM](./papers/image-matching/2024-gim.md) — 
-- [MARePo](./papers/visual-localization/2024-marepo.md) — 
-- [RoMa](./papers/image-matching/2024-roma.md) — 
+- [GIM](.././papers/image-matching/2024-gim.md) — 
+- [MARePo](.././papers/visual-localization/2024-marepo.md) — 
+- [RoMa](.././papers/image-matching/2024-roma.md) — 
 
 方向分布：3d-reconstruction: 2, evaluation-benchmarks: 3, image-matching: 2, robotics-autonomous-driving: 1, visual-localization: 3
 
 ## 2023
 
-- [DINOv2](./papers/vision-foundation-models/2023-dinov2.md) — 
-- [LightGlue](./papers/image-matching/2023-lightglue.md) — 
+- [DINOv2](.././papers/vision-foundation-models/2023-dinov2.md) — 
+- [LightGlue](.././papers/image-matching/2023-lightglue.md) — 
 
 方向分布：3d-reconstruction: 1, evaluation-benchmarks: 1, image-matching: 1, self-supervised-learning: 1, vision-foundation-models: 1, visual-localization: 1
 
 ## 2021
 
-- [DINO](./papers/vision-foundation-models/2021-dino.md) — 
+- [DINO](.././papers/vision-foundation-models/2021-dino.md) — 
 
 方向分布：self-supervised-learning: 1, vision-foundation-models: 1

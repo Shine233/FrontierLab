@@ -11,7 +11,8 @@ def display_name(rec):
 
 
 def paper_link(rec):
-    return "[{}]({})".format(display_name(rec), rec.get("_path", ""))
+    path = rec.get("_path", "")
+    return "[{}](../{})".format(display_name(rec), path) if path else "[{}]()".format(display_name(rec))
 
 
 def _join_list(v):

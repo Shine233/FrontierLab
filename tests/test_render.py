@@ -30,13 +30,13 @@ def test_display_name_priority():
 
 
 def test_paper_link():
-    assert r.paper_link(PAPERS[0]) == "[RoMa](papers/image-matching/2024-roma.md)"
+    assert r.paper_link(PAPERS[0]) == "[RoMa](../papers/image-matching/2024-roma.md)"
 
 
 def test_papers_table_has_header_and_rows():
     out = r.render_papers_table(PAPERS)
     assert "| Paper | Year |" in out
-    assert "[RoMa](papers/image-matching/2024-roma.md)" in out
+    assert "[RoMa](../papers/image-matching/2024-roma.md)" in out
     assert "2026" in out
 
 

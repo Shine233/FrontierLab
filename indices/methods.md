@@ -3,310 +3,310 @@
 <!-- AUTO:start -->
 ## absolute-pose-regression
 
-- [MARePo](./papers/visual-localization/2024-marepo.md) （2024）
+- [MARePo](.././papers/visual-localization/2024-marepo.md) （2024）
 
 ## ace-conditioned-localization
 
-- [MARePo](./papers/visual-localization/2024-marepo.md) （2024）
+- [MARePo](.././papers/visual-localization/2024-marepo.md) （2024）
 
 ## adaptive-depth-width
 
-- [LightGlue](./papers/image-matching/2023-lightglue.md) （2023）
+- [LightGlue](.././papers/image-matching/2023-lightglue.md) （2023）
 
 ## any-view-visual-geometry-foundation-model
 
-- [Depth Anything 3](./papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
-- [Pi3](./papers/3d-reconstruction/2026-pi3.md) （2026）
-- [VGGT-Omega](./papers/3d-reconstruction/2026-vggt-omega.md) （2026）
+- [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
+- [Pi3](.././papers/3d-reconstruction/2026-pi3.md) （2026）
+- [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) （2026）
 
 ## attention-based-matcher
 
-- [LightGlue](./papers/image-matching/2023-lightglue.md) （2023）
+- [LightGlue](.././papers/image-matching/2023-lightglue.md) （2023）
 
 ## attention-coarse-matcher
 
-- [RoMa v2](./papers/image-matching/2025-romav2.md) （2025）
+- [RoMa v2](.././papers/image-matching/2025-romav2.md) （2025）
 
 ## autonomous-driving-video-generation
 
-- [Xiaomi Auto World Model / JointWM](./papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
+- [Xiaomi Auto World Model / JointWM](.././papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
 
 ## autoregressive-video-diffusion
 
-- [X-World](./papers/world-models/2026-x-world.md) （2026）
+- [X-World](.././papers/world-models/2026-x-world.md) （2026）
 
 ## autoregressive-video-diffusion-acceleration
 
-- [X-Cache](./papers/efficient-training-inference/2026-x-cache.md) （2026）
+- [X-Cache](.././papers/efficient-training-inference/2026-x-cache.md) （2026）
 
 ## chunk-wise-autoregressive-vla
 
-- [X-Foresight](./papers/world-models/2026-x-foresight.md) （2026）
+- [X-Foresight](.././papers/world-models/2026-x-foresight.md) （2026）
 
 ## closed-loop-simulation
 
-- [X-World](./papers/world-models/2026-x-world.md) （2026）
+- [X-World](.././papers/world-models/2026-x-world.md) （2026）
 
 ## coarse-to-fine-matching
 
-- [RoMa](./papers/image-matching/2024-roma.md) （2024）
+- [RoMa](.././papers/image-matching/2024-roma.md) （2024）
 
 ## controllable-multi-camera-generation
 
-- [X-World](./papers/world-models/2026-x-world.md) （2026）
+- [X-World](.././papers/world-models/2026-x-world.md) （2026）
 
 ## cross-chunk-block-cache
 
-- [X-Cache](./papers/efficient-training-inference/2026-x-cache.md) （2026）
+- [X-Cache](.././papers/efficient-training-inference/2026-x-cache.md) （2026）
 
 ## cross-embodiment-transfer
 
-- [DreamZero](./papers/world-models/2026-dreamzero.md) （2026）
+- [DreamZero](.././papers/world-models/2026-dreamzero.md) （2026）
 
 ## curated-data-scaling
 
-- [DINOv2](./papers/vision-foundation-models/2023-dinov2.md) （2023）
+- [DINOv2](.././papers/vision-foundation-models/2023-dinov2.md) （2023）
 
 ## data-and-model-scaling
 
-- [LoMa](./papers/image-matching/2026-loma.md) （2026）
+- [LoMa](.././papers/image-matching/2026-loma.md) （2026）
 
 ## dense-feature-learning
 
-- [DINOv3](./papers/vision-foundation-models/2025-dinov3.md) （2025）
+- [DINOv3](.././papers/vision-foundation-models/2025-dinov3.md) （2025）
 
 ## dense-feature-matching
 
-- [RoMa](./papers/image-matching/2024-roma.md) （2024）
-- [RoMa v2](./papers/image-matching/2025-romav2.md) （2025）
+- [RoMa](.././papers/image-matching/2024-roma.md) （2024）
+- [RoMa v2](.././papers/image-matching/2025-romav2.md) （2025）
 
 ## depth-ray-representation
 
-- [Depth Anything 3](./papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
+- [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
 
 ## diffusion-inference-cache
 
-- [X-Cache](./papers/efficient-training-inference/2026-x-cache.md) （2026）
+- [X-Cache](.././papers/efficient-training-inference/2026-x-cache.md) （2026）
 
 ## diffusion-vision-renderer
 
-- [X-Foresight](./papers/world-models/2026-x-foresight.md) （2026）
+- [X-Foresight](.././papers/world-models/2026-x-foresight.md) （2026）
 
 ## dino-family
 
-- [DINO](./papers/vision-foundation-models/2021-dino.md) （2021）
-- [DINOv2](./papers/vision-foundation-models/2023-dinov2.md) （2023）
-- [DINOv3](./papers/vision-foundation-models/2025-dinov3.md) （2025）
+- [DINO](.././papers/vision-foundation-models/2021-dino.md) （2021）
+- [DINOv2](.././papers/vision-foundation-models/2023-dinov2.md) （2023）
+- [DINOv3](.././papers/vision-foundation-models/2025-dinov3.md) （2025）
 
 ## dinov2-frozen-features
 
-- [RoMa](./papers/image-matching/2024-roma.md) （2024）
+- [RoMa](.././papers/image-matching/2024-roma.md) （2024）
 
 ## dinov3-frozen-features
 
-- [RoMa v2](./papers/image-matching/2025-romav2.md) （2025）
+- [RoMa v2](.././papers/image-matching/2025-romav2.md) （2025）
 
 ## distillation
 
-- [DINOv2](./papers/vision-foundation-models/2023-dinov2.md) （2023）
+- [DINOv2](.././papers/vision-foundation-models/2023-dinov2.md) （2023）
 
 ## driving-world-model
 
-- [X-World](./papers/world-models/2026-x-world.md) （2026）
+- [X-World](.././papers/world-models/2026-x-world.md) （2026）
 
 ## dust3r-initialized-pose-regression
 
-- [Reloc3r](./papers/visual-localization/2025-reloc3r.md) （2025）
+- [Reloc3r](.././papers/visual-localization/2025-reloc3r.md) （2025）
 
 ## dynamic-3d-reconstruction
 
-- [VGGT-Omega](./papers/3d-reconstruction/2026-vggt-omega.md) （2026）
+- [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) （2026）
 
 ## early-multiview-fusion
 
-- [Reloc-VGGT](./papers/visual-localization/2026-reloc-vggt.md) （2026）
+- [Reloc-VGGT](.././papers/visual-localization/2026-reloc-vggt.md) （2026）
 
 ## feed-forward-3d-foundation-model
 
-- [LingBot-Map](./papers/3d-reconstruction/2026-lingbot-map.md) （2026）
+- [LingBot-Map](.././papers/3d-reconstruction/2026-lingbot-map.md) （2026）
 
 ## feed-forward-3d-reconstruction
 
-- [Depth Anything 3](./papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
-- [Pi3](./papers/3d-reconstruction/2026-pi3.md) （2026）
-- [VGGT-Omega](./papers/3d-reconstruction/2026-vggt-omega.md) （2026）
+- [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
+- [Pi3](.././papers/3d-reconstruction/2026-pi3.md) （2026）
+- [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) （2026）
 
 ## feed-forward-3dgs
 
-- [Depth Anything 3](./papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
+- [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
 
 ## feed-forward-3dgs-reconstruction
 
-- [Xiaomi Auto World Model / JointWM](./papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
+- [Xiaomi Auto World Model / JointWM](.././papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
 
 ## feed-forward-visual-relocalization
 
-- [Reloc3r](./papers/visual-localization/2025-reloc3r.md) （2025）
-- [Reloc-VGGT](./papers/visual-localization/2026-reloc-vggt.md) （2026）
+- [Reloc3r](.././papers/visual-localization/2025-reloc3r.md) （2025）
+- [Reloc-VGGT](.././papers/visual-localization/2026-reloc-vggt.md) （2026）
 
 ## gaussian-process-match-decoder
 
-- [RoMa](./papers/image-matching/2024-roma.md) （2024）
+- [RoMa](.././papers/image-matching/2024-roma.md) （2024）
 
 ## generalizable-matching
 
-- [GIM](./papers/image-matching/2024-gim.md) （2024）
+- [GIM](.././papers/image-matching/2024-gim.md) （2024）
 
 ## geometric-context-attention
 
-- [LingBot-Map](./papers/3d-reconstruction/2026-lingbot-map.md) （2026）
+- [LingBot-Map](.././papers/3d-reconstruction/2026-lingbot-map.md) （2026）
 
 ## gram-anchoring
 
-- [DINOv3](./papers/vision-foundation-models/2025-dinov3.md) （2025）
+- [DINOv3](.././papers/vision-foundation-models/2025-dinov3.md) （2025）
 
 ## joint-world-model
 
-- [Xiaomi Auto World Model / JointWM](./papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
+- [Xiaomi Auto World Model / JointWM](.././papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
 
 ## label-propagation-from-videos
 
-- [GIM](./papers/image-matching/2024-gim.md) （2024）
+- [GIM](.././papers/image-matching/2024-gim.md) （2024）
 
 ## lightglue-style-matcher
 
-- [LoMa](./papers/image-matching/2026-loma.md) （2026）
+- [LoMa](.././papers/image-matching/2026-loma.md) （2026）
 
 ## local-pointmap
 
-- [Pi3](./papers/3d-reconstruction/2026-pi3.md) （2026）
+- [Pi3](.././papers/3d-reconstruction/2026-pi3.md) （2026）
 
 ## map-relative-pose-regression
 
-- [MARePo](./papers/visual-localization/2024-marepo.md) （2024）
+- [MARePo](.././papers/visual-localization/2024-marepo.md) （2024）
 
 ## matcher-agnostic-wrapper
 
-- [GIM](./papers/image-matching/2024-gim.md) （2024）
+- [GIM](.././papers/image-matching/2024-gim.md) （2024）
 
 ## model-distillation
 
-- [DINOv3](./papers/vision-foundation-models/2025-dinov3.md) （2025）
+- [DINOv3](.././papers/vision-foundation-models/2025-dinov3.md) （2025）
 
 ## monocular-depth
 
-- [Depth Anything 3](./papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
+- [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
 
 ## motion-averaging
 
-- [Reloc3r](./papers/visual-localization/2025-reloc3r.md) （2025）
+- [Reloc3r](.././papers/visual-localization/2025-reloc3r.md) （2025）
 
 ## permutation-equivariant-visual-geometry
 
-- [Pi3](./papers/3d-reconstruction/2026-pi3.md) （2026）
+- [Pi3](.././papers/3d-reconstruction/2026-pi3.md) （2026）
 
 ## predicted-covariance
 
-- [RoMa v2](./papers/image-matching/2025-romav2.md) （2025）
+- [RoMa v2](.././papers/image-matching/2025-romav2.md) （2025）
 
 ## predictive-world-model
 
-- [X-Foresight](./papers/world-models/2026-x-foresight.md) （2026）
+- [X-Foresight](.././papers/world-models/2026-x-foresight.md) （2026）
 
 ## reconstruction-as-spatial-pretraining
 
-- [VGGT-Omega](./papers/3d-reconstruction/2026-vggt-omega.md) （2026）
+- [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) （2026）
 
 ## reconstruction-conditioned-generation
 
-- [Xiaomi Auto World Model / JointWM](./papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
+- [Xiaomi Auto World Model / JointWM](.././papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
 
 ## reference-free-reconstruction
 
-- [Pi3](./papers/3d-reconstruction/2026-pi3.md) （2026）
+- [Pi3](.././papers/3d-reconstruction/2026-pi3.md) （2026）
 
 ## register-attention
 
-- [VGGT-Omega](./papers/3d-reconstruction/2026-vggt-omega.md) （2026）
+- [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) （2026）
 
 ## regression-by-classification
 
-- [RoMa](./papers/image-matching/2024-roma.md) （2024）
+- [RoMa](.././papers/image-matching/2024-roma.md) （2024）
 
 ## relative-pose-regression
 
-- [Reloc3r](./papers/visual-localization/2025-reloc3r.md) （2025）
-- [Reloc-VGGT](./papers/visual-localization/2026-reloc-vggt.md) （2026）
+- [Reloc3r](.././papers/visual-localization/2025-reloc3r.md) （2025）
+- [Reloc-VGGT](.././papers/visual-localization/2026-reloc-vggt.md) （2026）
 
 ## robot-foundation-model
 
-- [DreamZero](./papers/world-models/2026-dreamzero.md) （2026）
+- [DreamZero](.././papers/world-models/2026-dreamzero.md) （2026）
 
 ## rolling-kv-cache-protection
 
-- [X-Cache](./papers/efficient-training-inference/2026-x-cache.md) （2026）
+- [X-Cache](.././papers/efficient-training-inference/2026-x-cache.md) （2026）
 
 ## scene-coordinate-regression
 
-- [MARePo](./papers/visual-localization/2024-marepo.md) （2024）
+- [MARePo](.././papers/visual-localization/2024-marepo.md) （2024）
 
 ## self-distillation
 
-- [DINO](./papers/vision-foundation-models/2021-dino.md) （2021）
+- [DINO](.././papers/vision-foundation-models/2021-dino.md) （2021）
 
 ## self-supervised-vision-foundation-model
 
-- [DINOv2](./papers/vision-foundation-models/2023-dinov2.md) （2023）
-- [DINOv3](./papers/vision-foundation-models/2025-dinov3.md) （2025）
+- [DINOv2](.././papers/vision-foundation-models/2023-dinov2.md) （2023）
+- [DINOv3](.././papers/vision-foundation-models/2025-dinov3.md) （2025）
 
 ## self-supervised-vision-transformer
 
-- [DINO](./papers/vision-foundation-models/2021-dino.md) （2021）
+- [DINO](.././papers/vision-foundation-models/2021-dino.md) （2021）
 
 ## self-training-framework
 
-- [GIM](./papers/image-matching/2024-gim.md) （2024）
+- [GIM](.././papers/image-matching/2024-gim.md) （2024）
 
 ## sparse-feature-matching
 
-- [LightGlue](./papers/image-matching/2023-lightglue.md) （2023）
-- [LoMa](./papers/image-matching/2026-loma.md) （2026）
+- [LightGlue](.././papers/image-matching/2023-lightglue.md) （2023）
+- [LoMa](.././papers/image-matching/2026-loma.md) （2026）
 
 ## sparse-scene-query
 
-- [Xiaomi Auto World Model / JointWM](./papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
+- [Xiaomi Auto World Model / JointWM](.././papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
 
 ## streaming-3d-reconstruction
 
-- [LingBot-Map](./papers/3d-reconstruction/2026-lingbot-map.md) （2026）
+- [LingBot-Map](.././papers/3d-reconstruction/2026-lingbot-map.md) （2026）
 
 ## superglue-successor
 
-- [LightGlue](./papers/image-matching/2023-lightglue.md) （2023）
+- [LightGlue](.././papers/image-matching/2023-lightglue.md) （2023）
 
 ## two-stage-matching-then-refinement
 
-- [RoMa v2](./papers/image-matching/2025-romav2.md) （2025）
+- [RoMa v2](.././papers/image-matching/2025-romav2.md) （2025）
 
 ## vggt-based-geometry-transformer
 
-- [Reloc-VGGT](./papers/visual-localization/2026-reloc-vggt.md) （2026）
+- [Reloc-VGGT](.././papers/visual-localization/2026-reloc-vggt.md) （2026）
 
 ## video-diffusion-policy
 
-- [DreamZero](./papers/world-models/2026-dreamzero.md) （2026）
+- [DreamZero](.././papers/world-models/2026-dreamzero.md) （2026）
 
 ## vision-action-causal-forecasting
 
-- [X-Foresight](./papers/world-models/2026-x-foresight.md) （2026）
+- [X-Foresight](.././papers/world-models/2026-x-foresight.md) （2026）
 
 ## vision-language-action
 
-- [DreamZero](./papers/world-models/2026-dreamzero.md) （2026）
+- [DreamZero](.././papers/world-models/2026-dreamzero.md) （2026）
 
 ## world-action-model
 
-- [DreamZero](./papers/world-models/2026-dreamzero.md) （2026）
+- [DreamZero](.././papers/world-models/2026-dreamzero.md) （2026）
 <!-- AUTO:end -->
 
 <!-- MANUAL:start -->
