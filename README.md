@@ -15,6 +15,11 @@
 | [`comparisons/_template.md`](comparisons/_template.md) | 多方法对比模板 |
 | [`reproductions/_template.md`](reproductions/_template.md) | 复现实验记录模板 |
 | [`reports/`](reports/) | 已有或历史分析报告 |
+| [`indices/timeline.md`](indices/timeline.md) | 时间线：按年看方向演进与划时代方法（自动生成） |
+| [`indices/landmarks.md`](indices/landmarks.md) | 划时代方法及其谱系（自动生成） |
+| [`dashboards/`](dashboards/) | Obsidian Dataview 动态视图 |
+| [`learning/`](learning/) | 各方向由浅入深学习路线 |
+| [`KB-MEMORY.md`](KB-MEMORY.md) | 知识库跨会话记忆：约定、缺口、待办、决策 |
 
 ## 推荐目录结构
 
@@ -46,6 +51,8 @@ FrontierLab/
 ├── notes/                   # 临时想法、会议/阅读札记，沉淀后迁移到 papers/comparisons
 └── reports/                 # 既有报告或长文分析归档
 ```
+
+> 新增/修改论文后运行 `python3 scripts/build_indices.py` 重建索引（timeline、landmarks 等自动生成内容）。
 
 ## 命名规范
 
@@ -124,6 +131,11 @@ metrics: []
 status: triage        # triage | reading | analyzed | compared | reproducing | reproduced | archived
 reproduction: none    # none | planned | running | blocked | reproduced
 confidence: medium    # low | medium | high
+landmark: false          # true = 划时代/奠基方法，时间线与 landmarks 索引加 ★
+org: []                  # 机构/团队，如 [Meta, ByteDance]
+key_idea: ""             # 一句话核心，用于索引表与悬浮预览
+supersedes: []           # 取代/改进的前作 slug，如 [2024-roma]
+builds_on: []            # 依赖但不取代的前作 slug，如 [2023-dinov2]
 updated: 2026-05-08
 ---
 ```
@@ -136,6 +148,7 @@ updated: 2026-05-08
 4. **同方向方法超过 2 个**：创建或更新 `comparisons/<direction>/<topic>.md`，把方法放进统一维度表。
 5. **准备复现**：复制 [`reproductions/_template.md`](reproductions/_template.md)，记录环境、commit、数据、指标、失败点。
 6. **有测试或 benchmark**：把脚本/说明放到 `tests/<direction>/<method>/`；大数据、权重、缓存不要提交到仓库。
+7. **重建索引**：新增或修改论文后运行 `python3 scripts/build_indices.py`，重新生成 timeline、landmarks 等自动索引。
 
 ## 检索方式
 
