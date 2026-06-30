@@ -88,7 +88,7 @@ def render_methods(papers):
 def render_timeline(papers):
     by_year = defaultdict(list)
     for r in papers:
-        by_year[r.get("year", 0)].append(r)
+        by_year[r.get("year") or 0].append(r)
     out = []
     for year in sorted(by_year, reverse=True):
         out.append("## {}".format(year))

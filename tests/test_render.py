@@ -49,6 +49,16 @@ def test_timeline_sorts_desc_and_marks_landmark():
     assert "image-matching: 1" in out  # 2024 方向小计
 
 
+def test_timeline_tolerates_blank_year():
+    # year 键存在但为空（YAML 空值 -> None），不应崩溃（模板默认即如此）
+    papers = [
+        {"_slug": "a", "_path": "papers/d/a.md", "title": "A", "year": None, "direction": ["d"]},
+        {"_slug": "b", "_path": "papers/d/b.md", "title": "B", "year": 2024, "direction": ["d"]},
+    ]
+    out = r.render_timeline(papers)  # 不抛 TypeError
+    assert "2024" in out
+
+
 def test_landmarks_lists_lineage():
     out = r.render_landmarks(PAPERS)
     assert "RoMa" in out
