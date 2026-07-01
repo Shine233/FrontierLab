@@ -2,7 +2,7 @@
 type: method-comparison
 title: "Any-view Visual Geometry Foundation Models"
 direction: [3d-reconstruction, dense-vision, robotics-autonomous-driving]
-methods: [Depth-Anything-3, VGGT-Omega, VGGT, Pi3, MapAnything, LingBot-Map, Depth-Anything-2]
+methods: [Depth-Anything-3, VGGT-Omega, VGGT, Pi3, MapAnything, LingBot-Map, Depth-Anything-2, DUSt3R, MASt3R, CUT3R]
 status: initial-completed
 confidence: medium
 updated: 2026-05-18
@@ -89,6 +89,25 @@ updated: 2026-05-18
 - LingBot-Map 是专门为 causal streaming 设计；论文中的 GCA 管理 anchor、local window、trajectory memory。
 - DA3 本体更像离线或 batch any-view geometry 模型；当前 GitHub repo 后续加入 DA3-Streaming，通过 chunk streaming 管理长视频推理，README 报告 KITTI/TUM 对 VGGT-Long/Pi-Long 有速度和 ATE 优势。
 - DA3-Streaming 是工程推理管线，不等价于 DA3 论文训练方法；后续复现应单独记录。
+
+## 3.6 谱系源头：DUSt3R / MASt3R / CUT3R
+
+上表的前馈方法（VGGT、Pi3、MapAnything、DA3 等）都建立在 **pointmap 前馈范式**之上，其源头与关键分支此前未纳入本表，现补齐：
+
+| 维度 | DUSt3R | MASt3R | CUT3R |
+|---|---|---|---|
+| 年份 / venue | 2023 / CVPR 2024 | 2024 / ECCV 2024 | 2025 |
+| 定位 | pointmap 前馈范式**源头** | DUSt3R + 度量匹配头，匹配/定位分支 | 持续状态在线/流式重建分支 |
+| 核心范式 | 两视图回归共享坐标系 pointmap，去投影相机模型硬约束 | 在 DUSt3R 上加稠密局部特征头 + 匹配损失 + 快速互易匹配（FRM） | 有状态循环模型，逐帧读入视频流并更新持久 3D 状态 |
+| 输入 / 输出 | 两图（多图靠全局对齐）→ pointmap/深度/位姿/匹配 | 图像对 → 度量 pointmap + 稠密匹配 → 位姿/定位 | 视频流 → 在线 pointmap/深度/位姿 |
+| 是否 metric | 否（scale-invariant） | 是（metric 权重） | 部分（VO/相对为主） |
+| 代码 / 训练 | [naver/dust3r](https://github.com/naver/dust3r)；训练开源 | [naver/mast3r](https://github.com/naver/mast3r)；训练开源 | 见分析文件；训练开源状态待核 |
+| 许可证 | CC BY-NC-SA 4.0（非商用） | CC BY-NC-SA 4.0（非商用） | 见分析文件 |
+| 与本表关系 | VGGT/Pi3/DA3/MapAnything 的共同范式前身 | 匹配-定位方向的强前驱，MapAnything 亦受其影响 | 与 LingBot-Map 同属 streaming/online 分支，可直接对照 |
+
+- **范式演进链**：DUSt3R（两视图 pointmap）→ MASt3R（加度量匹配）→ VGGT（大规模统一 Transformer，一次前馈多视）→ MapAnything（可 prompt 度量）/ CUT3R（有状态在线）。VGGT-Ω、Pi3 是 VGGT 之后的 scaling 与等变化分支。
+- **何时回看源头**：需要理解「为什么现在的前馈几何模型长这样」、或做最小可复现基线（DUSt3R/MASt3R 训练与权重开源、体量小）时，优先从 DUSt3R/MASt3R 入手。CUT3R 则是与 LingBot-Map 对照 streaming 状态设计的首选。
+- 详见分析：[DUSt3R](../../papers/3d-reconstruction/2023-dust3r.md)、[MASt3R](../../papers/3d-reconstruction/2024-mast3r.md)、[CUT3R](../../papers/3d-reconstruction/2025-cut3r.md)、[VGGT](../../papers/3d-reconstruction/2025-vggt.md)、[MapAnything](../../papers/3d-reconstruction/2025-mapanything.md)。
 
 ## 4. 复现优先级
 

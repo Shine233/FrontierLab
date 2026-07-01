@@ -9,6 +9,7 @@
 - 对比维度按方向稳定复用（见各 comparisons 文件末尾"建议固定对比维度"）。
 - 谱系信息写两处：frontmatter 的 supersedes/builds_on + 正文「方法谱系」小节标准 markdown 链接。
 - 新增/改动论文后运行 `python3 scripts/build_indices.py` 重建索引。
+- **分析新论文必做横向对比判断**（paper-read SOP 步骤 7）：查同方向相似论文，决定纳入现有对比 / 新建对比 / 暂记待攒；正文「## 6.」不留空。
 
 ## 各方向缺口
 - multimodal-learning / reasoning-agents：暂无论文，学习路线待方向有内容再建。

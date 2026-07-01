@@ -80,6 +80,8 @@ updated: 2026-07-01
 - **许可证风险**：COLMAP 本体为 new BSD（3-clause），商用友好；但依赖库（如 SIFT 相关实现）历史上曾有许可争议，实际集成需核对第三方依赖许可。
 
 ## 6. 与相似方法对比
+
+> 横向对比见：[场景表示范式对比](../../comparisons/3d-reconstruction/scene-representation-paradigms.md)（COLMAP/NeRF/3DGS 三范式）、[3D 重建发展全景](../../comparisons/3d-reconstruction/development-survey.md)。
 | Method | 相同点 | 不同点 | 何时选它 |
 |---|---|---|---|
 | Bundler / VisualSFM | 同为增量式 SfM | COLMAP 鲁棒性、完整度与工程质量更高，仍在维护 | 需要现代、可靠、可集成的 SfM 时选 COLMAP |

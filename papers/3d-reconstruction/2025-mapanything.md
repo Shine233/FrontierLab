@@ -73,6 +73,8 @@ updated: 2026-07-01
 - 许可证 / 数据风险：完整 13-数据集权重为 CC-BY-NC 4.0（不可商用），商用须用仅含可商用数据集子集训练的 Apache 版权重（子集数量待核验），二者精度可能有差（需自测）；这是相较「代码开源即可商用」的关键陷阱。
 
 ## 6. 与相似方法对比
+
+> 横向对比见：[前馈几何模型对比](../../comparisons/3d-reconstruction/visual-geometry-foundation-models.md)、[3D 重建发展全景](../../comparisons/3d-reconstruction/development-survey.md)。
 | Method | 相同点 | 不同点 | 何时选它 |
 |---|---|---|---|
 | VGGT | 单次前馈、多帧、多几何量回归 | VGGT 只吃图像、非可 prompt、度量性弱；MapAnything 可注入内参/位姿/深度并直接输出度量，单视图标定 1.18° vs VGGT 4.00° | 只有图像、要几何基础 backbone/点跟踪时选 VGGT；能拿到先验、要度量结果时选 MapAnything |
