@@ -1,3 +1,8 @@
 .vscode
 
 .omx/
+__pycache__/
+*.pyc
+
+# Obsidian per-machine config & vendored plugins
+.obsidian/

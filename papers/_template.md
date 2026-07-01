@@ -18,6 +18,11 @@ metrics: []
 status: triage
 reproduction: none
 confidence: medium
+landmark: false          # true = 划时代/奠基方法，时间线与 landmarks 索引加 ★
+org: []                  # 机构/团队，如 [Meta, ByteDance]
+key_idea: ""             # 一句话核心，用于索引表与悬浮预览
+supersedes: []           # 取代/改进的前作 slug，如 [2024-roma]
+builds_on: []            # 依赖但不取代的前作 slug，如 [2023-dinov2]
 updated: 2026-05-08
 ---
 
@@ -66,6 +71,14 @@ updated: 2026-05-08
 - 我推断的风险：
 - 工程落地风险：
 - 许可证 / 数据风险：
+
+## 方法谱系
+
+> 仅在有谱系关系时填写。用标准 markdown 链接（GitHub 可点 + Obsidian Graph 连边）。
+> 与 frontmatter 的 supersedes / builds_on 保持一致。
+
+- 取代/改进：[<前作名>](../<direction>/<year>-<slug>.md)
+- 基于：[<backbone 名>](../<direction>/<year>-<slug>.md)
 
 ## 6. 与相似方法对比
 
