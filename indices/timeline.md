@@ -21,8 +21,9 @@
 - [DINOv3](.././papers/vision-foundation-models/2025-dinov3.md) — 
 - [Reloc3r](.././papers/visual-localization/2025-reloc3r.md) — 
 - [RoMa v2](.././papers/image-matching/2025-romav2.md) — 
+- ★ [VGGT](.././papers/3d-reconstruction/2025-vggt.md) — 用一个纯前馈大型 Transformer 直接从 1~数百张图像回归相机参数、深度图、点图与 3D 点轨迹，在 1 秒内完成重建且无需后处理几何优化。
 
-方向分布：3d-reconstruction: 3, dense-vision: 2, evaluation-benchmarks: 3, image-matching: 1, robotics-autonomous-driving: 2, self-supervised-learning: 1, vision-foundation-models: 1, visual-localization: 2
+方向分布：3d-reconstruction: 4, dense-vision: 3, evaluation-benchmarks: 4, image-matching: 1, novel-view-synthesis: 1, robotics-autonomous-driving: 2, self-supervised-learning: 1, vision-foundation-models: 1, visual-localization: 2
 
 ## 2024
 
@@ -34,13 +35,27 @@
 
 ## 2023
 
+- ★ [3DGS](.././papers/3d-reconstruction/2023-3dgs.md) — 用一组各向异性 3D 高斯显式表示场景，配合可微分 tile-based 光栅化实现 1080p 下实时（论文目标 >=30 FPS，实测 130-200 FPS）的高质量新视角合成。
 - [DINOv2](.././papers/vision-foundation-models/2023-dinov2.md) — 
+- ★ [DUSt3R](.././papers/3d-reconstruction/2023-dust3r.md) — 把无标定两视图重建统一为回归共享坐标系下的稠密 pointmap，抛开投影相机模型的硬约束，一个前馈网络同时给出深度、匹配与位姿。
 - [LightGlue](.././papers/image-matching/2023-lightglue.md) — 
 
-方向分布：3d-reconstruction: 1, evaluation-benchmarks: 1, image-matching: 1, self-supervised-learning: 1, vision-foundation-models: 1, visual-localization: 1
+方向分布：3d-reconstruction: 3, dense-vision: 2, evaluation-benchmarks: 2, image-matching: 1, novel-view-synthesis: 1, self-supervised-learning: 1, vision-foundation-models: 1, visual-localization: 1
 
 ## 2021
 
 - [DINO](.././papers/vision-foundation-models/2021-dino.md) — 
 
 方向分布：self-supervised-learning: 1, vision-foundation-models: 1
+
+## 2020
+
+- ★ [NeRF](.././papers/3d-reconstruction/2020-nerf.md) — 用一个坐标 MLP 把场景编码成 5D 神经辐射场（位置+方向→颜色+密度），再用可微体渲染合成新视角。
+
+方向分布：3d-reconstruction: 1, dense-vision: 1, novel-view-synthesis: 1
+
+## 2016
+
+- ★ [COLMAP](.././papers/3d-reconstruction/2016-colmap.md) — 把增量式 SfM 与逐像素视图选择的 PatchMatch MVS 工程化打磨到鲁棒可用，成为无序图像三维重建的事实标准与长期 benchmark 基线。
+
+方向分布：3d-reconstruction: 1, dense-vision: 1, evaluation-benchmarks: 1

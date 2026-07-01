@@ -53,16 +53,16 @@ timeline
 |---|---:|---|---|---|
 | ⬜ | 2004 | SIFT + 多视图几何 | 特征匹配 + 对极几何/SfM 的理论与工程基石 | 待补 |
 | ⬜ | 2011 | KinectFusion | 实时稠密 TSDF 重建，深度相机重建代表 | 待补 |
-| ⬜ | 2016 | COLMAP | SfM/MVS 事实标准，至今是重建/位姿 benchmark 基线 | 待补（建议补，历史锚点） |
-| ⬜ | 2020 | NeRF | 神经隐式场景表示，重建/新视图合成分水岭 | 待补（建议补，历史锚点） |
+| ✅ | 2016 | COLMAP | SfM/MVS 事实标准，至今是重建/位姿 benchmark 基线 | [2016-colmap](../../papers/3d-reconstruction/2016-colmap.md) |
+| ✅ | 2020 | NeRF | 神经隐式场景表示，重建/新视图合成分水岭 | [2020-nerf](../../papers/3d-reconstruction/2020-nerf.md) |
 
 ### 神经渲染 & 显式表示期（2021–2023）
 
 | 状态 | 年份 | 工作 | 定位 | 分析文件 |
 |---|---:|---|---|---|
 | ⬜ | 2022 | Instant-NGP / Mip-NeRF | NeRF 加速与抗锯齿 | 待补（可选） |
-| ⬜ | 2023 | 3D Gaussian Splatting | 显式实时可微渲染，当前主流场景表示 | 待补（**优先级 3**） |
-| ⬜ | 2023 | DUSt3R | 前馈两视图 pointmap，开启"无位姿前馈重建"范式 | 待补（**优先级 1，整条线的源头**） |
+| ✅ | 2023 | 3D Gaussian Splatting | 显式实时可微渲染，当前主流场景表示 | [2023-3dgs](../../papers/3d-reconstruction/2023-3dgs.md) |
+| ✅ | 2023 | DUSt3R | 前馈两视图 pointmap，开启"无位姿前馈重建"范式 | [2023-dust3r](../../papers/3d-reconstruction/2023-dust3r.md) |
 
 ### 前馈几何基础模型爆发期（2024–2026）
 
@@ -70,7 +70,7 @@ timeline
 |---|---:|---|---|---|
 | ⬜ | 2024 | MASt3R / MASt3R-SfM | DUSt3R + 局部特征匹配 | 待补 |
 | ⬜ | 2024 | Spann3R / Fast3R / MV-DUSt3R | 多视图 / 在线 / 加速扩展 | 待补 |
-| ⬜ | 2025 | VGGT | 前馈视觉几何基础模型核心 | 待补（**优先级 2，已分析其衍生版但缺本体**） |
+| ✅ | 2025 | VGGT | 前馈视觉几何基础模型核心（CVPR 2025 Best Paper） | [2025-vggt](../../papers/3d-reconstruction/2025-vggt.md) |
 | ✅ | 2025 | Depth Anything 3 | 任意视角 depth-ray 几何统一输出 | [2025-depth-anything-3](../../papers/3d-reconstruction/2025-depth-anything-3.md) |
 | 🟡 | 2025 | MapAnything | metric promptable 几何，自动驾驶主候选 | 见 [feedforward 对比](../../reports/feedforward_3d_reconstruction_compare.md) |
 | 🟡 | 2025 | OmniVGGT | VGGT 几何先验 adapter | 见 [feedforward 对比](../../reports/feedforward_3d_reconstruction_compare.md) |
@@ -90,16 +90,19 @@ timeline
 
 ## 3. 已分析 vs 待补充 小结
 
-- **已独立分析（3d-recon 主目录）：** Depth Anything 3、VGGT-Ω、Pi3、LingBot-Map（4 篇，全在 2025–2026）。
-- **仅对比报告提及、无独立分析：** VGGT、MapAnything、OmniVGGT、HunyuanWorld-Mirror、CUT3R、MonST3R、MegaSaM、Stream3R、Wint3R、TTT3R、Spann3R、Fast3R。
-- **完全未纳入（历史里程碑）：** COLMAP、NeRF、3D Gaussian Splatting、DUSt3R、MASt3R、KinectFusion、SIFT/SfM。
+- **已独立分析（3d-recon 主目录，9 篇）：** COLMAP、NeRF、DUSt3R、3D Gaussian Splatting、VGGT、Depth Anything 3、VGGT-Ω、Pi3、LingBot-Map（历史锚点 2016→2020→2023 已拉通，前馈范式源头 DUSt3R 与本体 VGGT 已补齐）。
+- **仅对比报告提及、无独立分析：** MapAnything、OmniVGGT、HunyuanWorld-Mirror、CUT3R、MonST3R、MegaSaM、Stream3R、Wint3R、TTT3R、Spann3R、Fast3R、MASt3R。
+- **完全未纳入（历史里程碑）：** KinectFusion、SIFT/SfM、Instant-NGP（可选）。
 
 ## 4. 补全路线（优先级）
 
-1. **DUSt3R (2023)** — 前馈重建范式起点，VGGT/DA3/Pi3 的共同源头。
-2. **VGGT (2025)** — 已分析三个衍生方法却缺本体。
-3. **3D Gaussian Splatting (2023)** — 显式表示划时代工作。
-4. **NeRF (2020) + COLMAP (2016)** — 历史锚点，里程碑级简要分析即可。
-5. 之后填密 2024–2025：MapAnything、MASt3R、CUT3R 等。
+已完成（2026-07-01）：DUSt3R、VGGT、3D Gaussian Splatting、NeRF、COLMAP 五个关键节点已入库，时间轴从 2016 拉通到 2026。
+
+下一批建议：
+
+1. **MASt3R (2024)** — DUSt3R + 度量匹配，前馈重建谱系的关键中间环。
+2. **MapAnything (2025)** — 已在对比报告，值得独立分析（metric promptable）。
+3. **CUT3R / MonST3R (2025)** — 在线/动态重建分支。
+4. 视需要补 3DGS 加速线（Instant-NGP）与经典 SfM/MVS 历史节点（COLMAP 已补，可选补 KinectFusion）。
 
 > 补充新论文后：填好 frontmatter（2021 年前的标 `landmark: true`），运行 `python3 scripts/build_indices.py` 重建索引，本页 🟡/⬜ 状态同步更新。

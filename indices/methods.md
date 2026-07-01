@@ -13,6 +13,10 @@
 
 - [LightGlue](.././papers/image-matching/2023-lightglue.md) （2023）
 
+## alternating-attention-transformer
+
+- [VGGT](.././papers/3d-reconstruction/2025-vggt.md) （2025）
+
 ## any-view-visual-geometry-foundation-model
 
 - [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
@@ -43,6 +47,10 @@
 
 - [X-Foresight](.././papers/world-models/2026-x-foresight.md) （2026）
 
+## classical-geometric-pipeline
+
+- [COLMAP](.././papers/3d-reconstruction/2016-colmap.md) （2016）
+
 ## closed-loop-simulation
 
 - [X-World](.././papers/world-models/2026-x-world.md) （2026）
@@ -54,6 +62,10 @@
 ## controllable-multi-camera-generation
 
 - [X-World](.././papers/world-models/2026-x-world.md) （2026）
+
+## coordinate-mlp
+
+- [NeRF](.././papers/3d-reconstruction/2020-nerf.md) （2020）
 
 ## cross-chunk-block-cache
 
@@ -83,6 +95,10 @@
 ## depth-ray-representation
 
 - [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
+
+## differentiable-rendering
+
+- [3DGS](.././papers/3d-reconstruction/2023-3dgs.md) （2023）
 
 ## diffusion-inference-cache
 
@@ -126,6 +142,10 @@
 
 - [Reloc-VGGT](.././papers/visual-localization/2026-reloc-vggt.md) （2026）
 
+## feed-forward-3d
+
+- [DUSt3R](.././papers/3d-reconstruction/2023-dust3r.md) （2023）
+
 ## feed-forward-3d-foundation-model
 
 - [LingBot-Map](.././papers/3d-reconstruction/2026-lingbot-map.md) （2026）
@@ -133,6 +153,7 @@
 ## feed-forward-3d-reconstruction
 
 - [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
+- [VGGT](.././papers/3d-reconstruction/2025-vggt.md) （2025）
 - [Pi3](.././papers/3d-reconstruction/2026-pi3.md) （2026）
 - [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) （2026）
 
@@ -153,6 +174,10 @@
 
 - [RoMa](.././papers/image-matching/2024-roma.md) （2024）
 
+## gaussian-splatting
+
+- [3DGS](.././papers/3d-reconstruction/2023-3dgs.md) （2023）
+
 ## generalizable-matching
 
 - [GIM](.././papers/image-matching/2024-gim.md) （2024）
@@ -164,6 +189,10 @@
 ## gram-anchoring
 
 - [DINOv3](.././papers/vision-foundation-models/2025-dinov3.md) （2025）
+
+## incremental-structure-from-motion
+
+- [COLMAP](.././papers/3d-reconstruction/2016-colmap.md) （2016）
 
 ## joint-world-model
 
@@ -201,9 +230,30 @@
 
 - [Reloc3r](.././papers/visual-localization/2025-reloc3r.md) （2025）
 
+## neural-implicit-representation
+
+- [NeRF](.././papers/3d-reconstruction/2020-nerf.md) （2020）
+
+## neural-radiance-field
+
+- [NeRF](.././papers/3d-reconstruction/2020-nerf.md) （2020）
+
+## patchmatch-multi-view-stereo
+
+- [COLMAP](.././papers/3d-reconstruction/2016-colmap.md) （2016）
+
 ## permutation-equivariant-visual-geometry
 
 - [Pi3](.././papers/3d-reconstruction/2026-pi3.md) （2026）
+
+## point-based-rendering
+
+- [3DGS](.././papers/3d-reconstruction/2023-3dgs.md) （2023）
+
+## pointmap-regression
+
+- [DUSt3R](.././papers/3d-reconstruction/2023-dust3r.md) （2023）
+- [VGGT](.././papers/3d-reconstruction/2025-vggt.md) （2025）
 
 ## predicted-covariance
 
@@ -212,6 +262,10 @@
 ## predictive-world-model
 
 - [X-Foresight](.././papers/world-models/2026-x-foresight.md) （2026）
+
+## radiance-field
+
+- [3DGS](.././papers/3d-reconstruction/2023-3dgs.md) （2023）
 
 ## reconstruction-as-spatial-pretraining
 
@@ -284,6 +338,10 @@
 
 - [LightGlue](.././papers/image-matching/2023-lightglue.md) （2023）
 
+## transformer
+
+- [DUSt3R](.././papers/3d-reconstruction/2023-dust3r.md) （2023）
+
 ## two-stage-matching-then-refinement
 
 - [RoMa v2](.././papers/image-matching/2025-romav2.md) （2025）
@@ -303,6 +361,14 @@
 ## vision-language-action
 
 - [DreamZero](.././papers/world-models/2026-dreamzero.md) （2026）
+
+## visual-geometry-foundation-model
+
+- [VGGT](.././papers/3d-reconstruction/2025-vggt.md) （2025）
+
+## volume-rendering
+
+- [NeRF](.././papers/3d-reconstruction/2020-nerf.md) （2020）
 
 ## world-action-model
 

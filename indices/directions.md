@@ -3,12 +3,17 @@
 <!-- AUTO:start -->
 ## 3d-reconstruction
 
+- [COLMAP](.././papers/3d-reconstruction/2016-colmap.md) （2016）
+- [NeRF](.././papers/3d-reconstruction/2020-nerf.md) （2020）
+- [3DGS](.././papers/3d-reconstruction/2023-3dgs.md) （2023）
+- [DUSt3R](.././papers/3d-reconstruction/2023-dust3r.md) （2023）
 - [LightGlue](.././papers/image-matching/2023-lightglue.md) （2023）
 - [GIM](.././papers/image-matching/2024-gim.md) （2024）
 - [RoMa](.././papers/image-matching/2024-roma.md) （2024）
 - [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
 - [Reloc3r](.././papers/visual-localization/2025-reloc3r.md) （2025）
 - [RoMa v2](.././papers/image-matching/2025-romav2.md) （2025）
+- [VGGT](.././papers/3d-reconstruction/2025-vggt.md) （2025）
 - [LingBot-Map](.././papers/3d-reconstruction/2026-lingbot-map.md) （2026）
 - [LoMa](.././papers/image-matching/2026-loma.md) （2026）
 - [Pi3](.././papers/3d-reconstruction/2026-pi3.md) （2026）
@@ -18,8 +23,13 @@
 
 ## dense-vision
 
+- [COLMAP](.././papers/3d-reconstruction/2016-colmap.md) （2016）
+- [NeRF](.././papers/3d-reconstruction/2020-nerf.md) （2020）
+- [3DGS](.././papers/3d-reconstruction/2023-3dgs.md) （2023）
+- [DUSt3R](.././papers/3d-reconstruction/2023-dust3r.md) （2023）
 - [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
 - [DINOv3](.././papers/vision-foundation-models/2025-dinov3.md) （2025）
+- [VGGT](.././papers/3d-reconstruction/2025-vggt.md) （2025）
 - [Pi3](.././papers/3d-reconstruction/2026-pi3.md) （2026）
 - [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) （2026）
 
@@ -29,6 +39,8 @@
 
 ## evaluation-benchmarks
 
+- [COLMAP](.././papers/3d-reconstruction/2016-colmap.md) （2016）
+- [DUSt3R](.././papers/3d-reconstruction/2023-dust3r.md) （2023）
 - [LightGlue](.././papers/image-matching/2023-lightglue.md) （2023）
 - [GIM](.././papers/image-matching/2024-gim.md) （2024）
 - [MARePo](.././papers/visual-localization/2024-marepo.md) （2024）
@@ -36,6 +48,7 @@
 - [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
 - [Reloc3r](.././papers/visual-localization/2025-reloc3r.md) （2025）
 - [RoMa v2](.././papers/image-matching/2025-romav2.md) （2025）
+- [VGGT](.././papers/3d-reconstruction/2025-vggt.md) （2025）
 - [DreamZero](.././papers/world-models/2026-dreamzero.md) （2026）
 - [LoMa](.././papers/image-matching/2026-loma.md) （2026）
 - [Pi3](.././papers/3d-reconstruction/2026-pi3.md) （2026）
@@ -60,6 +73,12 @@
 - [RoMa](.././papers/image-matching/2024-roma.md) （2024）
 - [RoMa v2](.././papers/image-matching/2025-romav2.md) （2025）
 - [LoMa](.././papers/image-matching/2026-loma.md) （2026）
+
+## novel-view-synthesis
+
+- [NeRF](.././papers/3d-reconstruction/2020-nerf.md) （2020）
+- [3DGS](.././papers/3d-reconstruction/2023-3dgs.md) （2023）
+- [VGGT](.././papers/3d-reconstruction/2025-vggt.md) （2025）
 
 ## robotics-autonomous-driving
 

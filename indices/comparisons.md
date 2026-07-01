@@ -22,6 +22,7 @@
 
 <!-- AUTO:start -->
 ## 对比报告清单
+- [comparisons/3d-reconstruction/development-survey.md](../comparisons/3d-reconstruction/development-survey.md)
 - [comparisons/3d-reconstruction/streaming-3d-reconstruction.md](../comparisons/3d-reconstruction/streaming-3d-reconstruction.md)
 - [comparisons/3d-reconstruction/visual-geometry-foundation-models.md](../comparisons/3d-reconstruction/visual-geometry-foundation-models.md)
 - [comparisons/image-matching/image-matching-methods.md](../comparisons/image-matching/image-matching-methods.md)

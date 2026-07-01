@@ -12,6 +12,9 @@
 
 ## 各方向缺口
 - multimodal-learning / reasoning-agents：暂无论文，学习路线待方向有内容再建。
+- 3d-reconstruction：历史脉络见 comparisons/3d-reconstruction/development-survey.md（2000-2026 全景）。
+  - 补全中（2026-07-01）：DUSt3R / VGGT / 3DGS / NeRF / COLMAP 关键论文分析进行中。
+  - 仍缺（对比报告提及但无独立分析）：MapAnything、OmniVGGT、HunyuanWorld-Mirror、MASt3R、CUT3R、MonST3R、Stream3R、Wint3R、TTT3R、Spann3R、Fast3R。
 - 其余方向缺口随阅读补充。
 
 ## 未完成意图
