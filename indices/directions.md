@@ -9,8 +9,11 @@
 - [DUSt3R](.././papers/3d-reconstruction/2023-dust3r.md) （2023）
 - [LightGlue](.././papers/image-matching/2023-lightglue.md) （2023）
 - [GIM](.././papers/image-matching/2024-gim.md) （2024）
+- [MASt3R](.././papers/3d-reconstruction/2024-mast3r.md) （2024）
 - [RoMa](.././papers/image-matching/2024-roma.md) （2024）
+- [CUT3R](.././papers/3d-reconstruction/2025-cut3r.md) （2025）
 - [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
+- [MapAnything](.././papers/3d-reconstruction/2025-mapanything.md) （2025）
 - [Reloc3r](.././papers/visual-localization/2025-reloc3r.md) （2025）
 - [RoMa v2](.././papers/image-matching/2025-romav2.md) （2025）
 - [VGGT](.././papers/3d-reconstruction/2025-vggt.md) （2025）
@@ -27,11 +30,18 @@
 - [NeRF](.././papers/3d-reconstruction/2020-nerf.md) （2020）
 - [3DGS](.././papers/3d-reconstruction/2023-3dgs.md) （2023）
 - [DUSt3R](.././papers/3d-reconstruction/2023-dust3r.md) （2023）
+- [MASt3R](.././papers/3d-reconstruction/2024-mast3r.md) （2024）
+- [CUT3R](.././papers/3d-reconstruction/2025-cut3r.md) （2025）
 - [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
 - [DINOv3](.././papers/vision-foundation-models/2025-dinov3.md) （2025）
+- [MapAnything](.././papers/3d-reconstruction/2025-mapanything.md) （2025）
 - [VGGT](.././papers/3d-reconstruction/2025-vggt.md) （2025）
 - [Pi3](.././papers/3d-reconstruction/2026-pi3.md) （2026）
 - [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) （2026）
+
+## depth-estimation
+
+- [MapAnything](.././papers/3d-reconstruction/2025-mapanything.md) （2025）
 
 ## efficient-training-inference
 
@@ -101,6 +111,10 @@
 - [DINOv2](.././papers/vision-foundation-models/2023-dinov2.md) （2023）
 - [DINOv3](.././papers/vision-foundation-models/2025-dinov3.md) （2025）
 
+## video-4d
+
+- [CUT3R](.././papers/3d-reconstruction/2025-cut3r.md) （2025）
+
 ## vision-foundation-models
 
 - [DINO](.././papers/vision-foundation-models/2021-dino.md) （2021）
@@ -113,6 +127,7 @@
 - [LightGlue](.././papers/image-matching/2023-lightglue.md) （2023）
 - [GIM](.././papers/image-matching/2024-gim.md) （2024）
 - [MARePo](.././papers/visual-localization/2024-marepo.md) （2024）
+- [MASt3R](.././papers/3d-reconstruction/2024-mast3r.md) （2024）
 - [RoMa](.././papers/image-matching/2024-roma.md) （2024）
 - [Reloc3r](.././papers/visual-localization/2025-reloc3r.md) （2025）
 - [RoMa v2](.././papers/image-matching/2025-romav2.md) （2025）

@@ -68,14 +68,15 @@ timeline
 
 | 状态 | 年份 | 工作 | 定位 | 分析文件 |
 |---|---:|---|---|---|
-| ⬜ | 2024 | MASt3R / MASt3R-SfM | DUSt3R + 局部特征匹配 | 待补 |
+| ✅ | 2024 | MASt3R / MASt3R-SfM | DUSt3R + 局部特征匹配 | [2024-mast3r](../../papers/3d-reconstruction/2024-mast3r.md) |
 | ⬜ | 2024 | Spann3R / Fast3R / MV-DUSt3R | 多视图 / 在线 / 加速扩展 | 待补 |
 | ✅ | 2025 | VGGT | 前馈视觉几何基础模型核心（CVPR 2025 Best Paper） | [2025-vggt](../../papers/3d-reconstruction/2025-vggt.md) |
 | ✅ | 2025 | Depth Anything 3 | 任意视角 depth-ray 几何统一输出 | [2025-depth-anything-3](../../papers/3d-reconstruction/2025-depth-anything-3.md) |
-| 🟡 | 2025 | MapAnything | metric promptable 几何，自动驾驶主候选 | 见 [feedforward 对比](../../reports/feedforward_3d_reconstruction_compare.md) |
+| ✅ | 2025 | MapAnything | metric promptable 几何，自动驾驶主候选 | [2025-mapanything](../../papers/3d-reconstruction/2025-mapanything.md) |
 | 🟡 | 2025 | OmniVGGT | VGGT 几何先验 adapter | 见 [feedforward 对比](../../reports/feedforward_3d_reconstruction_compare.md) |
 | 🟡 | 2025 | HunyuanWorld-Mirror | any-prior 世界重建 / 3DGS / NVS | 见 [feedforward 对比](../../reports/feedforward_3d_reconstruction_compare.md) |
-| 🟡 | 2025 | CUT3R / MonST3R / MegaSaM | 在线 / 动态重建 | 见 [streaming 对比](streaming-3d-reconstruction.md) |
+| ✅ | 2025 | CUT3R | 持续状态在线 / 流式重建 | [2025-cut3r](../../papers/3d-reconstruction/2025-cut3r.md) |
+| 🟡 | 2025 | MonST3R / MegaSaM | 动态重建 | 见 [streaming 对比](streaming-3d-reconstruction.md) |
 | ✅ | 2026 | VGGT-Ω | VGGT scaling + register attention + 动态 | [2026-vggt-omega](../../papers/3d-reconstruction/2026-vggt-omega.md) |
 | ✅ | 2026 | Pi3 | permutation-equivariant reference-free 几何 | [2026-pi3](../../papers/3d-reconstruction/2026-pi3.md) |
 | ✅ | 2026 | LingBot-Map | streaming pose/depth/point cloud 建图 | [2026-lingbot-map](../../papers/3d-reconstruction/2026-lingbot-map.md) |
@@ -90,19 +91,19 @@ timeline
 
 ## 3. 已分析 vs 待补充 小结
 
-- **已独立分析（3d-recon 主目录，9 篇）：** COLMAP、NeRF、DUSt3R、3D Gaussian Splatting、VGGT、Depth Anything 3、VGGT-Ω、Pi3、LingBot-Map（历史锚点 2016→2020→2023 已拉通，前馈范式源头 DUSt3R 与本体 VGGT 已补齐）。
-- **仅对比报告提及、无独立分析：** MapAnything、OmniVGGT、HunyuanWorld-Mirror、CUT3R、MonST3R、MegaSaM、Stream3R、Wint3R、TTT3R、Spann3R、Fast3R、MASt3R。
+- **已独立分析（3d-recon 主目录，12 篇）：** COLMAP、NeRF、DUSt3R、3D Gaussian Splatting、MASt3R、VGGT、Depth Anything 3、MapAnything、CUT3R、VGGT-Ω、Pi3、LingBot-Map（历史锚点 2016→2020→2023 已拉通，前馈范式链 DUSt3R→MASt3R→VGGT→MapAnything/CUT3R 已成形）。
+- **仅对比报告提及、无独立分析：** OmniVGGT、HunyuanWorld-Mirror、MonST3R、MegaSaM、Stream3R、Wint3R、TTT3R、Spann3R、Fast3R、MV-DUSt3R。
 - **完全未纳入（历史里程碑）：** KinectFusion、SIFT/SfM、Instant-NGP（可选）。
 
 ## 4. 补全路线（优先级）
 
-已完成（2026-07-01）：DUSt3R、VGGT、3D Gaussian Splatting、NeRF、COLMAP 五个关键节点已入库，时间轴从 2016 拉通到 2026。
+已完成（2026-07-01）：DUSt3R、VGGT、3D Gaussian Splatting、NeRF、COLMAP 五个关键节点，以及 MASt3R、MapAnything、CUT3R 已入库；前馈范式链 DUSt3R→MASt3R→VGGT→MapAnything/CUT3R 已成形，时间轴 2016→2026 拉通。
 
 下一批建议：
 
-1. **MASt3R (2024)** — DUSt3R + 度量匹配，前馈重建谱系的关键中间环。
-2. **MapAnything (2025)** — 已在对比报告，值得独立分析（metric promptable）。
-3. **CUT3R / MonST3R (2025)** — 在线/动态重建分支。
-4. 视需要补 3DGS 加速线（Instant-NGP）与经典 SfM/MVS 历史节点（COLMAP 已补，可选补 KinectFusion）。
+1. **MonST3R / MegaSaM (2025)** — 动态场景重建分支。
+2. **Spann3R / Fast3R / MV-DUSt3R (2024)** — 多视图 / 加速扩展。
+3. **OmniVGGT / HunyuanWorld-Mirror (2025)** — 已在对比报告，可补独立分析。
+4. 视需要补经典节点（KinectFusion）与 3DGS 加速线（Instant-NGP）。
 
 > 补充新论文后：填好 frontmatter（2021 年前的标 `landmark: true`），运行 `python3 scripts/build_indices.py` 重建索引，本页 🟡/⬜ 状态同步更新。

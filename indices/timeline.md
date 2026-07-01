@@ -17,21 +17,24 @@
 
 ## 2025
 
+- [CUT3R](.././papers/3d-reconstruction/2025-cut3r.md) — 用一个带持久状态的循环模型在线处理图像流，每来一帧就更新内部状态并读出度量尺度点图，把前馈 pointmap 重建从离线成对处理推进到流式在线累积。
 - [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) — 
 - [DINOv3](.././papers/vision-foundation-models/2025-dinov3.md) — 
+- [MapAnything](.././papers/3d-reconstruction/2025-mapanything.md) — 一个统一前馈 Transformer 接收任意数量图像及可选先验（内参/位姿/深度/部分重建），用「深度图+局部 ray map+相机位姿+度量尺度」的因子化表示，单次前馈直接回归全局一致的度量 3D 几何与相机。
 - [Reloc3r](.././papers/visual-localization/2025-reloc3r.md) — 
 - [RoMa v2](.././papers/image-matching/2025-romav2.md) — 
 - ★ [VGGT](.././papers/3d-reconstruction/2025-vggt.md) — 用一个纯前馈大型 Transformer 直接从 1~数百张图像回归相机参数、深度图、点图与 3D 点轨迹，在 1 秒内完成重建且无需后处理几何优化。
 
-方向分布：3d-reconstruction: 4, dense-vision: 3, evaluation-benchmarks: 4, image-matching: 1, novel-view-synthesis: 1, robotics-autonomous-driving: 2, self-supervised-learning: 1, vision-foundation-models: 1, visual-localization: 2
+方向分布：3d-reconstruction: 6, dense-vision: 5, depth-estimation: 1, evaluation-benchmarks: 4, image-matching: 1, novel-view-synthesis: 1, robotics-autonomous-driving: 2, self-supervised-learning: 1, video-4d: 1, vision-foundation-models: 1, visual-localization: 2
 
 ## 2024
 
 - [GIM](.././papers/image-matching/2024-gim.md) — 
 - [MARePo](.././papers/visual-localization/2024-marepo.md) — 
+- ★ [MASt3R](.././papers/3d-reconstruction/2024-mast3r.md) — 在 DUSt3R 的 pointmap 前馈基座上加一个稠密局部特征匹配头与匹配损失，并用快速互易匹配（FRM）加速，把图像匹配当作 3D 问题来解，大幅提升匹配精度与视觉定位。
 - [RoMa](.././papers/image-matching/2024-roma.md) — 
 
-方向分布：3d-reconstruction: 2, evaluation-benchmarks: 3, image-matching: 2, robotics-autonomous-driving: 1, visual-localization: 3
+方向分布：3d-reconstruction: 3, dense-vision: 1, evaluation-benchmarks: 3, image-matching: 2, robotics-autonomous-driving: 1, visual-localization: 4
 
 ## 2023
 

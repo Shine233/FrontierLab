@@ -6,6 +6,12 @@
 - 核心：用一个纯前馈大型 Transformer 直接从 1~数百张图像回归相机参数、深度图、点图与 3D 点轨迹，在 1 秒内完成重建且无需后处理几何优化。
 - 基于：2023-dust3r
 
+## MASt3R （2024）
+
+- 链接：[MASt3R](.././papers/3d-reconstruction/2024-mast3r.md)
+- 核心：在 DUSt3R 的 pointmap 前馈基座上加一个稠密局部特征匹配头与匹配损失，并用快速互易匹配（FRM）加速，把图像匹配当作 3D 问题来解，大幅提升匹配精度与视觉定位。
+- 基于：2023-dust3r
+
 ## 3DGS （2023）
 
 - 链接：[3DGS](.././papers/3d-reconstruction/2023-3dgs.md)

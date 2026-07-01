@@ -142,9 +142,14 @@
 
 - [Reloc-VGGT](.././papers/visual-localization/2026-reloc-vggt.md) （2026）
 
+## factored-scene-representation
+
+- [MapAnything](.././papers/3d-reconstruction/2025-mapanything.md) （2025）
+
 ## feed-forward-3d
 
 - [DUSt3R](.././papers/3d-reconstruction/2023-dust3r.md) （2023）
+- [MASt3R](.././papers/3d-reconstruction/2024-mast3r.md) （2024）
 
 ## feed-forward-3d-foundation-model
 
@@ -152,7 +157,9 @@
 
 ## feed-forward-3d-reconstruction
 
+- [CUT3R](.././papers/3d-reconstruction/2025-cut3r.md) （2025）
 - [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
+- [MapAnything](.././papers/3d-reconstruction/2025-mapanything.md) （2025）
 - [VGGT](.././papers/3d-reconstruction/2025-vggt.md) （2025）
 - [Pi3](.././papers/3d-reconstruction/2026-pi3.md) （2026）
 - [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) （2026）
@@ -206,6 +213,10 @@
 
 - [LoMa](.././papers/image-matching/2026-loma.md) （2026）
 
+## local-feature-matching
+
+- [MASt3R](.././papers/3d-reconstruction/2024-mast3r.md) （2024）
+
 ## local-pointmap
 
 - [Pi3](.././papers/3d-reconstruction/2026-pi3.md) （2026）
@@ -217,6 +228,10 @@
 ## matcher-agnostic-wrapper
 
 - [GIM](.././papers/image-matching/2024-gim.md) （2024）
+
+## metric-3d
+
+- [MapAnything](.././papers/3d-reconstruction/2025-mapanything.md) （2025）
 
 ## model-distillation
 
@@ -238,6 +253,10 @@
 
 - [NeRF](.././papers/3d-reconstruction/2020-nerf.md) （2020）
 
+## online-streaming-reconstruction
+
+- [CUT3R](.././papers/3d-reconstruction/2025-cut3r.md) （2025）
+
 ## patchmatch-multi-view-stereo
 
 - [COLMAP](.././papers/3d-reconstruction/2016-colmap.md) （2016）
@@ -253,6 +272,9 @@
 ## pointmap-regression
 
 - [DUSt3R](.././papers/3d-reconstruction/2023-dust3r.md) （2023）
+- [MASt3R](.././papers/3d-reconstruction/2024-mast3r.md) （2024）
+- [CUT3R](.././papers/3d-reconstruction/2025-cut3r.md) （2025）
+- [MapAnything](.././papers/3d-reconstruction/2025-mapanything.md) （2025）
 - [VGGT](.././papers/3d-reconstruction/2025-vggt.md) （2025）
 
 ## predicted-covariance
@@ -262,6 +284,10 @@
 ## predictive-world-model
 
 - [X-Foresight](.././papers/world-models/2026-x-foresight.md) （2026）
+
+## promptable-reconstruction
+
+- [MapAnything](.././papers/3d-reconstruction/2025-mapanything.md) （2025）
 
 ## radiance-field
 
@@ -330,6 +356,10 @@
 
 - [Xiaomi Auto World Model / JointWM](.././papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
 
+## stateful-recurrent-model
+
+- [CUT3R](.././papers/3d-reconstruction/2025-cut3r.md) （2025）
+
 ## streaming-3d-reconstruction
 
 - [LingBot-Map](.././papers/3d-reconstruction/2026-lingbot-map.md) （2026）
@@ -341,6 +371,7 @@
 ## transformer
 
 - [DUSt3R](.././papers/3d-reconstruction/2023-dust3r.md) （2023）
+- [MASt3R](.././papers/3d-reconstruction/2024-mast3r.md) （2024）
 
 ## two-stage-matching-then-refinement
 
