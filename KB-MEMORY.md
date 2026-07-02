@@ -15,6 +15,7 @@
 - multimodal-learning / reasoning-agents：暂无论文，学习路线待方向有内容再建。
 - 3d-reconstruction：历史脉络见 comparisons/3d-reconstruction/development-survey.md（2000-2026 全景）。
   - 已补（2026-07-01）：COLMAP/NeRF/DUSt3R/3DGS/VGGT + MASt3R/MapAnything/CUT3R；前馈链 DUSt3R→MASt3R→VGGT→MapAnything/CUT3R 成形。
+  - **全 12 篇已深度化（2026-07-02）**：架构解析/核心原理/关键公式(LaTeX)/训练推理/效果性能小节 + 嵌入 arXiv 关键插图（存 assets/，标来源）。公式经 scripts/fix_inline_math.py 修复 GitHub 渲染。
   - 仍缺（对比报告提及但无独立分析）：OmniVGGT、HunyuanWorld-Mirror、MonST3R、MegaSaM、Stream3R、Wint3R、TTT3R、Spann3R、Fast3R、MV-DUSt3R。
 - 其余方向缺口随阅读补充。
 
