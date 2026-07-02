@@ -23,7 +23,7 @@ reproduction: planned
 confidence: high
 org: [ByteDance]
 key_idea: "用单个预训练 plain transformer + depth-ray 双目标，把任意视角视觉几何压成两张 dense map"
-builds_on: [2024-depth-anything-v2, 2023-dinov2, 2024-vggt, 2024-dust3r]
+builds_on: [2023-dinov2, 2025-vggt, 2023-dust3r]
 updated: 2026-07-02
 ---
 
@@ -218,12 +218,12 @@ $$\mathcal{L} = \mathcal{L}_{\text{depth}} + \lambda_r \mathcal{L}_{\text{ray}} 
 - 公式 (1)(2)(3) 的确切写法已核对 HTML 正文与图注（ $P = t + D(u,v) \cdot d$ 、homography DLT、经典 unproject），但未逐字节比对 PDF LaTeX 源，个别下标 / 归一化约束的精确记法可能与原文略有出入。
 - DA3-Streaming 是仓库后续发布的长视频推理管线，基于 VGGT-Long 思路；不是论文主训练方法的一部分，需单独做工程验证。
 - HuggingFace 上部分模型卡带 `-1.1` 后缀，README 称修复 training bug 后应优先使用；这些权重对应的论文表格数值是否完全一致，需官方说明或复跑确认。
-- 方法谱系里引用的前作 slug（2023-dinov2 / 2024-depth-anything-v2 / 2024-vggt / 2024-dust3r）按常见命名假定，未逐一 grep 校验本仓库实际文件名是否完全一致，以 `indices/methods.md` 为准。
+- 方法谱系 slug 已校验本仓库实际文件名：VGGT=`2025-vggt`、DUSt3R=`2023-dust3r`、DINOv2 在 `vision-foundation-models/2023-dinov2.md`；Depth Anything 2 仓库暂无独立分析（仅文字提及）。
 
 ## 方法谱系
 
-- 基于（backbone / 表示先验）：[DINOv2](../3d-reconstruction/2023-dinov2.md)（plain ViT 预训练权重直接迁移）、[Depth Anything 2](../3d-reconstruction/2024-depth-anything-v2.md)（单目 depth 泛化与 teacher 思路）。
-- 对标 / 改进（同代 any-view geometry）：[VGGT](../3d-reconstruction/2024-vggt.md)（DA3 用单 plain transformer + depth-ray 取代其多阶段架构与 point map）、[DUSt3R](../3d-reconstruction/2024-dust3r.md)（DA3 用 ray map 替代 point map 的显式位姿回归）。
+- 基于（backbone / 表示先验）：[DINOv2](../vision-foundation-models/2023-dinov2.md)（plain ViT 预训练权重直接迁移）、Depth Anything 2（单目 depth 泛化与 teacher 思路；仓库暂无独立分析）。
+- 对标 / 改进（同代 any-view geometry）：[VGGT](../3d-reconstruction/2025-vggt.md)（DA3 用单 plain transformer + depth-ray 取代其多阶段架构与 point map）、[DUSt3R](../3d-reconstruction/2023-dust3r.md)（DA3 用 ray map 替代 point map 的显式位姿回归）。
 
 > 谱系链接为方向内相对路径，若目标文件 slug 与此处不一致以 `indices/methods.md` 为准。
 
