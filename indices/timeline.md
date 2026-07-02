@@ -3,9 +3,9 @@
 ## 2026
 
 - [DreamZero](.././papers/world-models/2026-dreamzero.md) — 
-- [LingBot-Map](.././papers/3d-reconstruction/2026-lingbot-map.md) — 
+- [LingBot-Map](.././papers/3d-reconstruction/2026-lingbot-map.md) — 用 Geometric Context Attention 把流式状态拆成 anchor / local window / trajectory memory 三级上下文，在保持因果 streaming 的同时把每帧新增上下文从整图 token 压到少量 context token，实现万帧级实时在线 3D 重建。
 - [LoMa](.././papers/image-matching/2026-loma.md) — 
-- [Pi3](.././papers/3d-reconstruction/2026-pi3.md) — 
+- [Pi3](.././papers/3d-reconstruction/2026-pi3.md) — 去掉参考帧偏置，用置换等变架构 + 仿射不变位姿 + 尺度不变局部点图，实现任意视图 feed-forward 几何重建
 - [Reloc-VGGT](.././papers/visual-localization/2026-reloc-vggt.md) — 
 - [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) — 
 - [X-Cache](.././papers/efficient-training-inference/2026-x-cache.md) — 
@@ -18,9 +18,9 @@
 ## 2025
 
 - [CUT3R](.././papers/3d-reconstruction/2025-cut3r.md) — 用一个带持久状态的循环模型在线处理图像流，每来一帧就更新内部状态并读出度量尺度点图，把前馈 pointmap 重建从离线成对处理推进到流式在线累积。
-- [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) — 
+- [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) — 用单个预训练 plain transformer + depth-ray 双目标，把任意视角视觉几何压成两张 dense map
 - [DINOv3](.././papers/vision-foundation-models/2025-dinov3.md) — 
-- [MapAnything](.././papers/3d-reconstruction/2025-mapanything.md) — 一个统一前馈 Transformer 接收任意数量图像及可选先验（内参/位姿/深度/部分重建），用「深度图+局部 ray map+相机位姿+度量尺度」的因子化表示，单次前馈直接回归全局一致的度量 3D 几何与相机。
+- [MapAnything](.././papers/3d-reconstruction/2025-mapanything.md) — 一个统一前馈 Transformer 接收任意数量图像及可选先验（内参/位姿/深度/部分重建），用「射线方向 + 逐像素深度 + 相机位姿 + 单一度量尺度因子」的因子化表示，单次前馈直接回归全局一致的度量 3D 几何与相机。
 - [Reloc3r](.././papers/visual-localization/2025-reloc3r.md) — 
 - [RoMa v2](.././papers/image-matching/2025-romav2.md) — 
 - ★ [VGGT](.././papers/3d-reconstruction/2025-vggt.md) — 用一个纯前馈大型 Transformer 直接从 1~数百张图像回归相机参数、深度图、点图与 3D 点轨迹，在 1 秒内完成重建且无需后处理几何优化。
