@@ -100,7 +100,7 @@ updated: 2026-07-02
 
 把候选图像的可见 3D 点投影到一个多分辨率网格金字塔上，按「首次被填充的格子」加权计分：
 
-$$ S \;=\; \sum_{l=1}^{L} w_l \cdot \#\{\text{level-}l\ \text{cells occupied by at least one visible point}\} $$
+$$ S \;=\; \sum_{l=1}^{L} w_l \cdot \bigl|\{\text{level-}l\text{ cells occupied by} \ge 1 \text{ visible point}\}\bigr| $$
 
 - 符号（已核验）：level $l$ 把图像每个维度划分为 $K_l = 2^l$ 个 bin（即 $2^l\times 2^l$ 个格子）；权重 $w_l = K_l^2 = 4^l$（越细的层权重越大）；「被占用格子数」统计的是**可见点的空间覆盖**而非点数本身，每个格子只在首次被填充时计一次。
 - 作用：得分同时反映「看到的已重建点**多不多**」与「这些点**铺得均不均匀**」。选 $S$ 最大的图像作为下一张注册对象，抑制退化注册与漂移；该数据结构可在线增量更新。
