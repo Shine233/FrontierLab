@@ -77,11 +77,26 @@ DA3 的价值不在于“发明了一个复杂 3D 模块”，而是把多视图
 | Dual-DPT head | 联合输出 depth 和 ray | 共享 reassembly modules，depth / ray 分支用不同 fusion layers；depth 出 $N \times H \times W$ ，ray 出半分辨率 $N \times \tfrac{1}{2}H \times \tfrac{1}{2}W \times 6$ |
 | Optional camera head $\mathcal{D}_c$ | 快速输出 camera params | 从 camera token 解码 FOV、quaternion、translation（图中右下角相机 frustum）；论文称额外计算约为主 backbone 的 0.1% |
 
+**模型规模谱（论文给出的参数量）**：DA3 提供四档，从边缘部署到 SOTA 逐级放大，全部共享同一 depth-ray + plain-transformer 设计，只换 backbone 尺寸：
+
+| 档位 | 参数量 | 定位 |
+|---|---|---|
+| DA3-Small | 约 0.03B | 极轻量 / 边缘推理 |
+| DA3-Base | 约 0.11B | 工程默认起点（Apache-2.0 权重） |
+| DA3-Large | 约 0.36B | 性价比首选，多项指标已超 1.19B 的 VGGT |
+| DA3-Giant | 约 1.10B | 最强档，全面刷 benchmark |
+
+作为对照，VGGT 约 1.19B、Pi3 约 0.96B、MapAnything 约 0.56B。DA3-Large 用不到 VGGT 三分之一的参数就在 10 个 reconstruction setting 里有 5 个反超，是“参数效率”这一卖点的核心论据。论文正文把 backbone 抽象成“一个有 $L$ 个 block 的 ViT，在大规模单目图像上预训练（如 DINOv2）”，但未逐档给出对应的 ViT-S/B/L/g 映射，此处仅按参数量对齐直觉。
+
 **关键设计选择及理由**：
 
-- **单 plain transformer 而非多分支**：DA3 把 cross-view 交互塞进 backbone 内部的 attention（靠 token 重排），而不是像 VGGT 那样外挂 alternating-attention 模块。这样 backbone 可以整段加载 DINOv2 预训练权重，几何能力“长”在预训练视觉表示上。
+- **单 plain transformer 而非多分支**：DA3 把 cross-view 交互塞进 backbone 内部的 attention（靠 token 重排），而不是像 VGGT 那样外挂 alternating-attention 模块。这样 backbone 可以整段加载 DINOv2 预训练权重，几何能力“长”在预训练视觉表示上。具体地，把前 $L_s$ 层设为纯 within-view self-attention（每张图内部聚合），后 $L_g$ 层交替 cross-view / within-view，默认 $L_s : L_g = 2 : 1$ ；cross-view 那一步不新增任何参数，只是把 $N$ 张图的 token 从「按图分组」重排成「跨图共处一个序列」再做标准 self-attention，做完再排回去——这就是「input-adaptive」的含义：序列长度随输入视角数自适应，1 张图时 cross-view 自然退化为 within-view。
 - **depth + ray 双输出而非 point map**：point map 把“相机几何”和“场景深度”耦合进一个 3D 向量里，梯度互相干扰；depth + ray 把两者解耦——ray 只负责相机侧（原点 + 方向），depth 只负责沿射线的距离，几何含义清晰且可分别监督。
 - **ray map 半分辨率**：相机几何在空间上是低频信号（同一相机的射线场平滑），半分辨率足够表达且省算力，而 depth 保留全分辨率以保住细节。
+
+![Dual-DPT head：两个分支共享 reassembly 模块以对齐 depth 与 ray 输出（来源：arXiv 2511.10647, Depth Anything 3, Fig. 3）](../../assets/3d-reconstruction/2025-depth-anything-3/dpt-head.png)
+
+关于 dual-DPT head 的一个易忽略细节（Fig. 3）：depth 分支与 ray 分支**共享 reassembly modules**，只在 fusion 阶段分叉。消融（Table 6 附近）显示，若把两分支做成完全独立的 DPT head，指标反而下降。直觉是 depth 和 ray 必须在同一组多尺度特征上“看同一个世界”，共享 reassembly 保证二者的几何基底一致，公式 (3) 的逐像素组合才不会因两分支各自漂移而失配。
 
 ### 2.2 核心原理
 
@@ -93,42 +108,59 @@ DA3 的价值不在于“发明了一个复杂 3D 模块”，而是把多视图
 
 ### 2.3 关键公式解析
 
-**公式 (1)：经典逐像素 unproject（相机系 → 世界系）**
+理解 DA3 只需抓住一条主线：**世界点 = 相机射线原点 + 沿射线方向走深度**。下面 5 个公式（均按 HTML 正文逐句核对）把这条主线从“经典做法”一步步推进到 DA3 的“逐像素 dense 表示”，再反推相机参数与训练损失。
+
+**公式 (1)：经典逐像素 unproject（相机系 → 世界系），即 DA3 想绕开的写法**
 
 $$P = R_i \left( D_i(u,v) \cdot K_i^{-1} p \right) + t_i$$
 
-- 符号： $p$ 为像素齐次坐标 $(u,v,1)$ ； $K_i^{-1}$ 把像素反投影到归一化相机射线； $D_i(u,v)$ 为该像素深度； $R_i, t_i$ 为第 $i$ 张图的旋转与平移。
-- 作用：这是传统做法——要显式知道 $K_i, R_i, t_i$ 才能拿到世界点 $P$ ，位姿是显式变量。DA3 想绕开它。
+- 符号： $p = (u, v, 1)^\top$ 为像素齐次坐标； $K_i^{-1}$ 把像素反投影到归一化相机射线； $D_i(u,v)$ 为该像素深度； $R_i, t_i$ 为第 $i$ 张图的旋转与平移。
+- 作用：传统 multi-view 几何要先显式拿到 $K_i, R_i, t_i$ 才能算世界点 $P$ ，位姿是需要网络硬回归或后端优化求解的**全局参数**。DUSt3R/VGGT 的 camera head 走的就是这条路。DA3 的目标是把这些全局量“摊”到每个像素上，消掉显式位姿变量。
 
-**公式 (2)：depth-ray 表示（DA3 的核心简化）**
+**公式 (2)：per-pixel 相机射线定义（ray map 的物理含义）**
+
+$$r = (t, d) \in \mathbb{R}^6, \qquad d = R K^{-1} p$$
+
+- 符号：每个像素 $p$ 对应一条相机射线 $r$ ，由原点 $t \in \mathbb{R}^3$ （相机中心）与方向 $d \in \mathbb{R}^3$ 组成，共 6 个通道；方向 $d$ 是把像素反投影到相机系再用 $R$ 旋到世界系得到的。
+- 作用：这 6 个通道逐像素堆起来就是 ray map $M \in \mathbb{R}^{H \times W \times 6}$ 。注意 $d = R K^{-1} p$ 已经把公式 (1) 里的 $R_i$ 和 $K_i^{-1} p$ **打包进方向向量**——相机的旋转与内参不再是需要单独输出的量，而是隐含在 dense 的方向场里。
+
+**公式 (3)：depth-ray 世界点（DA3 的核心简化）**
 
 $$P = t + D(u,v) \cdot d$$
 
-- 符号： $t \in \mathbb{R}^3$ 为该像素射线的原点（相机中心）， $d \in \mathbb{R}^3$ 为世界系下的归一化射线方向，二者即 ray map 的 6 个通道； $D(u,v)$ 仍是标量深度。
-- 作用：把公式 (1) 里的 $R_i, K_i^{-1} p$ 全部吸收进 per-pixel 的 $(t, d)$ 。网络不再需要输出全局 $R_i, t_i$ ，只要逐像素预测 $(t, d, D)$ ，世界点就是一次逐元素运算。这是 DA3 统一各任务接口的关键。（已按 HTML 正文核对：world point 表达式为 $P = t + D(u,v) \cdot d$ 。）
+- 符号： $t, d$ 即 ray map 的 6 通道， $D(u,v)$ 仍是标量深度。
+- 作用：对比公式 (1)，全局 $R_i, t_i, K_i$ 全部被吸收进 per-pixel 的 $(t, d)$ 。网络只需逐像素回归 $(t, d, D)$ ，世界点就是一次逐元素加乘运算，无需任何全局矩阵求逆或位姿拟合。这就是 DA3 能用**同一套 dense 输出**同时服务单目、多视图、posed/unposed、点云、3DGS 的根源：所有下游任务都从 $(D, M)$ 这两张图派生。
 
-**公式 (3)：从 ray map 解 homography（闭式恢复相机参数）**
+**公式 (4)：从 ray map 闭式反推相机参数（相机中心 + homography DLT）**
 
-$$H^\ast = \arg\min_{\lVert H \rVert = 1} \sum_{h,w} \left\lVert H\, p_{h,w} \times M(h,w,3{:}) \right\rVert$$
+$$t_c = \frac{1}{H \times W} \sum_{h,w} M(h, w, 0{:}3), \qquad H^\ast = \arg\min_{\lVert H \rVert = 1} \sum_{h,w} \left\lVert H\, p_{h,w} \times M(h,w,3{:}) \right\rVert$$
 
-- 符号： $M$ 为预测的 ray map， $M(h,w,3{:})$ 取该像素的方向分量 $d$ ； $p_{h,w}$ 为像素坐标； $H$ 为待求单应，约束 $\lVert H \rVert = 1$ 避免平凡解； $\times$ 为叉积（方向对齐残差）。
-- 作用：用 Direct Linear Transform 从整幅 ray map 最小二乘解出 $H = KR$ ，再对 $H$ 做 RQ 分解得到 intrinsics 与 rotation。这让“没有 camera head 也能拿到位姿”，camera head 只是加速推理的旁路。
+- 符号：相机中心 $t_c$ 直接取 ray map 前 3 通道（各像素原点）的均值； $M(h,w,3{:})$ 取方向分量 $d$ ； $p_{h,w}$ 为像素坐标； $H$ 为待求单应，约束 $\lVert H \rVert = 1$ 避免平凡零解； $\times$ 为叉积，度量“预测方向 $d$ 与 $H p$ 所隐含方向”的对齐残差。
+- 作用：用 Direct Linear Transform 从整幅 ray map 最小二乘解出 $H = K R$ ，再对 $H$ 做 RQ 分解得到 intrinsics $K$ 与 rotation $R$ 。这说明**位姿是从 dense 几何“解”出来的量，而非网络硬记的参数**——即使不挂 camera head 也能拿到相机参数，camera head 只是把这步 DLT 换成一次前向、加速推理的旁路（额外算力约主 backbone 的 0.1%）。
 
-**公式 (4)：训练总损失（概念形式）**
+**公式 (5)：训练总损失（已按正文核对，权重 $\alpha = \beta = 1$ ）**
 
-$$\mathcal{L} = \mathcal{L}_{\text{depth}} + \lambda_r \mathcal{L}_{\text{ray}} + \lambda_p \mathcal{L}_{\text{point}} + \lambda_g \mathcal{L}_{\text{grad}} + \lambda_c \mathcal{L}_{\text{cam}}$$
+$$\mathcal{L} = \mathcal{L}_D(\hat{D}, D) + \mathcal{L}_M(\hat{R}, M) + \mathcal{L}_P(\hat{D} \odot d + t,\, P) + \beta\, \mathcal{L}_C(\hat{c}, v) + \alpha\, \mathcal{L}_{\text{grad}}(\hat{D}, D)$$
 
-- 符号： $\mathcal{L}_{\text{depth}}$ 为带 confidence 加权的深度 L1； $\mathcal{L}_{\text{ray}}$ 为 ray map 回归 L1； $\mathcal{L}_{\text{point}}$ 为按公式 (2) 组合出的 3D 点重投影一致性 L1； $\mathcal{L}_{\text{grad}}$ 为水平 / 垂直有限差分梯度正则（保边缘）； $\mathcal{L}_{\text{cam}}$ 为可选的 quaternion + translation 位姿损失。
-- 作用：depth / ray / point 三项互相约束——point loss 强迫 depth 与 ray 的组合在 3D 里自洽，而不是各自独立收敛，这是 depth-ray 双目标“对齐”的直接监督来源。（各项权重 $\lambda$ 的具体数值论文正文未给全，此处以符号占位，待核验。）
+其中深度项与梯度项分别为：
+
+$$\mathcal{L}_D(\hat{D}, D; D_c) = \frac{1}{Z_\Omega} \sum_{p \in \Omega} m_p \left( D_{c,p} \lvert \hat{D}_p - D_p \rvert - \lambda_c \log D_{c,p} \right)$$
+
+$$\mathcal{L}_{\text{grad}}(\hat{D}, D) = \lVert \nabla_x \hat{D} - \nabla_x D \rVert_1 + \lVert \nabla_y \hat{D} - \nabla_y D \rVert_1$$
+
+- 符号： $\mathcal{L}_D$ 是 confidence 加权的深度 L1—— $D_{c,p}$ 是网络预测的逐像素置信度，越高则该像素 L1 权重越大，同时 $-\lambda_c \log D_{c,p}$ 项惩罚过度自信， $m_p$ 为有效像素 mask， $Z_\Omega$ 为归一化常数； $\mathcal{L}_M$ 是 ray map 回归损失； $\mathcal{L}_P$ 是把 $\hat{D} \odot d + t$ 组合出的 3D 点与真值 $P$ 的一致性损失（正是公式 (3) 的可微版本）； $\mathcal{L}_C$ 为可选的 camera（quaternion + translation）损失； $\mathcal{L}_{\text{grad}}$ 为水平/垂直有限差分梯度正则，保住深度边缘。正文给出 $\alpha = 1$ 、 $\beta = 1$ 。
+- 作用： $\mathcal{L}_P$ 是 depth 与 ray“对齐”的关键监督——它强迫 $(\hat{D}, \hat{R})$ 组合出的世界点自洽，而不是让 depth 分支和 ray 分支各自独立收敛。confidence 加权让稀疏/噪声真值下模型能自动降低不可靠像素的权重，与 teacher-student pseudo-label 配合，是 real-world 数据训练稳定的核心。（ $\lambda_c$ 及 $\mathcal{L}_M / \mathcal{L}_P / \mathcal{L}_C$ 内部权重的精确数值正文未逐一给出，标为待核验。）
 
 ### 2.4 训练与推理细节
 
 已确认的论文事实：
 
+- **训练目标**：总损失见公式 (5)，由 depth（confidence 加权 L1） + ray 回归 + point 一致性 + 可选 camera + gradient 正则五项组成，梯度项与 camera 项权重 $\alpha = \beta = 1$ 。
 - **规模与算力**：DA3-Giant 使用 128 H100 GPU、200k steps（含 8k warmup）、约 10 天；peak lr $2 \times 10^{-4}$ 。
 - **多分辨率**：基础分辨率 504，训练混合 504×504、504×378、504×336、504×280、336×504、896×504、756×504、672×504 等长宽比；batch size 动态调整以维持 token 数恒定。
-- **视角采样**：504×504 时每图 view 数从 $[2, 18]$ 均匀采样，让模型天然适配任意视角数。
-- **teacher-student**：真实 depth 常稀疏 / 有噪；先训一个只用合成数据（Hypersim、TartanAir、IRS、vKITTI2、BlendedMVS 等）的单目 relative-depth teacher，teacher 用 exponential depth（而非 disparity）以增强近处判别，并带 distance-weighted surface-normal loss、sky/object mask、global-local ROE 对齐；再用 RANSAC scale-shift 把 teacher 伪深度对齐到真实稀疏 / 噪声测量。
+- **视角采样**：504×504 时每图 view 数从 $[2, 18]$ 均匀采样，让模型天然适配任意视角数——这与 input-adaptive attention（ $L_s : L_g = 2 : 1$ ）配合，使同一套权重覆盖 1 到 N 张图。
+- **teacher-student**：真实 depth 常稀疏 / 有噪；先训一个只用合成数据（Hypersim、TartanAir、IRS、vKITTI2、BlendedMVS 等，覆盖 indoor/outdoor/object-centric/in-the-wild）的单目 relative-depth teacher，teacher 用 exponential depth（而非 disparity）以增强近处判别，并带 distance-weighted surface-normal loss、sky/object mask、global-local ROE 对齐；再用 RANSAC scale-shift 把 teacher 伪深度对齐到真实稀疏 / 噪声测量。
+- **尺度对齐公式**：设 teacher 相对深度 $\tilde{D}$ 、可用稀疏深度 $D$ ，用 RANSAC 最小二乘估计 scale $s$ 与 shift $t$ ： $(\hat{s}, \hat{t}) = \arg\min_{s>0, t} \sum_{p \in \Omega} m_p (s \tilde{D}_p + t - D_p)^2$ ，对齐后的伪标签 $D^{(T \to M)} = \hat{s}\, \tilde{D} + \hat{t}$ 提供 scale-consistent 且 pose–depth 一致的监督。
 - **监督切换**：训练前 120k steps 用 ground-truth depth 监督，之后切换到 teacher 伪标签；pose conditioning 以 0.2 概率随机启用，使模型既能 posed 也能 unposed 推理。
 - **数据来源**：700k+ 场景，混合 synthetic、LiDAR、3D reconstruction、COLMAP 多来源（含 Objaverse ~505k、Trellis ~557k、AriaSyntheticENV ~99k 等）。
 
@@ -164,14 +196,38 @@ $$\mathcal{L} = \mathcal{L}_{\text{depth}} + \lambda_r \mathcal{L}_{\text{ray}} 
 
 ![点云重建质量对比（来源：arXiv 2511.10647, Depth Anything 3, Fig. 5）](../../assets/3d-reconstruction/2025-depth-anything-3/results-pointcloud.png)
 
+**Pose estimation 具体数字（Table 2，AUC@3 / AUC@30，越高越好）**：DA3-Giant 在 5 个数据集上几乎全面领先，且在最严格的 AUC@3（3° 阈值）上优势最大：
+
+| 数据集 | DA3-Giant | VGGT (1.19B) | Pi3 (0.96B) | MapAnything (0.56B) |
+|---|---|---|---|---|
+| HiRoom | **80.3** / 95.9 | 49.1 / 88.0 | 67.0 / 94.8 | 17.9 / 82.8 |
+| ETH3D | **48.4** / 91.2 | 26.3 / 80.8 | 35.2 / 87.3 | 19.2 / 77.4 |
+| DTU | **94.1** / 99.4 | 79.2 / 99.8 | 62.5 / 94.9 | 6.5 / 72.7 |
+| 7Scenes | **28.5** / 86.8 | 23.9 / 85.0 | 25.5 / 86.3 | 12.6 / 79.7 |
+| ScanNet++ | **85.0** / 98.1 | 62.6 / 95.1 | 50.7 / 92.1 | 20.2 / 84.1 |
+
+（数值经 WebFetch 从 HTML 表格抽取，正式引用建议比对 PDF。）读法：AUC@3 是「累计到 3° 的位姿误差曲线下面积」，对小误差高度敏感；DA3 在 HiRoom（49.1→80.3）、ScanNet++（62.6→85.0）这类复杂室内场景相对 VGGT 有约 30+ 个百分点绝对增益，这正是「ray map 把病态全局位姿拟合改成良态 dense 回归」在难场景上的兑现。AUC@30 大家都逼近饱和（85–99），区分度主要落在 AUC@3。
+
+**Reconstruction 具体数字（Table 3，F1 越高越好 / DTU Chamfer 越低越好，pose-free 设置）**：
+
+| 数据集 | DA3-Giant F1（pose-free / posed） | VGGT F1（pose-free） |
+|---|---|---|
+| HiRoom | 85.1 / 95.6 | 56.7 |
+| ETH3D | 79.0 / 87.1 | 57.2 |
+| 7Scenes | 53.5 / 56.5 | — |
+| ScanNet++ | 77.0 / 79.3 | 66.4 |
+| DTU（Chamfer mm↓） | 1.85 | — |
+
+正文据此给出 reconstruction 平均相对 VGGT 提升 25.1%、相对 Pi3 提升 21.5%。有了 GT pose（posed 列）后 F1 进一步跳升（HiRoom 85.1→95.6），说明 pose conditioning 是实打实的额外信息而非摆设。Fig. 5 目视上 DA3 点云更规整、飘点更少，与 F1 数字一致。
+
 | 结果 | 论文证据 | 解读 |
 |---|---|---|
 | DA3-Giant pose 几乎全面领先 | Table 2 中 DA3-Giant 在 HiRoom/ETH3D/DTU/7Scenes/ScanNet++ 的 AUC3/AUC30 多数第一；正文称 AUC3 相对所有对手至少 8% 相对提升，ScanNet++ 相对次优约 33% 相对增益 | pose-free camera estimation 是 DA3 强项，尤其复杂室内 ScanNet++ |
 | reconstruction 全面强于 VGGT/Pi3 | Table 3 中 DA3-Giant 在 5 个 pose-free 设置全领先；正文称平均相对 VGGT 提升 25.1%、相对 Pi3 提升 21.5% | depth+ray 输出能直接转成更干净点云（Fig. 5 目视也更完整少飘点） |
 | DA3-Large 性价比高 | 约 0.36B 参数，论文称在 10 个 reconstruction settings 中 5 个超过 1.19B VGGT | 工程上优先试 DA3-LARGE/BASE，而非直接上 Giant |
-| 单目深度超过 DA2/VGGT | Table 4 中 DA3 rank 2.20、DA2 2.60、VGGT 3.75；teacher rank 1.00 | 多视图能力没有牺牲单目 depth，仍继承 Depth Anything 系优势 |
-| NVS backbone 最强 | Table 5 中 DAv3 作 3DGS backbone 在 DL3DV/T&T/MegaDepth 的 PSNR/SSIM/LPIPS 均优于 VGGT backbone | 几何 backbone 质量直接转化为 feed-forward rendering 质量 |
-| depth + ray ablation 强 | Table 6 中明显强于 depth + cam、depth + pcd + cam；正文称 AUC3 相对 depth + cam 接近翻倍 | depth-ray 是核心方法，不是装饰性 head |
+| 单目深度超过 DA2/VGGT | Table 4 中 DA3 rank 2.20、DA2 2.60、VGGT 3.75；teacher rank 1.00（KITTI/NYU/SINTEL/ETH3D/DIODE 平均排名） | 多视图能力没有牺牲单目 depth，仍继承 Depth Anything 系优势 |
+| NVS backbone 最强 | Table 5 中 DAv3 作 3DGS backbone 在 DL3DV（PSNR 21.33 vs VGGT 20.96、SSIM 0.711 vs 0.697、LPIPS 0.241 vs 0.253）/T&T/MegaDepth 均优于 VGGT backbone | 几何 backbone 质量直接转化为 feed-forward rendering 质量 |
+| depth + ray ablation 强 | Table 6 中 depth+ray（HiRoom AUC3 48.7 / F1 60.3）明显强于 depth + pcd + cam（HiRoom AUC3 仅 9.1 / F1 12.8）；正文称 AUC3 相对 depth + cam 接近翻倍 | depth-ray 是核心方法，不是装饰性 head |
 | 单 plain transformer > VGGT-style | Table 7 中 VGGT-style 同参数掉到约 79.8% | 预训练完整性比堆更多未预训练 block 更重要 |
 
 **速度 / 显存 / 参数量**（Table 8，A100）：DA3-Giant 单卡最多约 900–1000 张图、37.6 FPS；DA3-Large 约 1500–1600 张图、78.37 FPS；VGGT reference 约 400–500 张图、34.1 FPS。DA3 在“最大可处理视角数”和吞吐上都优于 VGGT，说明单 plain transformer + 半分辨率 ray 不仅精度好，显存和长序列扩展性也更友好。（表内具体数值来自 WebFetch 抽取，若做正式引用建议复跑或比对 PDF 表格。）
@@ -214,8 +270,8 @@ $$\mathcal{L} = \mathcal{L}_{\text{depth}} + \lambda_r \mathcal{L}_{\text{ray}} 
 ### Unknowns / to verify
 
 - 摘要 pose 平均提升数字在两个官方来源不一致：arXiv 摘要页（/abs）显示 44.3%（geometric 25.1%），HTML/PDF 摘要显示 35.7%（geometric 23.6%）；正文可核对的 reconstruction 平均提升为 25.1%。pose 的“平均”口径待官方勘误或复跑确认，本笔记暂以正文数字为准。
-- 损失函数 (4) 是概念形式：各项存在（depth 带 confidence、ray、point、grad、cam），但各项权重 $\lambda$ 的具体数值论文正文未给全，标为待核验。
-- 公式 (1)(2)(3) 的确切写法已核对 HTML 正文与图注（ $P = t + D(u,v) \cdot d$ 、homography DLT、经典 unproject），但未逐字节比对 PDF LaTeX 源，个别下标 / 归一化约束的精确记法可能与原文略有出入。
+- 损失函数 (5) 已按 HTML 正文核对：五项（depth 带 confidence、ray、point、camera、grad）与总式形态确认，梯度/相机项权重 $\alpha = \beta = 1$ 亦确认；仍待核验的是 depth confidence 项内的 $\lambda_c$ 以及 $\mathcal{L}_M / \mathcal{L}_P / \mathcal{L}_C$ 各自内部的标定权重，正文未逐一列出。
+- 公式 (1)–(5) 的写法已核对 HTML 正文与图注（ray 定义 $r=(t,d)$ 、 $d = R K^{-1} p$ 、world point $P = t + D(u,v) \cdot d$ 、camera-center 均值、homography DLT、总损失），但未逐字节比对 PDF LaTeX 源，个别下标 / 通道切片记法（如 $M(h,w,0{:}3)$ 与 $M(h,w,3{:})$ 的索引约定）可能与原文排版略有出入。
 - DA3-Streaming 是仓库后续发布的长视频推理管线，基于 VGGT-Long 思路；不是论文主训练方法的一部分，需单独做工程验证。
 - HuggingFace 上部分模型卡带 `-1.1` 后缀，README 称修复 training bug 后应优先使用；这些权重对应的论文表格数值是否完全一致，需官方说明或复跑确认。
 - 方法谱系 slug 已校验本仓库实际文件名：VGGT=`2025-vggt`、DUSt3R=`2023-dust3r`、DINOv2 在 `vision-foundation-models/2023-dinov2.md`；Depth Anything 2 仓库暂无独立分析（仅文字提及）。

@@ -7,7 +7,7 @@
 - [LoMa](.././papers/image-matching/2026-loma.md) — 
 - [Pi3](.././papers/3d-reconstruction/2026-pi3.md) — 去掉参考帧偏置，用置换等变架构 + 仿射不变位姿 + 尺度不变局部点图，实现任意视图 feed-forward 几何重建
 - [Reloc-VGGT](.././papers/visual-localization/2026-reloc-vggt.md) — 
-- [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) — 
+- [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) — 把 VGGT 类 feed-forward 视觉几何 Transformer 从静态场景推向可扩展的 foundation model：用 register attention 降低跨帧全局注意力开销，用单 dense head + 多任务损失简化架构，再靠大规模动态视频标注与 teacher-student 自监督把模型和数据都推大一个量级，让 reconstruction token 本身成为可复用的空间表征。
 - [X-Cache](.././papers/efficient-training-inference/2026-x-cache.md) — 
 - [X-Foresight](.././papers/world-models/2026-x-foresight.md) — 
 - [X-World](.././papers/world-models/2026-x-world.md) — 

@@ -23,7 +23,9 @@ metrics: [AUC@3, AUC@30, delta1.25, AbsRel, point-error, GPU-memory, inference-t
 status: compared
 reproduction: planned
 confidence: high
-updated: 2026-05-18
+builds_on: [2025-vggt]
+key_idea: "把 VGGT 类 feed-forward 视觉几何 Transformer 从静态场景推向可扩展的 foundation model：用 register attention 降低跨帧全局注意力开销，用单 dense head + 多任务损失简化架构，再靠大规模动态视频标注与 teacher-student 自监督把模型和数据都推大一个量级，让 reconstruction token 本身成为可复用的空间表征。"
+updated: 2026-07-02
 ---
 
 # VGGT-Ω：Scaling Feed-forward Reconstruction
@@ -47,49 +49,64 @@ updated: 2026-05-18
 
 ### 我的理解
 
-VGGT-Ω 的重点不是“多了一个更复杂的 head”，而是把 VGGT 类模型推成一个可扩展的几何 backbone：
+VGGT-Ω 的重点不是"多了一个更复杂的 head"，而是把 VGGT 类模型推成一个可扩展的几何 backbone：
 
 - **重建能力**：camera + depth 的单次前向仍是核心接口。
 - **动态能力**：不显式输出 motion mask / 4D point map，而是通过动态数据和统计先验学会在动态视频里估 camera/depth。
 - **表征能力**：registers 不再只是辅助 token，而是承载场景级信息，可喂给 VLA 或做语言对齐。
 
-这使它与 MapAnything / HunyuanWorld-Mirror / Pi3X 这类“输入几何先验”的路线不同：VGGT-Ω 更像一个强大的 RGB/video geometry foundation backbone，后续可以通过 fine-tuning 或 adapter 接入 metric scale、任务 token 或下游控制模型。
+这使它与 MapAnything / HunyuanWorld-Mirror / Pi3X 这类"输入几何先验"的路线不同：VGGT-Ω 更像一个强大的 RGB/video geometry foundation backbone，后续可以通过 fine-tuning 或 adapter 接入 metric scale、任务 token 或下游控制模型。
 
-## 2. 方法概览
+## 2. 方法概览：核心想法 + 一句话 pipeline
 
-### 2.1 Register attention
+- **核心想法**：把「reconstruction」本身当作一种 spatial pretraining 目标——不是先设计好一个几何 pipeline 再塞进网络，而是相信「足够大的模型 + 足够大且包含动态内容的数据」能让 camera/depth 回归这个单一前馈任务自己学出对动态、尺度和场景结构的鲁棒性,并把过程中产生的 register token 变成可迁移的空间表征。
+- **一句话 pipeline**：N 帧 RGB → DINOv3 patch token + 每帧 1 个 camera token + 16 个 register token → L 层交替（frame attention / global attention，其中约 25% 替换为 register-only 跨帧 attention）→ camera head 单次出位姿，轻量 depth head（MLP + pixel shuffle）出 dense depth 与 confidence，register token 额外可接 VLA/语言 adapter。
 
-VGGT 使用 frame-wise attention 和 global attention 交替建模单帧和跨帧关系。VGGT-Ω 保留这个范式，但把约 25% 的 global attention layer 改成 register attention：
+### 2.1 架构解析：模块分解 + 数据流 + 关键设计
 
-| 设计 | 作用 | 工程含义 |
-|---|---|---|
-| 每帧 1 个 camera token + 16 个 scene/register tokens | 聚合 camera 与场景级信息 | register tokens 可作为下游空间表征 |
-| register attention | 只让各帧 registers 跨帧互相 attention，再通过 frame attention 回流到 image tokens | 减少跨帧全 token attention 的计算 |
-| 25% global attention 替换 | 论文消融显示 point error 0.071 -> 0.073，基本无损 | 训练 backbone 约省 23% FLOPs / 16% memory |
-| register-only 极限版本 | FLOPs 降到原 global attention 的 6%，但性能退回 VGGT 水平 | 可作为端侧/低算力方向，但不是主模型设置 |
+![架构图（来源：arXiv 2605.15195, VGGT-Ω）](../../assets/3d-reconstruction/2026-vggt-omega/arch.png)
 
-### 2.2 单 dense head + 多任务损失
+- **模块分解**：
+  1. **Tokenizer（DINOv3）**：把每帧图像 patch 化为图像 token；相比 VGGT 用 DINOv2，VGGT-Ω 换成 DINOv3 初始化 backbone。
+  2. **camera token + register token**：每帧追加 1 个 camera token（用于回归该帧位姿）和 16 个 register/scene token（用于聚合场景级、非逐像素的信息）。
+  3. **交替注意力主干**：延续 VGGT 的 frame attention（帧内自注意力）/ global attention（跨帧联合注意力）交替堆叠范式,但把其中约 25% 的 global attention 层替换为 register attention。
+  4. **register attention 层**：只让各帧的 register token 互相跨帧 attention，再通过随后的 frame attention 把聚合到的信息广播回该帧的 image token,从而避免每层都对全部 image token 做昂贵的跨帧全局 attention。
+  5. **camera head**：对 camera token 单次前向直接回归相机参数,不做 VGGT 式的迭代式 refinement。
+  6. **dense depth head**：只保留一个 depth head（不再像 VGGT 那样并行维护 point map head 等多个 dense head）；高分辨率阶段用轻量 MLP + pixel shuffle 上采样代替卷积块,低分辨率阶段仍保留卷积,以避免纯 MLP 在室外远景产生块状 artifacts。
+- **数据流**：图像 → DINOv3 token（+ camera/register token）→ 交替注意力（frame / global / register）× L 层 → camera token 进 camera head 出位姿,image token 进 depth head 出 dense depth + confidence,register token 可选接入下游 adapter。
+- **关键设计选择及理由**：
+  - 用 register attention 部分替代 global attention,是因为消融显示替换 25% 时 point error 几乎无损（0.071 → 0.073）,却能显著降低训练显存和 FLOPs,这是在「一次训练能塞进多大模型/多少帧」这个工程约束下做出的取舍。
+  - 单 dense depth head 而非 VGGT 的多套 dense head,是用训练时的多任务损失去塑造表征,但推理时只保留最省算力的输出接口——训练目标和推理接口被有意解耦。
+  - camera head 去掉迭代 refinement,换取更简单、更快的单次前向,代价是相机精度的进一步提升更多依赖模型规模和数据,而不是架构内的迭代机制。
 
-VGGT 原先直接预测多个 dense heads，例如 depth、point map、track/matching 相关输出。VGGT-Ω 改为：
+### 2.2 核心原理：为什么 work、关键机制与归纳偏置
 
-- 保留一个 dense depth head 和一个 sparse camera head。
-- depth head 的高分辨率卷积块改成轻量 MLP + pixel shuffle，低分辨率卷积保留以避免室外深度块状 artifacts。
-- 训练 loss 仍包含 camera、depth、point、matching 四类监督；point map 由预测 depth + camera unprojection 得到后监督。
-- camera head 单次预测 camera parameters，不做 VGGT 的 iterative refinement。
+- **为什么这样设计 work**：VGGT 已经证明「用一次前馈回归相机+深度+点图+跟踪」可以内化多视图几何约束,VGGT-Ω 的赌注是——这条路径的瓶颈不在架构本身,而在训练能塞进去的模型规模和数据规模,尤其是动态、真实视频数据的覆盖率。因此它把大部分设计精力用在「怎么用更少显存训练更大模型、怎么标注更多动态视频数据」,架构上则做减法（更简单的 head、更省算力的 attention）为规模让路。
+- **register attention 的归纳偏置**：把「跨帧信息融合」拆成两条通道——少量 register token 负责长距离、场景级的跨帧聚合,image token 之间的跨帧交互则大部分退化为通过 register token 间接完成,而不再逐层做全量跨帧 attention。这是一种「信息瓶颈」式的归纳偏置：强迫模型把跨帧一致性压缩进少量 token,代价是牺牲一部分逐 patch 的直接跨帧交互,换来的是可扩展性（帧数、分辨率、模型规模都能往上堆）。
+- **reconstruction as spatial pretraining**：论文的核心机制假设是——如果把 camera/depth 回归当成一个足够困难、足够多样（尤其是动态视频）的自监督式任务来训练,模型内部（尤其是 register token）自然会学出对场景几何和空间关系的通用表征,这个表征可以迁移到 VLA、语言对齐等与几何回归本身无关的下游任务。这与「专门设计一个表征学习目标」不同,是把「重建」本身当预训练目标。
+- **与 VGGT 的本质区别**：VGGT 的设计重心是「架构能否内化多视图几何约束」（交替注意力 + 归一化学进网络）,证明前馈可以替代优化。VGGT-Ω 假设这一点已经成立,重心转移到「能否把这套前馈范式的模型和数据规模再放大一个量级,同时让它对动态场景鲁棒、并产出通用空间表征」,是同一范式下的 scaling 与工程效率问题,而不是新的几何建模问题。
 
-这条线的关键取舍是：**训练时用多任务监督塑造表征，但推理/发布时保持输出和架构简单**。
+### 2.3 关键公式解析
 
-### 2.3 动态重建路线
+> 论文正文对 register attention 和多任务损失以文字与消融表描述为主,未给出逐项加权系数的完整 LaTeX 公式；以下为**形式化表述**（标注「论文未给严格公式」处），用于说明机制,不代表论文原文公式编号。
 
-论文明确认为动态内容很重要，因为互联网视频大多不是纯静态。VGGT-Ω 没有显式输出动态点图、scene flow 或 motion mask，而是：
+**(1) 多任务训练损失（形式化表述,论文未给出逐权重完整公式）**：
 
-- 在标注阶段用 Grounding DINO 检测人、车等可动物体区域，并从 matching/tracking/verification 中排除。
-- 从 synthetic dynamic data 和经过筛选的真实视频中学习动态先验。
-- 训练模型直接预测 camera + depth，让动态场景能力通过数据分布和重建目标涌现。
+$$ \mathcal{L} = \mathcal{L}_{\text{camera}} + \mathcal{L}_{\text{depth}} + \mathcal{L}_{\text{pmap}} + \mathcal{L}_{\text{match}} $$
 
-我的判断：这更像“动态鲁棒的 feed-forward reconstruction”，不是完整 4D scene reconstruction。自动驾驶中的车辆/行人分层、动态 occupancy、object motion 仍需要额外模块。
+- 符号： $\mathcal{L}_{\text{camera}}$ 相机参数损失（监督 camera head 输出）， $\mathcal{L}_{\text{depth}}$ dense depth 损失， $\mathcal{L}_{\text{pmap}}$ 点图损失（由预测 depth 结合预测相机做 unprojection 后监督，而非独立 head 直出）， $\mathcal{L}_{\text{match}}$ 匹配/跟踪相关损失。
+- 作用：四类监督共享同一 backbone,训练阶段用多任务信号塑造表征；消融显示去掉 point/matching 项后 point error 从 0.073 升到 0.078,说明多任务监督对表征质量有实质贡献,但推理时不需要保留对应的 dense head。
 
-### 2.4 数据与自监督训练
+**(2) register attention（形式化表述,论文未给出严格数学定义）**：
+
+$$ R^{(l+1)} = \text{Attn}\big(R^{(l)}_{1:N}\big), \qquad X_i^{(l+1)} = \text{Attn}\big([X_i^{(l)}; R_i^{(l+1)}]\big) $$
+
+- 符号： $R_i^{(l)}$ 第 $l$ 层第 $i$ 帧的 register token 集合（共 16 个）， $R^{(l)}_{1:N}$ 表示把 $N$ 帧的 register token 拼在一起做跨帧 attention， $X_i^{(l)}$ 第 $i$ 帧的 image token。
+- 作用：第一步只让各帧 register token 互相看到彼此（跨帧聚合场景级信息）；第二步再用一次帧内 attention,把刚更新过的 register token 和该帧 image token 放在一起做 self-attention,把聚合到的跨帧信息广播回 image token。相比每层都对全部 image token 做跨帧 global attention,复杂度从 $O(N^2 \cdot K^2)$ （ $K$ 为每帧 image token 数）降到近似 $O(N^2 \cdot r^2 + N \cdot (K+r)^2)$ （ $r=16$ 为 register 数），这正是训练显存降到约 30% 的架构来源之一。
+
+**(3) 尺度与坐标系（沿用 VGGT 做法,论文未改变）**：VGGT-Ω 延续 VGGT「以第一帧为参考系、用点图平均欧氏距离归一化 GT 但不归一化网络输入」的做法,本笔记不重复展开,细节见 [VGGT 笔记 2.3](../3d-reconstruction/2025-vggt.md)。
+
+### 2.4 训练与推理细节
 
 已确认论文事实：
 
@@ -98,11 +115,17 @@ VGGT 原先直接预测多个 dense heads，例如 depth、point map、track/mat
 - 公开 + 内部 supervised 数据合计约 3M sequences；另从约 40M internal Internet-style videos 中筛选，得到约 600K static + 200K dynamic 高质量标注序列。
 - 自监督阶段使用 18M unlabeled videos，teacher/student 从 supervised VGGT-Ω checkpoint 初始化；student 匹配 teacher 的 camera、depth 和多层 token features，teacher 用 EMA 更新。
 - 主训练配置：200M/500M/1B/10B 四种模型；AdamW 240K iterations，其中 160K supervised、50K self-supervised、30K supervised；训练使用 128 张 96GB H100、bf16、gradient checkpointing、FSDP。
+- 动态标注管线：用 Grounding DINO 检测人、车等可动物体区域,并从 matching/tracking/verification 中排除,再结合多种 matcher/tracker、VGGT/COLMAP 初始化与几何过滤构造 pseudo label。
+
+![Scaling 曲线（来源：arXiv 2605.15195, VGGT-Ω）](../../assets/3d-reconstruction/2026-vggt-omega/scaling.png)
+
+- **推理**：单次前馈输出 `pose_enc`、`depth`、`depth_conf`、`camera_and_register_tokens`；README runtime 显示 `VGGT-Omega-1B-512` 在单 A100、约 624×416 输入时,1/10/100/500 frames 峰值显存约 6.02/6.67/13.37/43.15 GB；论文 Fig. 7 显示 80GB A100 上可推理到约 1250 frames（DA3 约 750 frames 即 OOM）,依赖 flash attention v2。
 
 我的判断：
 
-- 这篇论文的“上限”主要来自数据工程和训练规模；公开代码不足以复现论文训练结果。
+- 这篇论文的"上限"主要来自数据工程和训练规模；公开代码不足以复现论文训练结果。
 - 自监督协议不是从零训练可行方案，它仍依赖一个强 supervised checkpoint，论文也承认 self-supervised reconstruction 仍是开放问题。
+- register attention 的显存/FLOPs 收益和「25% 替换比例几乎无损」的消融结果，是这篇论文里少数可以脱离 internal 数据独立验证的架构结论，值得优先在自有硬件上复现验证。
 
 ## 3. 关键贡献
 
@@ -122,7 +145,9 @@ VGGT 原先直接预测多个 dense heads，例如 depth、point map、track/mat
 | 表征应用 | LIBERO VLA benchmark；100 个 curated internet videos 做 language retrieval |
 | 公开代码验证 | GitHub main commit `399d4d6` 公开 model/inference/demo；README 列出 1B-512 与 1B-256 text-alignment gated checkpoints |
 
-### 4.1 论文报告的关键结果
+### 4.1 效果与性能解析
+
+![性能/Benchmark 对比（来源：arXiv 2605.15195, VGGT-Ω）](../../assets/3d-reconstruction/2026-vggt-omega/perf.png)
 
 | 结果 | 论文证据 | 解读 |
 |---|---|---|
@@ -135,14 +160,25 @@ VGGT 原先直接预测多个 dense heads，例如 depth、point map、track/mat
 | 推理长视图能力强 | 论文 Fig. 7：VGGT/VGGT-Ω 在 80GB A100 上可到约 1250 frames；DA3 约 750 frames OOM；VGGT-Ω 速度更快 | 对长视频/多摄窗口比 DA3 更友好，但论文测试依赖 flash attention v2 |
 | Registers 可用于 VLA/语言 | Table 3：OpenVLA-OFT 加冻结 scene tokens 后 LIBERO 平均 SR 98.5；语言检索 VLM embedding top-1 76.8%、top-3 97.0 | reconstruction tokens 可能是通用空间表征，而非只服务 depth/camera |
 
-### 4.2 需要谨慎解读的点
+### 需要谨慎解读的点
 
 - 论文主结果包含 10B 模型，但公开 README 当前只列 1B checkpoint；不能把 10B 论文性能直接当作公开可跑性能。
 - 训练使用大量 internal 数据、internal video pipeline 和 128 H100；公开代码无法端到端复刻。
 - 动态 benchmark 中模型预测的是 camera/depth，不是显式 4D motion；对动态物体的几何一致性仍需单独评估。
 - 论文与 DA3 的效率对比依赖具体实现修正、输入分辨率、patch size、flash attention backend；本地复现要记录硬件和配置。
 
-## 5. 已确认的代码/仓库事实
+## 5. 局限与风险
+
+### 论文明确承认或附录可见
+
+- 强 motion blur 会显著降低表现。
+- FOV 在短时间内剧烈变化、相机高度畸变时重建质量会下降。
+- 训练早期使用过部分 noisy data，办公室多显示器等场景可能不稳定。
+- 出于隐私和授权，部分训练数据中人脸/商标被 mask 或 blur，这些区域偶尔产生 artifacts 或深度不平滑。
+- 自监督 reconstruction 仍未完全解决；成功方案仍依赖 supervised checkpoint。
+- MLP-only dense decoder 虽快且省显存，但会产生可见 patch/block artifacts，尤其室外远距离结构。
+
+### 已确认的代码/仓库事实
 
 - GitHub：<https://github.com/facebookresearch/vggt-omega>
 - 默认分支 main，检查到 HEAD 为 `399d4d62935deb71cedb1e1c35b7a90413a6bee4`。
@@ -153,17 +189,6 @@ VGGT 原先直接预测多个 dense heads，例如 depth、point map、track/mat
 - Hugging Face `facebook/VGGT-Omega` 是 restricted/gated；未认证访问 model card 只返回受限提示。
 - License 文件为 FAIR Noncommercial Research License，明确限制 noncommercial research use。
 - 仓库未发现训练入口、训练配置、评测脚本、数据处理或 annotation pipeline，因此公开仓库主要是 inference/demo/model code。
-
-## 6. 局限与风险
-
-### 论文明确承认或附录可见
-
-- 强 motion blur 会显著降低表现。
-- FOV 在短时间内剧烈变化、相机高度畸变时重建质量会下降。
-- 训练早期使用过部分 noisy data，办公室多显示器等场景可能不稳定。
-- 出于隐私和授权，部分训练数据中人脸/商标被 mask 或 blur，这些区域偶尔产生 artifacts 或深度不平滑。
-- 自监督 reconstruction 仍未完全解决；成功方案仍依赖 supervised checkpoint。
-- MLP-only dense decoder 虽快且省显存，但会产生可见 patch/block artifacts，尤其室外远距离结构。
 
 ### 已确认的工程风险
 
@@ -186,8 +211,16 @@ VGGT 原先直接预测多个 dense heads，例如 depth、point map、track/mat
 - 是否会释放 training/evaluation branch、10B 权重、annotation scripts 或更宽松许可证。
 - text alignment checkpoint 对非英语/复杂操作描述、VLA 任务和长视频检索的泛化。
 - 与 DA3-Streaming、MapAnything memory-efficient attention、Pi3X condition injection 在同一硬件和数据上的真实速度/显存差异。
+- register attention 与多任务 loss 的公式化表述（2.3 节）为本笔记根据论文文字与消融表推导，未逐字节比对官方 LaTeX 源若官方后续公开更严格的公式，需要回来校对。
 
-## 7. 与相似方法对比
+## 方法谱系
+
+- 基于（backbone / 范式延续）：[VGGT](../3d-reconstruction/2025-vggt.md)（延续交替注意力 + 单次前馈回归相机/深度的范式，替换为 DINOv3 初始化、register attention、单 dense depth head，并把训练规模和动态数据覆盖率大幅扩大）。
+- VGGT 本身基于：[DUSt3R](../3d-reconstruction/2023-dust3r.md)（前馈 pointmap 回归、去优化管线的范式起点）。
+
+> 谱系链接为方向内相对路径，若目标文件 slug 与此处不一致以 `indices/methods.md` 为准。
+
+## 6. 与相似方法对比
 
 | Method | 相同点 | 不同点 | 何时选它 |
 |---|---|---|---|
@@ -201,7 +234,7 @@ VGGT 原先直接预测多个 dense heads，例如 depth、point map、track/mat
 
 更详细横向对比见：[`../../comparisons/3d-reconstruction/visual-geometry-foundation-models.md`](../../comparisons/3d-reconstruction/visual-geometry-foundation-models.md)。
 
-## 8. 复现判断
+## 7. 复现判断
 
 - Git 地址：<https://github.com/facebookresearch/vggt-omega>
 - 是否开源：是，公开 inference/demo/model code。
@@ -219,14 +252,16 @@ VGGT 原先直接预测多个 dense heads，例如 depth、point map、track/mat
   5. 若研究表征，把 `camera_and_register_tokens` 接入一个轻量 retrieval/probe 或 VLA adapter，验证 scene tokens 是否带来收益。
 - 是否值得复现：值得做 inference-level 和小 benchmark 复现；不建议把完整训练复现作为近期目标。
 
-## 9. 后续动作
+## 8. 后续动作
 
 - [x] 创建 VGGT-Ω 单篇论文分析
 - [x] 更新 `indices/papers.md`
 - [x] 更新 `indices/directions.md`
 - [x] 更新 `indices/methods.md`
 - [x] 更新 `comparisons/3d-reconstruction/visual-geometry-foundation-models.md`
+- [x] 重组为深度模板结构（架构解析/核心原理/公式解析/训练推理细节拆分 + 嵌入 arch/scaling/perf 三图）
 - [ ] 若后续做复现，创建 `reproductions/3d-reconstruction/vggt-omega/README.md`
+- [ ] 若官方公开更严格的 loss / register attention 公式，回来校对 2.3 节的形式化表述
 
 ## Sources
 
