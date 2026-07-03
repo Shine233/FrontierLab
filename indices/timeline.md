@@ -9,7 +9,7 @@
 - [Reloc-VGGT](.././papers/visual-localization/2026-reloc-vggt.md) — 
 - [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) — 把 VGGT 类 feed-forward 视觉几何 Transformer 从静态场景推向可扩展的 foundation model：用 register attention 降低跨帧全局注意力开销，用单 dense head + 多任务损失简化架构，再靠大规模动态视频标注与 teacher-student 自监督把模型和数据都推大一个量级，让 reconstruction token 本身成为可复用的空间表征。
 - [X-Cache](.././papers/efficient-training-inference/2026-x-cache.md) — 
-- [X-Foresight](.././papers/world-models/2026-x-foresight.md) — 
+- [X-Foresight](.././papers/world-models/2026-x-foresight.md) — 把预测式世界模型嵌入 VLA，用 chunk-wise 自回归同时预测未来视觉与动作，以'预见未来'提升驾驶规划的安全性与长期因果。
 - [X-World](.././papers/world-models/2026-x-world.md) — 
 - [Xiaomi Auto World Model / JointWM](.././papers/world-models/2026-xiaomi-auto-world-model.md) — 
 
