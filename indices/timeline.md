@@ -19,7 +19,7 @@
 
 - [CUT3R](.././papers/3d-reconstruction/2025-cut3r.md) — 用一个带持久状态的循环模型在线处理图像流，每来一帧就更新内部状态并读出度量尺度点图，把前馈 pointmap 重建从离线成对处理推进到流式在线累积。
 - [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) — 用单个预训练 plain transformer + depth-ray 双目标，把任意视角视觉几何压成两张 dense map
-- [DINOv3](.././papers/vision-foundation-models/2025-dinov3.md) — 
+- [DINOv3](.././papers/vision-foundation-models/2025-dinov3.md) — 用 Gram anchoring 约束 patch 相似度矩阵，在把 DINO 自监督扩展到 ViT-7B/1.7B 图像时防止 dense feature 退化
 - [MapAnything](.././papers/3d-reconstruction/2025-mapanything.md) — 一个统一前馈 Transformer 接收任意数量图像及可选先验（内参/位姿/深度/部分重建），用「射线方向 + 逐像素深度 + 相机位姿 + 单一度量尺度因子」的因子化表示，单次前馈直接回归全局一致的度量 3D 几何与相机。
 - [Reloc3r](.././papers/visual-localization/2025-reloc3r.md) — 
 - [RoMa v2](.././papers/image-matching/2025-romav2.md) — 
@@ -47,7 +47,7 @@
 
 ## 2021
 
-- [DINO](.././papers/vision-foundation-models/2021-dino.md) — 
+- [DINO](.././papers/vision-foundation-models/2021-dino.md) — student 学 teacher 的 EMA，无标签自蒸馏让 ViT 的 attention 自发涌现物体语义
 
 方向分布：self-supervised-learning: 1, vision-foundation-models: 1
 
