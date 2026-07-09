@@ -32,7 +32,7 @@ updated: 2026-07-02
 
 - **一句话定位**：MARePo 把 APR（绝对位姿回归）和 SCR（场景坐标回归）缝在一起——query 时是单帧前馈回归位姿，但网络吃的不是原始 RGB，而是场景专属的 scene coordinate map $\hat{H}$ ，因此回归出来的是相对于目标地图坐标系的 metric 6DoF 位姿。
 - **核心机制**：把「场景几何」和「位姿回归器」解耦。每个新场景训练一个 ACE 式的 scene coordinate CNN $\mathcal{G}_S$ （几分钟），而 transformer 位姿回归器 $\mathcal{M}$ 在 Map-Free 上**训练一次、跨场景通用**——它学的是「从场景坐标图到位姿」这个几何映射，而不是死记某个场景。
-- **论文证据**：7-Scenes 上 MARePo 中位误差 3.9cm/1.68° ，scene-specific 微调版 MARePo$_S$ 达 3.2cm/1.54° ；作为 SCR baseline 的 ACE 为 2.8cm/0.93° 。Wayspots 10cm/5° 精度：MARePo 47.2%、MARePo$_S$ 47.9%、ACE 52.2% 。推理约 55.6 fps ，比传统 APR 精度高约 50%。
+- **论文证据**：7-Scenes 上 MARePo 中位误差 3.9cm/1.68° ，scene-specific 微调版 MARePo$\_S$ 达 3.2cm/1.54° ；作为 SCR baseline 的 ACE 为 2.8cm/0.93° 。Wayspots 10cm/5° 精度：MARePo 47.2%、MARePo$\_S$ 47.9%、ACE 52.2% 。推理约 55.6 fps ，比传统 APR 精度高约 50%。
 - **代码状态**：GitHub 开源训练/测试/预处理脚本与预训练模型，但许可证是 Niantic 非商用 license；商业化需单独授权。
 - **工程判断**：能接受为每个新场景准备 ACE head 的话，MARePo 是目前最强的 pose-regression baseline；若目标是「新场景零训练」，应优先比较 Reloc3r、Reloc-VGGT、FastForward 这类 posed-database-only / RPR 方法。
 
@@ -43,7 +43,7 @@ updated: 2026-07-02
 - **问题定义**：视觉重定位有两条主线。APR（PoseNet 系）直接从 RGB 回归位姿，前馈、快、无需 solver，但精度低、需每场景大量训练数据、对新视角泛化差——本质是把整个场景坐标系隐式塞进网络权重。SCR（DSAC*/ACE）预测每像素 3D 场景坐标，再走 RANSAC+PnP 求位姿，精度高但依赖鲁棒估计器。MARePo 想同时保留 APR 的前馈简洁性和 SCR 的几何精度。
 - **输入 / 输出**：输入 query 图像经场景专属坐标回归器 $\mathcal{G}_S$ 得到 dense scene coordinate map $\hat{H}$ ，加相机内参 $K$ ；map-relative 回归器 $\mathcal{M}$ 输出相对于场景坐标系的 6DoF metric 位姿 $\hat{P}$ 。
 - **目标场景**：室内/室外视觉重定位，重点在 7-Scenes 与 Niantic Wayspots，补充 12-Scenes。
-- **训练设定**： $\mathcal{M}$ 在 Map-Free 数据上训练一次；新场景需训练 ACE 式坐标 head $\mathcal{G}_S$ ，可选对 $\mathcal{M}$ 做 1–15 分钟 scene-specific 微调（即 MARePo$_S$ ）。
+- **训练设定**： $\mathcal{M}$ 在 Map-Free 数据上训练一次；新场景需训练 ACE 式坐标 head $\mathcal{G}\_S$ ，可选对 $\mathcal{M}$ 做 1–15 分钟 scene-specific 微调（即 MARePo$\_S$ ）。
 
 ### 我的理解
 
@@ -74,7 +74,7 @@ $\mathcal{M}$ 的数据流（对应上图自上而下）：
 2. **12 层 linear-attention transformer，分 3 组、每组 4 层（4× SA Transformer）**： $d_{model}=256$ ， $h=8$ 头。用线性注意力控制稠密 token 的算力开销。
 3. **Re-Attention 残差（Sec 3.2.2）**：每组 4 层之后，把该组的输入以残差方式加回输出（图中的 ⊕）。这是防止深层 transformer 在稠密几何 token 上信息坍缩的关键设计。
 4. **Regression Head（Sec 3.3）**：3 层 1×1 卷积 + 全局平均池化 + 一个 3 层 MLP，输出 10 维位姿表征——平移用 4 维齐次坐标，旋转用 6 维表征（两条未归一化的轴，经 Gram-Schmidt 正交化成旋转矩阵）。
-5. **训练期辅助 head（图中虚线，only used in training）**：在第 1、2 组之后各挂一个 regression head 输出中间位姿 $\hat{P}_0$、 $\hat{P}_1$ ，只用于训练时的辅助监督；推理只取最后的 $\hat{P}$ 。
+5. **训练期辅助 head（图中虚线，only used in training）**：在第 1、2 组之后各挂一个 regression head 输出中间位姿 $\hat{P}\_0$、 $\hat{P}\_1$ ，只用于训练时的辅助监督；推理只取最后的 $\hat{P}$ 。
 
 **关键设计选择及理由**：
 
@@ -84,7 +84,7 @@ $\mathcal{M}$ 的数据流（对应上图自上而下）：
 
 ### 2.2 核心原理
 
-**为什么这样设计 work**：传统 APR 形式化为 $\hat{P}=\mathcal{F}(I)$ ，网络 $\mathcal{F}$ 必须同时承担「视觉理解」和「记住这个场景的坐标系」两件事，后者高度 scene-specific，导致换场景就要重训、且数据少时严重过拟合。MARePo 把它改写为 $\hat{P}=\mathcal{M}(\mathcal{G}_S(I),K)$ ：场景记忆全部压进 $\mathcal{G}_S$ 的权重（一个廉价的小 CNN），而 $\mathcal{M}$ 面对的输入已经是「站在场景坐标系里的 3D 点云」，它要解的只是一个纯几何配准问题（点云 + 内参 → 相机外参）。几何问题与具体场景无关，所以 $\mathcal{M}$ 一次训练即可通用泛化。
+**为什么这样设计 work**：传统 APR 形式化为 $\hat{P}=\mathcal{F}(I)$ ，网络 $\mathcal{F}$ 必须同时承担「视觉理解」和「记住这个场景的坐标系」两件事，后者高度 scene-specific，导致换场景就要重训、且数据少时严重过拟合。MARePo 把它改写为 $\hat{P}=\mathcal{M}(\mathcal{G}\_S(I),K)$ ：场景记忆全部压进 $\mathcal{G}\_S$ 的权重（一个廉价的小 CNN），而 $\mathcal{M}$ 面对的输入已经是「站在场景坐标系里的 3D 点云」，它要解的只是一个纯几何配准问题（点云 + 内参 → 相机外参）。几何问题与具体场景无关，所以 $\mathcal{M}$ 一次训练即可通用泛化。
 
 **关键机制/归纳偏置**：
 
@@ -110,7 +110,7 @@ $$ \hat{P}=\mathcal{F}(I) \qquad\text{vs.}\qquad \hat{P}=\mathcal{M}(\hat{H},K)=
 
 $$ X_{\text{ray}}(u)=\lambda\,\frac{u-c_x-\varepsilon}{f_x}, \qquad Y_{\text{ray}}(v)=\lambda\,\frac{v-c_y-\varepsilon}{f_y} $$
 
-- 符号： $(u,v)$ 为像素坐标； $f_{x},f_{y}$ 为焦距、 $c_{x},c_{y}$ 为主点（均来自 $K$ ）； $\varepsilon=0.5$ 为下采样引入的偏移修正； $\lambda=400$ 为缩放常数。
+- 符号： $(u,v)$ 为像素坐标； $f\_{x},f\_{y}$ 为焦距、 $c\_{x},c\_{y}$ 为主点（均来自 $K$ ）； $\varepsilon=0.5$ 为下采样引入的偏移修正； $\lambda=400$ 为缩放常数。
 - 作用：把像素通过内参反投影成归一化相机射线方向，作为 2D 位置编码的输入。因为编码里显式含 $f,c$ ，同一个 $\mathcal{M}$ 才能处理不同内参的相机——这是 scene/camera-agnostic 的关键。射线坐标再经正弦编码（频率 $\omega_k=\frac{1}{10000^{2k/d}}$ ）升维。
 
 **公式 (3)：3D 位置编码与融合**
@@ -124,7 +124,7 @@ $$ \mathcal{PE}_{3D}(p)=\operatorname{Conv}_{3(2m+1)}^{d}\big[\,p,\ \ldots,\ \si
 
 $$ \mathcal{L}_{\hat{P}}=\lVert \hat{R}-R\rVert_1+\lVert \hat{\mathbf{t}}-\mathbf{t}\rVert_1, \qquad \mathcal{L}=\mathcal{L}_{\hat{P}_0}+\mathcal{L}_{\hat{P}_1}+\mathcal{L}_{\hat{P}} $$
 
-- 符号： $\hat{R},R$ 为预测/真值旋转（矩阵形式）， $\hat{\mathbf{t}},\mathbf{t}$ 为预测/真值平移； $\lVert\cdot\rVert_1$ 为 L1 范数； $\mathcal{L}_{\hat{P}_0},\mathcal{L}_{\hat{P}_1}$ 是第 1、2 组 transformer 后辅助 head 的同型损失。
+- 符号： $\hat{R},R$ 为预测/真值旋转（矩阵形式）， $\hat{\mathbf{t}},\mathbf{t}$ 为预测/真值平移； $\lVert\cdot\rVert\_1$ 为 L1 范数； $\mathcal{L}\_{\hat{P}\_0},\mathcal{L}\_{\hat{P}\_1}$ 是第 1、2 组 transformer 后辅助 head 的同型损失。
 - 作用：主损失直接在位姿空间用 L1 监督旋转和平移（L1 比 L2 对离群更稳）。总损失把两个中间位姿的辅助损失加进来，做深监督——缓解 12 层 transformer 的梯度传播、稳定训练；这两个辅助 head 推理时丢弃。
 
 ### 2.4 训练与推理细节
@@ -149,15 +149,15 @@ $$ \mathcal{L}_{\hat{P}}=\lVert \hat{R}-R\rVert_1+\lVert \hat{\mathbf{t}}-\mathb
 | 数据集 | Map-Free training set（约 450 场景/500K 帧）、7-Scenes、Niantic Wayspots、12-Scenes（补充） |
 | Baseline | DSAC*、ACE（SCR）；PoseNet、MapNet、Direct-PN、MS-Transformer、DFNet、LENS（APR/APR-like） |
 | 指标 | 中位平移/旋转误差；10cm/5°、0.5m/5° 阈值精度；mapping time；throughput（fps） |
-| 主要结果 | 7-Scenes：MARePo 3.9cm/1.68°、MARePo$_S$ 3.2cm/1.54°、ACE 2.8cm/0.93°、PoseNet 44cm/10.4°。Wayspots 10cm/5° 精度：MARePo 47.2%、MARePo$_S$ 47.9%、ACE 52.2%。推理约 55.6 fps |
-| 训练成本 | $\mathcal{M}$：约 8×V100、约 10 天；每新场景 $\mathcal{G}_S$ 约 5 分钟；MARePo$_S$ 微调约 1–15 分钟 |
+| 主要结果 | 7-Scenes：MARePo 3.9cm/1.68°、MARePo$\_S$ 3.2cm/1.54°、ACE 2.8cm/0.93°、PoseNet 44cm/10.4°。Wayspots 10cm/5° 精度：MARePo 47.2%、MARePo$\_S$ 47.9%、ACE 52.2%。推理约 55.6 fps |
+| 训练成本 | $\mathcal{M}$：约 8×V100、约 10 天；每新场景 $\mathcal{G}\_S$ 约 5 分钟；MARePo$\_S$ 微调约 1–15 分钟 |
 | 消融 | Re-Attention、Dynamic PE、model dimension、训练策略、辅助损失、坐标 backbone、坐标噪声鲁棒性 |
 | 失败案例 | 强依赖场景坐标图质量；新场景需训练坐标 head；非 zero-shot / 非 posed-database-only 方法 |
 
 ### 4.1 效果与性能解析
 
 - **主要结果解读（非搬数字）**：在 APR 阵营里 MARePo 是碾压性的——7-Scenes 上把中位误差从 PoseNet 的 44cm/10.4° 压到 3.9cm/1.68°，约一个数量级，这直接印证了「显式场景坐标图提供的 metric 几何先验」远胜「隐式权重记忆」。但要客观：对 SCR 阵营的 ACE（2.8cm/0.93°，Wayspots 52.2%），MARePo 仍略逊。MARePo 的价值不在于精度压倒 SCR，而在于**用纯前馈回归拿到接近 SCR 的精度**——它抹掉了 APR 与几何法之间的大半差距，同时保留 APR 的简洁与速度。
-- **性能与效率**：推理约 55.6 fps（Wayspots），无 RANSAC/PnP、无迭代，单 GPU 可跑；新场景准备成本极低（ $\mathcal{G}_S$ 约 5 分钟，MARePo$_S$ 微调 1–15 分钟），对照传统 APR 动辄数小时/数天的每场景训练是巨大改善。代价在训练侧： $\mathcal{M}$ 需 8×V100 约 10 天、Map-Free 增广数据可能占用 TB 级存储。
+- **性能与效率**：推理约 55.6 fps（Wayspots），无 RANSAC/PnP、无迭代，单 GPU 可跑；新场景准备成本极低（ $\mathcal{G}\_S$ 约 5 分钟，MARePo$\_S$ 微调 1–15 分钟），对照传统 APR 动辄数小时/数天的每场景训练是巨大改善。代价在训练侧： $\mathcal{M}$ 需 8×V100 约 10 天、Map-Free 增广数据可能占用 TB 级存储。
 - **消融揭示的关键因素**：两个组件是命门——完整架构在 Wayspots 10cm/5° 约 39.6% ；去掉 Re-Attention 明显下滑，去掉 Dynamic PE 进一步跌到约 18.6% ，说明二者对稠密几何 token 的稳定编码/信息流至关重要（各消融行的具体绝对数值以论文 Table 3 为准，此处仅取量级，标为待核验）。坐标噪声消融显示：即便高比例场景坐标带 ±10cm 级噪声，位姿精度仅轻微退化——证明 $\mathcal{M}$ 学到了全局几何配准的鲁棒性，功能上替代了 solver 的 outlier rejection。
 - **可比性与协议一致性**：与 ACE 比较时协议基本一致（同数据集、同阈值），但要注意 MARePo 的「mapping time」只算 $\mathcal{G}_S$/微调，其通用回归器 $\mathcal{M}$ 的 10 天训练是一次性摊销、不计入每场景成本；而与 Reloc3r/Reloc-VGGT 这类 posed-database-only 方法比较时**并不同类**——MARePo 需要每场景坐标 head，不是零准备，横向对比时不应混为一档。
 

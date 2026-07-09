@@ -86,15 +86,15 @@ updated: 2026-07-02
 
 $$ r^{(n)}_{t,b} = f_b\left(x^{(n)}_{t,b-1};\, c^{(n)}_{t}\right) = x^{(n)}_{t,b} - x^{(n)}_{t,b-1} $$
 
-- 符号： $n$ 是 generation chunk 索引， $t$ 是 denoising step， $b$ 是 DiT block 索引； $f_b$ 是第 $b$ 个残差 block； $c^{(n)}_{t}$ 是该位置的条件（含 action）； $x^{(n)}_{t,b-1}$ 是 block 输入， $x^{(n)}_{t,b}$ 是 block 输出。
+- 符号： $n$ 是 generation chunk 索引， $t$ 是 denoising step， $b$ 是 DiT block 索引； $f\_b$ 是第 $b$ 个残差 block； $c^{(n)}\_{t}$ 是该位置的条件（含 action）； $x^{(n)}\_{t,b-1}$ 是 block 输入， $x^{(n)}\_{t,b}$ 是 block 输出。
 - 作用：明确 X-Cache 缓存的对象是 **block 残差** $r_{t,b}$ （输出减输入），而不是整个激活。残差比绝对激活更平稳、更适合跨 chunk 复用。
 
 **公式 (2) —— 缓存残差复用**：
 
 $$ \tilde{x}^{(n+1)}_{t,b} = x^{(n+1)}_{t,b-1} + \hat{r}_{t,b} $$
 
-- 符号： $\hat{r}_{t,b}$ 是上一个 full-compute chunk 在 $(t,b)$ 存下的残差； $x^{(n+1)}_{t,b-1}$ 是当前 chunk 该 block 的**实际输入**； $\tilde{x}^{(n+1)}_{t,b}$ 是近似输出。
-- 作用：跳过时不重算 $f_b$，直接把缓存残差加到当前真实输入上。注意输入 $x^{(n+1)}_{t,b-1}$ 用的是当前 chunk 的真实值，只有"输入到输出的变换量"被近似复用。
+- 符号： $\hat{r}\_{t,b}$ 是上一个 full-compute chunk 在 $(t,b)$ 存下的残差； $x^{(n+1)}\_{t,b-1}$ 是当前 chunk 该 block 的**实际输入**； $\tilde{x}^{(n+1)}\_{t,b}$ 是近似输出。
+- 作用：跳过时不重算 $f\_b$，直接把缓存残差加到当前真实输入上。注意输入 $x^{(n+1)}\_{t,b-1}$ 用的是当前 chunk 的真实值，只有"输入到输出的变换量"被近似复用。
 
 **公式 (3) —— 双指标 gating**：
 
@@ -102,14 +102,14 @@ $$ s_{\cos} = \frac{\phi\left(x^{(n)}_{t,b-1}\right) \cdot \phi\left(x^{(n-1)}_{
 
 $$ \text{skip}(t,b) = \left(s_{\cos} \ge \tau_{\cos}(t,b)\right) \,\wedge\, \left(d_{\max} < \tau_{\text{dev}}\right) $$
 
-- 符号： $\phi(\cdot)$ 是指纹函数； $s_{\cos}$ 是当前 chunk 与上一 chunk 指纹的余弦相似度（跨 fingerprint 条目取最小，最保守）； $d_{\max}$ 是最大 token 偏差归一化值（跨 view group 取最大，捕捉局部突变）； $\tau_{\cos}(t,b)$ 是逐位置自适应阈值， $\tau_{\text{dev}}$ 是偏差阈值； $\varepsilon$ 防除零。
+- 符号： $\phi(\cdot)$ 是指纹函数； $s\_{\cos}$ 是当前 chunk 与上一 chunk 指纹的余弦相似度（跨 fingerprint 条目取最小，最保守）； $d\_{\max}$ 是最大 token 偏差归一化值（跨 view group 取最大，捕捉局部突变）； $\tau\_{\cos}(t,b)$ 是逐位置自适应阈值， $\tau\_{\text{dev}}$ 是偏差阈值； $\varepsilon$ 防除零。
 - 作用：cosine 捕全局方向一致性（平均化，易漏局部突变），max deviation 补局部异常检测。两者是"且"关系——必须同时满足才跳过，用双保险降低误跳风险。
 
 **公式 (4) —— 自适应阈值（EMA）**：
 
 $$ \bar{s}_{t,b} \leftarrow \alpha\, s_{\cos}^{(n)} + (1-\alpha)\,\bar{s}_{t,b},\qquad \tau_{\cos}(t,b) = \max\left(\tau_{\text{floor}},\; \bar{s}_{t,b} - m\right) $$
 
-- 符号： $\bar{s}_{t,b}$ 是该位置历史相似度的 EMA， $\alpha$ 是 EMA 系数（论文取 0.30）， $m$ 是相对历史的容忍 margin（0.02）， $\tau_{\text{floor}}$ 是阈值下限（0.97，保底安全）。
+- 符号： $\bar{s}\_{t,b}$ 是该位置历史相似度的 EMA， $\alpha$ 是 EMA 系数（论文取 0.30）， $m$ 是相对历史的容忍 margin（0.02）， $\tau\_{\text{floor}}$ 是阈值下限（0.97，保底安全）。
 - 作用：让每个 $(t,b)$ 用自己的历史相似度动态设阈值——本来就高度相似的位置阈值随之升高（更严格），从而在场景切换时快速收紧、避免过度复用； $\tau_{\text{floor}}$ 保证阈值不会被历史拉到过低而危险。
 
 ### 2.4 训练与推理细节
@@ -119,7 +119,7 @@ $$ \bar{s}_{t,b} \leftarrow \alpha\, s_{\cos}^{(n)} + (1-\alpha)\,\bar{s}_{t,b},
 - **安全 / 保护机制**（对应架构图红格与 forced-compute checks）：
   - **Warmup chunks**：开头没缓存，全部 full compute（ $W=1$ ）。
   - **KV-update chunk protection**：写入 rolling KV 的 clean pass 强制 full compute（最关键，见 4）。
-  - **Anchor blocks**：默认 front block（ $F_n=1$ ）永远全算，保证后续残差基础稳定；tail block 默认 $B_n=0$。
+  - **Anchor blocks**：默认 front block（ $F\_n=1$ ）永远全算，保证后续残差基础稳定；tail block 默认 $B\_n=0$。
   - **Step-0 protection**：默认关闭，可选开启作为分布外场景安全边际。
   - **Maximum staleness**：限制同一 $(t,b)$ 连续跳过次数 $M$，超过强制刷新。
 - **推理流程**：warmup → 每 chunk 内对每 $(t,b)$ 先 forced-compute check，再 fingerprint + 双指标 gating，决定 skip（复用残差 + KV copy-forward）或 compute（全算 + 刷新缓存 + 写 KV）→ 输出 clean latent → VAE 解码。

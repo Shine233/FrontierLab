@@ -31,7 +31,7 @@ updated: 2026-07-02
 
 ## 结论先行
 - MapAnything 把多种 3D 视觉任务（无标定 SfM、标定 MVS、单目深度、相机定位、深度补全）统一进「一个可 prompt 的前馈模型、一次前馈」框架：输入是 1~N 张图像 + 任意可选先验（内参/位姿/深度/部分重建），输出直接是度量尺度的全局一致 3D 几何与相机（证据：arXiv 2509.13414 摘要）。
-- 关键在「因子化表示」——把场景拆成逐视图射线方向 $R_i$ + up-to-scale 深度 $\tilde{D}_i$ + 相机位姿 $\tilde{P}_i$ + 单一全局度量尺度因子 $m$ ，先在各视图局部构造点图、再刚性拼装到全局坐标系、最后乘 $m$ 得度量结果；这套解耦让同一模型既能吃图像、又能吃几何先验，先验越多精度单调越高（证据：2-view 无先验 inlier 57.5%，注入内参+位姿+深度后 abs-rel 降到 0.01、inlier 升到 82.0%，arXiv v3 HTML Table 2）。
+- 关键在「因子化表示」——把场景拆成逐视图射线方向 $R\_i$ + up-to-scale 深度 $\tilde{D}\_i$ + 相机位姿 $\tilde{P}\_i$ + 单一全局度量尺度因子 $m$ ，先在各视图局部构造点图、再刚性拼装到全局坐标系、最后乘 $m$ 得度量结果；这套解耦让同一模型既能吃图像、又能吃几何先验，先验越多精度单调越高（证据：2-view 无先验 inlier 57.5%，注入内参+位姿+深度后 abs-rel 降到 0.01、inlier 升到 82.0%，arXiv v3 HTML Table 2）。
 - 它在多项基准上追平或超过专用前馈模型：2-view images-only inlier ratio 57.5% 高于 DUSt3R 43.9% / MASt3R 30.2% / VGGT 43.2%；单视图标定平均角误差 1.06° 优于 VGGT 4.00°、MoGe-2 1.95°、AnyCalib 2.01°（证据：arXiv v3 HTML 对比表）。作者定位为「追平或超过 specialist 模型，同时联合训练更高效」。
 - 工程可用性高且明确面向落地：代码 Apache 2.0；权重双许可（CC-BY-NC 研究版含论文全部 13 数据集 / Apache 2.0 商用版仅用可商用数据集子集训练），训练代码、13 数据集处理管线均开源，权重上 HuggingFace。商用可直接用 Apache 版权重（这是它相较 VGGT 权重需申请的落地优势）。
 - 对自动驾驶友好点在于「metric + promptable」：可注入车载已知内参/位姿/稀疏深度做深度补全与度量重建，且 memory-efficient 模式下宣称单卡 140GB 可处理约 2000 视图（证据：README；推断：车队多相机/长序列场景契合）。
@@ -58,7 +58,7 @@ updated: 2026-07-02
    - 一个额外的全局 **Scale Token**，专门承载「整场景该放大多少倍到米制」这一自由度；再叠一个 Reference View Embedding 标记参考帧（第 1 帧定义世界系）。
 2. **Multi-View Transformer**：交替注意力（alternating attention，逐帧内自注意 ↔ 跨帧全局注意交替）跨视图融合，是「全局一致性」的来源。
 3. **三个输出头**：
-   - 单一 **DPT Head**（dense 预测头）对每视图回归：射线方向 $R_i$、up-to-scale 射线深度 $\tilde{D}_i$、有效区域 mask $M_i$、逐像素置信度 $C_i$。
+   - 单一 **DPT Head**（dense 预测头）对每视图回归：射线方向 $R\_i$、up-to-scale 射线深度 $\tilde{D}\_i$、有效区域 mask $M\_i$、逐像素置信度 $C\_i$。
    - **Pose Head**（平均池化 + 卷积）回归各帧在第 1 帧坐标系下的位姿（四元数旋转 + 平移）。
    - **MLP** 从 Scale Token 回归单个全局度量尺度因子 $m$ 。
 
@@ -82,12 +82,12 @@ updated: 2026-07-02
 
 $$ \tilde{L}_i = R_i \cdot \tilde{D}_i \in \mathbb{R}^{3 \times H \times W} $$
 
-- 符号： $R_i$ 逐像素单位射线方向（局部相机标定）， $\tilde{D}_i$ 逐像素 up-to-scale 射线深度， $\tilde{L}_i$ 第 $i$ 视图相机系下的 up-to-scale 局部点图。
+- 符号： $R\_i$ 逐像素单位射线方向（局部相机标定）， $\tilde{D}\_i$ 逐像素 up-to-scale 射线深度， $\tilde{L}\_i$ 第 $i$ 视图相机系下的 up-to-scale 局部点图。
 - 作用：把「标定」与「深度」两个解耦输出相乘还原局部 3D 点。因内参被表示成射线，无需显式焦距/主点即可反投影。
 
 $$ \tilde{X}_i = O_i \cdot \tilde{L}_i + \tilde{T}_i $$
 
-- 符号： $O_i$ 由预测四元数 $Q_i$ 转成的旋转矩阵， $\tilde{T}_i$ up-to-scale 平移（均在第 1 帧世界系下）， $\tilde{X}_i$ 世界系下 up-to-scale 点图。
+- 符号： $O\_i$ 由预测四元数 $Q\_i$ 转成的旋转矩阵， $\tilde{T}\_i$ up-to-scale 平移（均在第 1 帧世界系下）， $\tilde{X}\_i$ 世界系下 up-to-scale 点图。
 - 作用：用 Pose Head 的外参把各视图局部点图刚性搬到统一世界系，实现「全局一致」。
 
 $$ X_i^{\text{metric}} = m \cdot \tilde{X}_i $$
@@ -106,7 +106,7 @@ $$ f_{\log}: \mathbf{x} \mapsto \frac{\mathbf{x}}{\lVert \mathbf{x} \rVert} \cdo
 
 $$ L_{\text{pointmap}} = \sum_i \left( C_i \, \big\lVert f_{\log}(\hat{X}_i / \hat{z}) - f_{\log}(\tilde{X}_i / \tilde{z}) \big\rVert - \alpha \log C_i \right) $$
 
-- 符号： $C_i$ 逐像素预测置信度， $\hat{X}_i$ 为 GT、 $\tilde{X}_i$ 为预测点图， $\hat{z}$ / $\tilde{z}$ 是用有效掩码 $V_i$ 统计的归一化尺度（GT/预测各自的平均模长）， $\alpha$ 置信正则权重。
+- 符号： $C\_i$ 逐像素预测置信度， $\hat{X}\_i$ 为 GT、 $\tilde{X}\_i$ 为预测点图， $\hat{z}$ / $\tilde{z}$ 是用有效掩码 $V\_i$ 统计的归一化尺度（GT/预测各自的平均模长）， $\alpha$ 置信正则权重。
 - 作用：先按 $\hat{z}$ / $\tilde{z}$ 归一去掉度量歧义，再让模型对不确定像素（遮挡/天空）主动降权， $-\alpha\log C_i$ 阻止置信塌缩到零。
 
 ### 2.4 训练与推理细节

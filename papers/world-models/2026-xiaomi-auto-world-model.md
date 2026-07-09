@@ -104,28 +104,28 @@ WorldRec 的 query → Gaussian 前向：
 
 $$ \boldsymbol{u}_{c,l} = \pi_c(\boldsymbol{p}), \qquad \boldsymbol{f}_{c,l} = \mathrm{BilinearInterp}\!\left(\mathbf{F}_{c,l}^{t},\, \boldsymbol{u}_{c,l}\right) $$
 
-- 符号： $\boldsymbol{p}=[X,Y,Z]^\top$ 是 query 的世界坐标； $\pi_c$ 是第 $c$ 台相机的投影函数； $\boldsymbol{u}_{c,l}$ 是投到该相机第 $l$ 尺度特征图上的像素坐标； $\mathbf{F}_{c,l}^{t}$ 是 $t$ 时刻该相机该尺度的特征图； $\boldsymbol{f}_{c,l}$ 是采样得到的特征。
+- 符号： $\boldsymbol{p}=[X,Y,Z]^\top$ 是 query 的世界坐标； $\pi\_c$ 是第 $c$ 台相机的投影函数； $\boldsymbol{u}\_{c,l}$ 是投到该相机第 $l$ 尺度特征图上的像素坐标； $\mathbf{F}\_{c,l}^{t}$ 是 $t$ 时刻该相机该尺度的特征图； $\boldsymbol{f}\_{c,l}$ 是采样得到的特征。
 - 作用：把一个 3D 点「看进」所有相机的多尺度特征，为聚合准备多视角证据。
 
 visibility-aware 跨视角/跨时间聚合：
 
 $$ \boldsymbol{q}_i = \sum_{c,l} w_{c,l}\, \boldsymbol{f}_i^{\,c,l} $$
 
-- 符号： $\boldsymbol{q}_i$ 是第 $i$ 个 query 聚合后的特征； $w_{c,l}$ 是由可见性与特征质量决定的权重（遮挡/低质视角权重小）。
+- 符号： $\boldsymbol{q}\_i$ 是第 $i$ 个 query 聚合后的特征； $w\_{c,l}$ 是由可见性与特征质量决定的权重（遮挡/低质视角权重小）。
 - 作用：把同一 3D 点的多源观测融成一个稳健表征，是「跨视角一致性由构造保证」的核心一步。
 
 Gaussian 属性解码：
 
 $$ (\Delta\boldsymbol{p}_i,\, \boldsymbol{c}_i,\, \alpha_i,\, \boldsymbol{s}_i,\, \boldsymbol{r}_i) = \mathrm{MLP}(\boldsymbol{q}_i), \qquad \hat{\boldsymbol{p}}_i = \boldsymbol{p}_i + \Delta\boldsymbol{p}_i $$
 
-- 符号： $\Delta\boldsymbol{p}_i$ 位置偏移， $\boldsymbol{c}_i$ RGB， $\alpha_i$ opacity， $\boldsymbol{s}_i$ scale， $\boldsymbol{r}_i$ rotation 四元数； $\hat{\boldsymbol{p}}_i$ 是修正后的 Gaussian 中心。
+- 符号： $\Delta\boldsymbol{p}\_i$ 位置偏移， $\boldsymbol{c}\_i$ RGB， $\alpha\_i$ opacity， $\boldsymbol{s}\_i$ scale， $\boldsymbol{r}\_i$ rotation 四元数； $\hat{\boldsymbol{p}}\_i$ 是修正后的 Gaussian 中心。
 - 作用：query 只给「粗位置」，MLP 在其邻域微调出完整 Gaussian，属性可微、可 rasterize。
 
 WorldGen 双向阶段用 rectified flow（linear interpolation + 匹配速度场）：
 
 $$ x_t = (1-t)\,z + t\,x_0, \qquad \mathcal{L}_{rf} = \mathbb{E}_{t,x_0,z}\big[\lVert v_\theta(x_t,t,c) - (x_0 - z)\rVert_2^2\big] $$
 
-- 符号： $x_0$ 干净样本， $z\sim\mathcal{N}(0,I)$ 噪声， $t\sim U(0,1)$ ， $x_t$ 插值点； $v_\theta(\cdot)$ 网络预测的速度场，回归目标是真实速度 $x_0 - z$ ； $c$ 是条件。
+- 符号： $x\_0$ 干净样本， $z\sim\mathcal{N}(0,I)$ 噪声， $t\sim U(0,1)$ ， $x\_t$ 插值点； $v\_\theta(\cdot)$ 网络预测的速度场，回归目标是真实速度 $x\_0 - z$ ； $c$ 是条件。
 - 作用：flow-matching 目标，让 DiT 学会从噪声沿直线流回数据，是「画得好」的分布学习基础。
 
 因果微调三步的目标（Teacher Forcing / ODE 蒸馏 / DMD）：
@@ -136,7 +136,7 @@ $$ \mathcal{L}_{ODE} = \mathbb{E}_{x_T}\big[\lVert f_\phi(x_T, K{=}4) - \mathrm{
 
 $$ \mathcal{L}_{DMD} = \mathbb{E}_{t,\epsilon}\big[\lVert \epsilon_\phi(x_t^{(i)}, t, c, \hat{x}^{(<i)}) - \epsilon\rVert_2^2\big] + \lambda\, D_{KL}\!\left(p_\phi \,\Vert\, p_{data}\right) $$
 
-- 符号： $x_t^{(i)}$ 是第 $i$ 帧的 noisy latent， $x_{GT}^{(<i)}$ 为 GT 历史帧（TF），因果 mask $M_{ij}=0\ (j\le i),\ -\infty\ (j>i)$ 保证只看过去； $f_\phi(\cdot,K{=}4)$ 是学生 4 步求解器，回归教师 50 步 ODE 结果 $\hat{x}_0^{\,teacher}$ （ $\mathrm{sg}$ 为 stop-gradient）；DMD 中 $\hat{x}^{(<i)}=G_\phi(\epsilon,c)$ 是模型**自生成**的历史帧， $D_{KL}(p_\phi\Vert p_{data})$ 拉近生成分布与数据分布。
+- 符号： $x\_t^{(i)}$ 是第 $i$ 帧的 noisy latent， $x\_{GT}^{(<i)}$ 为 GT 历史帧（TF），因果 mask $M\_{ij}=0\ (j\le i),\ -\infty\ (j>i)$ 保证只看过去； $f\_\phi(\cdot,K{=}4)$ 是学生 4 步求解器，回归教师 50 步 ODE 结果 $\hat{x}\_0^{\,teacher}$ （ $\mathrm{sg}$ 为 stop-gradient）；DMD 中 $\hat{x}^{(<i)}=G\_\phi(\epsilon,c)$ 是模型**自生成**的历史帧， $D\_{KL}(p\_\phi\Vert p\_{data})$ 拉近生成分布与数据分布。
 - 作用：分别解决在线因果性、采样速度（50→4 步、约 12x）、以及自回归 exposure bias 导致的长时序漂移。
 
 ### 2.4 训练与推理细节

@@ -43,7 +43,7 @@ updated: 2026-07-02
 ## 1. 这篇论文解决什么问题？
 
 - **问题定义**：从连续视频流中在线恢复 3D 信息（相机位姿、深度图、点云），同时满足三个常常互相冲突的目标——几何准确性、时间一致性、计算效率。
-- **输入 / 输出**：输入为按时间到达的单目 RGB 帧序列 $\{I_1, I_2, \dots, I_t\}$ ；输出为每帧的 camera-to-world pose $P_t$ 、depth map $D_t$ ，并可反投影汇聚为全局 point cloud。
+- **输入 / 输出**：输入为按时间到达的单目 RGB 帧序列 $\{I\_1, I\_2, \dots, I\_t\}$ ；输出为每帧的 camera-to-world pose $P\_t$ 、depth map $D\_t$ ，并可反投影汇聚为全局 point cloud。
 - **约束**：推理是严格 causal / streaming 的，处理第 $t$ 帧时不能访问未来帧；长序列下显存与计算不能随帧数线性甚至平方爆炸。
 - **目标场景**：室内外长视频、机器人 / 自动驾驶在线建图、AR、embodied AI 的持续空间理解。
 - **与离线 feed-forward 3D 的差异**：VGGT、DA3、MapAnything、Pi3 等可在完整图像集合上做全局双向注意力，但这天然不满足严格 streaming——每来一帧都要重算全局注意力，代价随帧数平方增长。LingBot-Map 把核心难点显式定位在**流式上下文选择与状态压缩**：哪些历史信息必须保留完整 token，哪些可以压成少量摘要 token。
@@ -103,28 +103,28 @@ updated: 2026-07-02
 
 $$ \mathcal{L} = \lambda_{\text{depth}} \, \mathcal{L}_{\text{depth}} + \lambda_{\text{abs}} \, \mathcal{L}_{\text{abs-pose}} + \lambda_{\text{rel}} \, \mathcal{L}_{\text{rel-pose}} $$
 
-- 符号： $\mathcal{L}_{\text{depth}}$ 为深度回归损失（沿用 VGGT 的置信度加权 + 梯度匹配）； $\mathcal{L}_{\text{abs-pose}}$ 为绝对位姿损失； $\mathcal{L}_{\text{rel-pose}}$ 为窗口内相对位姿损失； $\lambda_\ast$ 为权重（论文未在可见文本给出具体数值，待核验）。
+- 符号： $\mathcal{L}\_{\text{depth}}$ 为深度回归损失（沿用 VGGT 的置信度加权 + 梯度匹配）； $\mathcal{L}\_{\text{abs-pose}}$ 为绝对位姿损失； $\mathcal{L}\_{\text{rel-pose}}$ 为窗口内相对位姿损失； $\lambda\_\ast$ 为权重（论文未在可见文本给出具体数值，待核验）。
 - 作用：三项分别约束稠密几何、全局定位、局部轨迹一致性，缺一不可——只有绝对位姿会累积漂移，只有相对位姿会丢全局尺度。
 
 **公式 (2)：深度损失（confidence + 梯度匹配）**
 
 $$ \mathcal{L}_{\text{depth}} = \sum_{i=1}^{N} \big\lVert \Sigma_i^{D} \odot (\hat{D}_i - D_i) \big\rVert + \big\lVert \Sigma_i^{D} \odot (\nabla \hat{D}_i - \nabla D_i) \big\rVert - \alpha \log \Sigma_i^{D} $$
 
-- 符号： $\hat{D}_i$ / $D_i$ 为预测 / 真值深度； $\Sigma_i^{D}$ 为模型预测的逐像素置信度； $\odot$ 为逐元素乘； $\nabla$ 为空间梯度； $-\alpha \log \Sigma_i^{D}$ 是置信度正则（防止模型把所有置信度压到 0 逃避惩罚）。
+- 符号： $\hat{D}\_i$ / $D\_i$ 为预测 / 真值深度； $\Sigma\_i^{D}$ 为模型预测的逐像素置信度； $\odot$ 为逐元素乘； $\nabla$ 为空间梯度； $-\alpha \log \Sigma\_i^{D}$ 是置信度正则（防止模型把所有置信度压到 0 逃避惩罚）。
 - 作用：置信度加权让模型在难像素上“坦白不确定”，梯度项保边界锐利，与 VGGT 深度头一致。
 
 **公式 (3)：相对位姿损失（窗口内全帧对监督）**
 
 $$ \mathcal{L}_{\text{rel-pose}} = \frac{1}{k(k-1)} \sum_{\substack{i,j \in \{1,\dots,k\} \\ i \neq j}} \Big( \mathcal{L}_{\text{rot}}(i,j) + \lambda_{\text{trans}} \, \mathcal{L}_{\text{trans}}(i,j) \Big) $$
 
-- 符号： $k$ 为 local window 帧数； $(i,j)$ 遍历窗口内所有有序帧对； $\mathcal{L}_{\text{rot}}$ 为相对旋转的测地误差（geodesic on SO(3)）； $\mathcal{L}_{\text{trans}}$ 为相对平移的 $\ell_1$ 误差； $\lambda_{\text{trans}}$ 平衡两者。
+- 符号： $k$ 为 local window 帧数； $(i,j)$ 遍历窗口内所有有序帧对； $\mathcal{L}\_{\text{rot}}$ 为相对旋转的测地误差（geodesic on SO(3)）； $\mathcal{L}\_{\text{trans}}$ 为相对平移的 $\ell\_1$ 误差； $\lambda\_{\text{trans}}$ 平衡两者。
 - 作用：只在 local pose-reference window 内监督**所有帧对**的相对运动，直接约束局部轨迹形状，抑制小误差沿时间的逐帧积累——这是长序列 ATE 稳定的关键之一。
 
 **公式 (4)：绝对位姿损失**
 
 $$ \mathcal{L}_{\text{abs-pose}} = \sum_{i=1}^{N} \big\lVert \hat{P}_i - P_i \big\rVert_{\varepsilon} $$
 
-- 符号： $\hat{P}_i$ / $P_i$ 为预测 / 真值的 camera-to-world 变换； $\lVert \cdot \rVert_{\varepsilon}$ 为带 Huber 型鲁棒项的范数。
+- 符号： $\hat{P}\_i$ / $P\_i$ 为预测 / 真值的 camera-to-world 变换； $\lVert \cdot \rVert\_{\varepsilon}$ 为带 Huber 型鲁棒项的范数。
 - 作用：以 c2w 参数化直接监督全局位姿，配合相对位姿损失，兼顾全局定位与局部轨迹形状。
 
 > 补充：论文用 anchor scale 对真值深度与平移做归一化以绕开单目绝对尺度不可观测问题（推理时全序列共享同一 anchor 尺度以保证 streaming 输出尺度一致）；其精确公式在可见 HTML 文本中未逐字给出，故此处只描述作用（待核验）。

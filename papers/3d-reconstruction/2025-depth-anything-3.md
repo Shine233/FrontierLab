@@ -72,7 +72,7 @@ DA3 的价值不在于“发明了一个复杂 3D 模块”，而是把多视图
 |---|---|---|
 | Image Patch Embed | 把 $N$ 张 RGB 切成 patch token | 所有视角共享同一 embed；不同视角 token 拼在同一序列里 |
 | Plain ViT backbone（Vanilla DINO） | 复用预训练视觉特征做几何推理 | 单个 DINOv2 风格 ViT；避免 VGGT 式多 transformer 堆叠 |
-| Input-adaptive cross-view attention | 任意视角数量的信息交换 | 前 $L_s$ 层做 within-view attention，后续 $L_g$ 层交替 cross-view / within-view，默认比例 $L_s : L_g = 2 : 1$ ，靠 token rearrangement 实现，无需新增参数 |
+| Input-adaptive cross-view attention | 任意视角数量的信息交换 | 前 $L\_s$ 层做 within-view attention，后续 $L\_g$ 层交替 cross-view / within-view，默认比例 $L\_s : L\_g = 2 : 1$ ，靠 token rearrangement 实现，无需新增参数 |
 | Camera condition token | 兼容 posed / unposed 输入 | 有相机参数时由编码器 $\mathcal{E}_c$ （MLP）编码成 camera token 加到序列；无参数时用 learnable token |
 | Dual-DPT head | 联合输出 depth 和 ray | 共享 reassembly modules，depth / ray 分支用不同 fusion layers；depth 出 $N \times H \times W$ ，ray 出半分辨率 $N \times \tfrac{1}{2}H \times \tfrac{1}{2}W \times 6$ |
 | Optional camera head $\mathcal{D}_c$ | 快速输出 camera params | 从 camera token 解码 FOV、quaternion、translation（图中右下角相机 frustum）；论文称额外计算约为主 backbone 的 0.1% |
@@ -90,7 +90,7 @@ DA3 的价值不在于“发明了一个复杂 3D 模块”，而是把多视图
 
 **关键设计选择及理由**：
 
-- **单 plain transformer 而非多分支**：DA3 把 cross-view 交互塞进 backbone 内部的 attention（靠 token 重排），而不是像 VGGT 那样外挂 alternating-attention 模块。这样 backbone 可以整段加载 DINOv2 预训练权重，几何能力“长”在预训练视觉表示上。具体地，把前 $L_s$ 层设为纯 within-view self-attention（每张图内部聚合），后 $L_g$ 层交替 cross-view / within-view，默认 $L_s : L_g = 2 : 1$ ；cross-view 那一步不新增任何参数，只是把 $N$ 张图的 token 从「按图分组」重排成「跨图共处一个序列」再做标准 self-attention，做完再排回去——这就是「input-adaptive」的含义：序列长度随输入视角数自适应，1 张图时 cross-view 自然退化为 within-view。
+- **单 plain transformer 而非多分支**：DA3 把 cross-view 交互塞进 backbone 内部的 attention（靠 token 重排），而不是像 VGGT 那样外挂 alternating-attention 模块。这样 backbone 可以整段加载 DINOv2 预训练权重，几何能力“长”在预训练视觉表示上。具体地，把前 $L\_s$ 层设为纯 within-view self-attention（每张图内部聚合），后 $L\_g$ 层交替 cross-view / within-view，默认 $L\_s : L\_g = 2 : 1$ ；cross-view 那一步不新增任何参数，只是把 $N$ 张图的 token 从「按图分组」重排成「跨图共处一个序列」再做标准 self-attention，做完再排回去——这就是「input-adaptive」的含义：序列长度随输入视角数自适应，1 张图时 cross-view 自然退化为 within-view。
 - **depth + ray 双输出而非 point map**：point map 把“相机几何”和“场景深度”耦合进一个 3D 向量里，梯度互相干扰；depth + ray 把两者解耦——ray 只负责相机侧（原点 + 方向），depth 只负责沿射线的距离，几何含义清晰且可分别监督。
 - **ray map 半分辨率**：相机几何在空间上是低频信号（同一相机的射线场平滑），半分辨率足够表达且省算力，而 depth 保留全分辨率以保住细节。
 
@@ -114,7 +114,7 @@ DA3 的价值不在于“发明了一个复杂 3D 模块”，而是把多视图
 
 $$P = R_i \left( D_i(u,v) \cdot K_i^{-1} p \right) + t_i$$
 
-- 符号： $p = (u, v, 1)^\top$ 为像素齐次坐标； $K_i^{-1}$ 把像素反投影到归一化相机射线； $D_i(u,v)$ 为该像素深度； $R_i, t_i$ 为第 $i$ 张图的旋转与平移。
+- 符号： $p = (u, v, 1)^\top$ 为像素齐次坐标； $K\_i^{-1}$ 把像素反投影到归一化相机射线； $D\_i(u,v)$ 为该像素深度； $R\_i, t\_i$ 为第 $i$ 张图的旋转与平移。
 - 作用：传统 multi-view 几何要先显式拿到 $K_i, R_i, t_i$ 才能算世界点 $P$ ，位姿是需要网络硬回归或后端优化求解的**全局参数**。DUSt3R/VGGT 的 camera head 走的就是这条路。DA3 的目标是把这些全局量“摊”到每个像素上，消掉显式位姿变量。
 
 **公式 (2)：per-pixel 相机射线定义（ray map 的物理含义）**
@@ -122,7 +122,7 @@ $$P = R_i \left( D_i(u,v) \cdot K_i^{-1} p \right) + t_i$$
 $$r = (t, d) \in \mathbb{R}^6, \qquad d = R K^{-1} p$$
 
 - 符号：每个像素 $p$ 对应一条相机射线 $r$ ，由原点 $t \in \mathbb{R}^3$ （相机中心）与方向 $d \in \mathbb{R}^3$ 组成，共 6 个通道；方向 $d$ 是把像素反投影到相机系再用 $R$ 旋到世界系得到的。
-- 作用：这 6 个通道逐像素堆起来就是 ray map $M \in \mathbb{R}^{H \times W \times 6}$ 。注意 $d = R K^{-1} p$ 已经把公式 (1) 里的 $R_i$ 和 $K_i^{-1} p$ **打包进方向向量**——相机的旋转与内参不再是需要单独输出的量，而是隐含在 dense 的方向场里。
+- 作用：这 6 个通道逐像素堆起来就是 ray map $M \in \mathbb{R}^{H \times W \times 6}$ 。注意 $d = R K^{-1} p$ 已经把公式 (1) 里的 $R\_i$ 和 $K\_i^{-1} p$ **打包进方向向量**——相机的旋转与内参不再是需要单独输出的量，而是隐含在 dense 的方向场里。
 
 **公式 (3)：depth-ray 世界点（DA3 的核心简化）**
 
@@ -135,7 +135,7 @@ $$P = t + D(u,v) \cdot d$$
 
 $$t_c = \frac{1}{H \times W} \sum_{h,w} M(h, w, 0{:}3), \qquad H^\ast = \arg\min_{\lVert H \rVert = 1} \sum_{h,w} \left\lVert H\, p_{h,w} \times M(h,w,3{:}) \right\rVert$$
 
-- 符号：相机中心 $t_c$ 直接取 ray map 前 3 通道（各像素原点）的均值； $M(h,w,3{:})$ 取方向分量 $d$ ； $p_{h,w}$ 为像素坐标； $H$ 为待求单应，约束 $\lVert H \rVert = 1$ 避免平凡零解； $\times$ 为叉积，度量“预测方向 $d$ 与 $H p$ 所隐含方向”的对齐残差。
+- 符号：相机中心 $t\_c$ 直接取 ray map 前 3 通道（各像素原点）的均值； $M(h,w,3{:})$ 取方向分量 $d$ ； $p\_{h,w}$ 为像素坐标； $H$ 为待求单应，约束 $\lVert H \rVert = 1$ 避免平凡零解； $\times$ 为叉积，度量“预测方向 $d$ 与 $H p$ 所隐含方向”的对齐残差。
 - 作用：用 Direct Linear Transform 从整幅 ray map 最小二乘解出 $H = K R$ ，再对 $H$ 做 RQ 分解得到 intrinsics $K$ 与 rotation $R$ 。这说明**位姿是从 dense 几何“解”出来的量，而非网络硬记的参数**——即使不挂 camera head 也能拿到相机参数，camera head 只是把这步 DLT 换成一次前向、加速推理的旁路（额外算力约主 backbone 的 0.1%）。
 
 **公式 (5)：训练总损失（已按正文核对，权重 $\alpha = \beta = 1$ ）**
@@ -148,8 +148,8 @@ $$\mathcal{L}_D(\hat{D}, D; D_c) = \frac{1}{Z_\Omega} \sum_{p \in \Omega} m_p \l
 
 $$\mathcal{L}_{\text{grad}}(\hat{D}, D) = \lVert \nabla_x \hat{D} - \nabla_x D \rVert_1 + \lVert \nabla_y \hat{D} - \nabla_y D \rVert_1$$
 
-- 符号： $\mathcal{L}_D$ 是 confidence 加权的深度 L1—— $D_{c,p}$ 是网络预测的逐像素置信度，越高则该像素 L1 权重越大，同时 $-\lambda_c \log D_{c,p}$ 项惩罚过度自信， $m_p$ 为有效像素 mask， $Z_\Omega$ 为归一化常数； $\mathcal{L}_M$ 是 ray map 回归损失； $\mathcal{L}_P$ 是把 $\hat{D} \odot d + t$ 组合出的 3D 点与真值 $P$ 的一致性损失（正是公式 (3) 的可微版本）； $\mathcal{L}_C$ 为可选的 camera（quaternion + translation）损失； $\mathcal{L}_{\text{grad}}$ 为水平/垂直有限差分梯度正则，保住深度边缘。正文给出 $\alpha = 1$ 、 $\beta = 1$ 。
-- 作用： $\mathcal{L}_P$ 是 depth 与 ray“对齐”的关键监督——它强迫 $(\hat{D}, \hat{R})$ 组合出的世界点自洽，而不是让 depth 分支和 ray 分支各自独立收敛。confidence 加权让稀疏/噪声真值下模型能自动降低不可靠像素的权重，与 teacher-student pseudo-label 配合，是 real-world 数据训练稳定的核心。（ $\lambda_c$ 及 $\mathcal{L}_M / \mathcal{L}_P / \mathcal{L}_C$ 内部权重的精确数值正文未逐一给出，标为待核验。）
+- 符号： $\mathcal{L}\_D$ 是 confidence 加权的深度 L1—— $D\_{c,p}$ 是网络预测的逐像素置信度，越高则该像素 L1 权重越大，同时 $-\lambda\_c \log D\_{c,p}$ 项惩罚过度自信， $m\_p$ 为有效像素 mask， $Z\_\Omega$ 为归一化常数； $\mathcal{L}\_M$ 是 ray map 回归损失； $\mathcal{L}\_P$ 是把 $\hat{D} \odot d + t$ 组合出的 3D 点与真值 $P$ 的一致性损失（正是公式 (3) 的可微版本）； $\mathcal{L}\_C$ 为可选的 camera（quaternion + translation）损失； $\mathcal{L}\_{\text{grad}}$ 为水平/垂直有限差分梯度正则，保住深度边缘。正文给出 $\alpha = 1$ 、 $\beta = 1$ 。
+- 作用： $\mathcal{L}\_P$ 是 depth 与 ray“对齐”的关键监督——它强迫 $(\hat{D}, \hat{R})$ 组合出的世界点自洽，而不是让 depth 分支和 ray 分支各自独立收敛。confidence 加权让稀疏/噪声真值下模型能自动降低不可靠像素的权重，与 teacher-student pseudo-label 配合，是 real-world 数据训练稳定的核心。（ $\lambda\_c$ 及 $\mathcal{L}\_M / \mathcal{L}\_P / \mathcal{L}\_C$ 内部权重的精确数值正文未逐一给出，标为待核验。）
 
 ### 2.4 训练与推理细节
 
@@ -270,7 +270,7 @@ $$\mathcal{L}_{\text{grad}}(\hat{D}, D) = \lVert \nabla_x \hat{D} - \nabla_x D \
 ### Unknowns / to verify
 
 - 摘要 pose 平均提升数字在两个官方来源不一致：arXiv 摘要页（/abs）显示 44.3%（geometric 25.1%），HTML/PDF 摘要显示 35.7%（geometric 23.6%）；正文可核对的 reconstruction 平均提升为 25.1%。pose 的“平均”口径待官方勘误或复跑确认，本笔记暂以正文数字为准。
-- 损失函数 (5) 已按 HTML 正文核对：五项（depth 带 confidence、ray、point、camera、grad）与总式形态确认，梯度/相机项权重 $\alpha = \beta = 1$ 亦确认；仍待核验的是 depth confidence 项内的 $\lambda_c$ 以及 $\mathcal{L}_M / \mathcal{L}_P / \mathcal{L}_C$ 各自内部的标定权重，正文未逐一列出。
+- 损失函数 (5) 已按 HTML 正文核对：五项（depth 带 confidence、ray、point、camera、grad）与总式形态确认，梯度/相机项权重 $\alpha = \beta = 1$ 亦确认；仍待核验的是 depth confidence 项内的 $\lambda\_c$ 以及 $\mathcal{L}\_M / \mathcal{L}\_P / \mathcal{L}\_C$ 各自内部的标定权重，正文未逐一列出。
 - 公式 (1)–(5) 的写法已核对 HTML 正文与图注（ray 定义 $r=(t,d)$ 、 $d = R K^{-1} p$ 、world point $P = t + D(u,v) \cdot d$ 、camera-center 均值、homography DLT、总损失），但未逐字节比对 PDF LaTeX 源，个别下标 / 通道切片记法（如 $M(h,w,0{:}3)$ 与 $M(h,w,3{:})$ 的索引约定）可能与原文排版略有出入。
 - DA3-Streaming 是仓库后续发布的长视频推理管线，基于 VGGT-Long 思路；不是论文主训练方法的一部分，需单独做工程验证。
 - HuggingFace 上部分模型卡带 `-1.1` 后缀，README 称修复 training bug 后应优先使用；这些权重对应的论文表格数值是否完全一致，需官方说明或复跑确认。

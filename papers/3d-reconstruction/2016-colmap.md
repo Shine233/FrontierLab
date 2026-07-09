@@ -102,21 +102,21 @@ updated: 2026-07-02
 
 $$ S \;=\; \sum_{l=1}^{L} w_l \cdot \bigl|\{\text{level-}l\text{ cells occupied by} \ge 1 \text{ visible point}\}\bigr| $$
 
-- 符号（已核验）：level $l$ 把图像每个维度划分为 $K_l = 2^l$ 个 bin（即 $2^l\times 2^l$ 个格子）；权重 $w_l = K_l^2 = 4^l$ （越细的层权重越大）；「被占用格子数」统计的是**可见点的空间覆盖**而非点数本身，每个格子只在首次被填充时计一次。
+- 符号（已核验）：level $l$ 把图像每个维度划分为 $K\_l = 2^l$ 个 bin（即 $2^l\times 2^l$ 个格子）；权重 $w\_l = K\_l^2 = 4^l$ （越细的层权重越大）；「被占用格子数」统计的是**可见点的空间覆盖**而非点数本身，每个格子只在首次被填充时计一次。
 - 作用：得分同时反映「看到的已重建点**多不多**」与「这些点**铺得均不均匀**」。选 $S$ 最大的图像作为下一张注册对象，抑制退化注册与漂移；该数据结构可在线增量更新。
 
 **公式 (2) — Bundle Adjustment 目标（SfM，原文 Eq. 1）**
 
-联合优化相机参数 $\{P_c\}$ 与 3D 点 $\{X_k\}$，最小化带鲁棒核的重投影误差：
+联合优化相机参数 $\{P\_c\}$ 与 3D 点 $\{X\_k\}$，最小化带鲁棒核的重投影误差：
 
 $$ E \;=\; \sum_{j} \; \rho_j\!\left( \big\lVert \pi(P_{c},\, X_{k}) - x_j \big\rVert^2 \right) $$
 
-- 符号： $j$ 遍历所有观测（2D 特征）； $x_j$ 为观测像素坐标； $\pi(\cdot)$ 为把 3D 点 $X_k$ 用相机 $P_c$ 投影到像平面的投影函数； $\rho_j(\cdot)$ 为鲁棒损失——原文**明确采用 Cauchy 函数**降低外点影响。求解用 Ceres Solver（小规模稀疏直接解，大规模用 PCG），LM 为优化方法。
+- 符号： $j$ 遍历所有观测（2D 特征）； $x\_j$ 为观测像素坐标； $\pi(\cdot)$ 为把 3D 点 $X\_k$ 用相机 $P\_c$ 投影到像平面的投影函数； $\rho\_j(\cdot)$ 为鲁棒损失——原文**明确采用 Cauchy 函数**降低外点影响。求解用 Ceres Solver（小规模稀疏直接解，大规模用 PCG），LM 为优化方法。
 - 作用：这是几何一致性的总能量。Cauchy 核是「脏数据」下不被少量错误匹配拖垮的关键；配合局部 / 全局 BA 分层触发控制计算量。
 
 **公式 (3) — MVS 的光度似然与联合概率（MVS，原文 Eq. 1/2）**
 
-对参考图每个像素 $l$，二值遮挡隐变量 $Z_l^m\in\{0,1\}$ （ $m$ 为源视图索引）与深度 $\theta_l$ 决定**光度似然**：
+对参考图每个像素 $l$，二值遮挡隐变量 $Z\_l^m\in\{0,1\}$ （ $m$ 为源视图索引）与深度 $\theta\_l$ 决定**光度似然**：
 
 $$ P(X_l^m \mid Z_l^m, \theta_l) \;=\; \begin{cases} \dfrac{1}{N A}\,\exp\!\Big(-\dfrac{(1-\rho_l^m(\theta_l))^2}{2\sigma_\rho^2}\Big) & Z_l^m = 1 \\[2mm] \dfrac{1}{N}\cdot\dfrac{1}{U} & Z_l^m = 0 \end{cases} $$
 
@@ -124,7 +124,7 @@ $$ P(X_l^m \mid Z_l^m, \theta_l) \;=\; \begin{cases} \dfrac{1}{N A}\,\exp\!\Big(
 
 $$ P(X, Z, \theta) \;=\; \prod_{l=1}^{L}\prod_{m=1}^{M} \big[\, P(Z_l^m \mid Z_{l-1}^m)\; P(X_l^m \mid Z_l^m, \theta_l)\,\big] $$
 
-- 符号： $\rho_l^m$ 为参考 patch 与按 $(\theta_l,\mathbf n_l)$ 单应变换到源图的 patch 之间的**归一化互相关 (NCC)**（COLMAP 用**双边加权 NCC** 改善遮挡边界）； $Z_l^m{=}0$ （遮挡）时两 patch 颜色不相关、服从 $[-1,1]$ 上的均匀分布； $\sigma_\rho$ 是「可见」的软阈值。
+- 符号： $\rho\_l^m$ 为参考 patch 与按 $(\theta\_l,\mathbf n\_l)$ 单应变换到源图的 patch 之间的**归一化互相关 (NCC)**（COLMAP 用**双边加权 NCC** 改善遮挡边界）； $Z\_l^m{=}0$ （遮挡）时两 patch 颜色不相关、服从 $[-1,1]$ 上的均匀分布； $\sigma\_\rho$ 是「可见」的软阈值。
 - **重要更正**：三条几何先验（三角化角 / 分辨率 / 入射角）**并不直接出现在上式联合概率里**，而是作为调制因子进入**蒙特卡洛视图采样分布**（原文 Eq. 7）：
 $$ P_l(m) \;\propto\; q(Z_l^m{=}1)\, q(\alpha_l^m)\, q(\beta_l^m)\, q(\kappa_l^m) $$
 - 作用： $Z_l^m$ 把「该源视图对该像素是否可信」显式建模并**边缘化**掉；论文用**变分推断 + 广义 EM（GEM）**，其中隐变量 $Z$ 的推断（E 步）在这条像素链上用**前向-后向（forward-backward）算法**（即隐 Markov 链），深度 $\theta$ 用 **PatchMatch 采样**（M 步）交替求解——「行方向图模型 / 类 HMM」的描述已核验为原文原意。
@@ -135,13 +135,13 @@ $$ P_l(m) \;\propto\; q(Z_l^m{=}1)\, q(\alpha_l^m)\, q(\beta_l^m)\, q(\kappa_l^m
 
 $$ \psi_l^m \;=\; \big\lVert \, x_l - H_l^m H_l\, x_l \, \big\rVert, \qquad \xi_l^m \;=\; \big(1-\rho_l^m\big) \;+\; \eta\,\min\!\big(\psi_l^m,\; \psi_{\max}\big) $$
 
-- 符号（已核验取值）： $H_l$ 把参考像素 $x_l$ 按其深度前向投到源图， $H_l^m$ 用源图估计 $(\theta_l^m,\mathbf n_l^m)$ 反投回参考图；两次投影的像素位移即前向-后向重投影误差 $\psi_l^m$。 $\rho_l^m$ 为光度项， $\eta=0.5$ 为常数正则权重， $\psi_{\max}=3\,\text{px}$ 为截断阈值（避免遮挡区惩罚爆炸）。最终深度 / 法向由 $\hat\theta_l^{opt},\hat{\mathbf n}_l^{opt}=\arg\min\frac{1}{|S|}\sum_{m\in S}\xi_l^m$ 选出。
+- 符号（已核验取值）： $H\_l$ 把参考像素 $x\_l$ 按其深度前向投到源图， $H\_l^m$ 用源图估计 $(\theta\_l^m,\mathbf n\_l^m)$ 反投回参考图；两次投影的像素位移即前向-后向重投影误差 $\psi\_l^m$。 $\rho\_l^m$ 为光度项， $\eta=0.5$ 为常数正则权重， $\psi\_{\max}=3\,\text{px}$ 为截断阈值（避免遮挡区惩罚爆炸）。最终深度 / 法向由 $\hat\theta\_l^{opt},\hat{\mathbf n}\_l^{opt}=\arg\min\frac{1}{|S|}\sum\_{m\in S}\xi\_l^m$ 选出。
 - 作用：光度一致但几何矛盾的深度（常见于重复纹理 / 反射）会被这一项压制。与多数方法把左右一致性放到后处理不同，COLMAP 把它**直接整合进推断**，同时提升完整度与准确度。
 
 ### 2.4 训练与推理细节
 - **训练目标 / 损失函数**：无训练。SfM 的「损失」即公式 (2) 的 Cauchy 鲁棒重投影能量；MVS 的「目标」即公式 (3)(4) 的联合后验最大化（变分推断 + GEM）。全部通过几何优化（PnP、三角化、BA 用 Ceres）与 PatchMatch 迭代求解。
 - **数据规模**：无训练数据；SfM 论文在大规模互联网照片集合（Rome 75K→21K、Dubrovnik 2.9M feature tracks / 47M 验证匹配、Quad 含相机位置 GT）上验证可扩展性；MVS 论文在 South Building（128 图）、Middlebury（Dino 等）、Strecha（Fountain 等高分辨率带 GT）及 Internet 数据上验证。
-- **超参要点（部分已核验）**：已核验 next-best-view 权重 $w_l=K_l^2$、BA 用 Cauchy 核、MVS 中 $\eta=0.5$ / $\psi_{\max}=3\text{px}$。其余如金字塔层数 $L$、几何验证 RANSAC 内点阈值、三角化最小角度、全局 BA 触发的模型增长比例、re-triangulation 触发条件、NCC 窗口大小与融合最少一致视图数——原文未全部给定固定数字或为可配置旋钮，精确默认值请回原文 Sec. 4/5 或官方文档核对。
+- **超参要点（部分已核验）**：已核验 next-best-view 权重 $w\_l=K\_l^2$、BA 用 Cauchy 核、MVS 中 $\eta=0.5$ / $\psi\_{\max}=3\text{px}$。其余如金字塔层数 $L$、几何验证 RANSAC 内点阈值、三角化最小角度、全局 BA 触发的模型增长比例、re-triangulation 触发条件、NCC 窗口大小与融合最少一致视图数——原文未全部给定固定数字或为可配置旋钮，精确默认值请回原文 Sec. 4/5 或官方文档核对。
 - **推理（即跑管线）流程**：
   1. `feature_extractor`（SIFT）→ 2. `*_matcher`（穷举 / 词表 / 顺序匹配）→ 3. 几何验证得场景图 → 4. `mapper`（增量重建：初始化 → 注册 → 三角化 → BA → 过滤循环）得稀疏模型 → 5. `image_undistorter` → 6. `patch_match_stereo`（逐像素深度 / 法向 + 视图选择）→ 7. `stereo_fusion`（几何一致性融合）→ 稠密点云 →（可选）`poisson_mesher` / `delaunay_mesher` 网格化。
 

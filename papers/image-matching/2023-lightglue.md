@@ -93,7 +93,7 @@ updated: 2026-07-03
 
 $$ \mathbf{S}_{ij} = \mathrm{Linear}(\mathbf{x}_i^A)^\top \, \mathrm{Linear}(\mathbf{x}_j^B), \quad \forall (i,j) \in A \times B $$
 
-- 符号： $\mathbf{x}_i^A,\mathbf{x}_j^B$ 为两图点的状态向量；两个 $\mathrm{Linear}$ 是各自的可学习投影； $\mathbf{S}_{ij}$ 是点 $i$ 与点 $j$ 的相似度分数。
+- 符号： $\mathbf{x}\_i^A,\mathbf{x}\_j^B$ 为两图点的状态向量；两个 $\mathrm{Linear}$ 是各自的可学习投影； $\mathbf{S}\_{ij}$ 是点 $i$ 与点 $j$ 的相似度分数。
 - 作用：给出跨图任意点对的匹配亲和度，是赋值矩阵的原始打分。
 
 **公式 (7) 可匹配性（matchability）**：
@@ -107,7 +107,7 @@ $$ \sigma_i = \mathrm{Sigmoid}\big(\mathrm{Linear}(\mathbf{x}_i)\big) \in [0,1] 
 
 $$ \mathbf{P}_{ij} = \sigma_i^A \, \sigma_j^B \, \operatorname{Softmax}_{k \in A}(\mathbf{S}_{kj})_i \, \operatorname{Softmax}_{k \in B}(\mathbf{S}_{ik})_j $$
 
-- 符号： $\mathbf{P}_{ij}$ 为点 $i,j$ 成为一对匹配的得分；两个 $\operatorname{Softmax}$ 分别沿 $A$ 维、 $B$ 维归一化相似度（互为最近邻的双向 softmax）；乘上两端 matchability $\sigma_i^A,\sigma_j^B$ 。
+- 符号： $\mathbf{P}\_{ij}$ 为点 $i,j$ 成为一对匹配的得分；两个 $\operatorname{Softmax}$ 分别沿 $A$ 维、 $B$ 维归一化相似度（互为最近邻的双向 softmax）；乘上两端 matchability $\sigma\_i^A,\sigma\_j^B$ 。
 - 作用：这是替代 Sinkhorn 的核心——用「双向 softmax 相似度 × 两端可匹配性」闭式地得到部分赋值，无需迭代最优传输。最终匹配取 $\mathbf{P}$ 上互为最大且超过阈值 $\tau=0.1$ 的对。
 
 **公式 (9) 置信度分类器**：
@@ -136,7 +136,7 @@ $$ \lambda_\ell = 0.8 + 0.1\, e^{-4\ell / L} $$
 $$ \mathrm{unmatchable}(i) = \big[\, c_i^\ell > \lambda_\ell \,\big] \ \wedge\ \big[\, \sigma_i^\ell < \beta \,\big] $$
 
 - 符号： $\beta=0.01$ 为可匹配性下限阈值。
-- 作用：一个点若「已置信」（ $c_i>\lambda_\ell$ ）且「几乎不可匹配」（ $\sigma_i<\beta$ ），就从后续层剔除——这是自适应宽度，直接减少后续注意力的参与点数。
+- 作用：一个点若「已置信」（ $c\_i>\lambda\_\ell$ ）且「几乎不可匹配」（ $\sigma\_i<\beta$ ），就从后续层剔除——这是自适应宽度，直接减少后续注意力的参与点数。
 
 **公式 (11) 训练损失**（跨 $L$ 层深监督）：
 

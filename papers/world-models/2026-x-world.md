@@ -110,14 +110,14 @@ updated: 2026-07-02
 
 $$ \mathbf{y}_t = (1-t)\,\mathbf{y}_0 + t\,\mathbf{y}_1 $$
 
-- 符号： $\mathbf{y}_0$ 是高斯噪声起点， $\mathbf{y}_1$ 是干净数据（多相机视频 latent）， $t \in [0,1]$ 是插值系数， $\mathbf{y}_t$ 是插值得到的 noisy latent。
+- 符号： $\mathbf{y}\_0$ 是高斯噪声起点， $\mathbf{y}\_1$ 是干净数据（多相机视频 latent）， $t \in [0,1]$ 是插值系数， $\mathbf{y}\_t$ 是插值得到的 noisy latent。
 - 作用：定义噪声到数据的直线路径，为下面的速度场回归提供监督目标。
 
 **Rectified Flow 损失（Stage-I 主损失）**：
 
 $$ \mathcal{L}_{\text{RF}}(\theta) = \mathbb{E}_{\mathbf{y}_0, \mathbf{y}_1, t, \mathbf{c}}\Big[\big\lVert v_\theta(\mathbf{y}_t, t, \mathbf{c}) - (\mathbf{y}_1 - \mathbf{y}_0) \big\rVert_2^2\Big] $$
 
-- 符号： $v_\theta$ 是网络预测的速度场， $\mathbf{c}$ 是全部条件（历史帧、action、agent/element、camera、text）的集合， $(\mathbf{y}_1 - \mathbf{y}_0)$ 是 rectified flow 下的恒定目标速度。
+- 符号： $v\_\theta$ 是网络预测的速度场， $\mathbf{c}$ 是全部条件（历史帧、action、agent/element、camera、text）的集合， $(\mathbf{y}\_1 - \mathbf{y}\_0)$ 是 rectified flow 下的恒定目标速度。
 - 作用：训练 Stage-I bidirectional generator 学会在给定条件下，把噪声沿直线路径推向干净的多相机视频 latent；这是后续 causal 蒸馏的 teacher 目标来源。
 
 **多相机 action-conditioned 生成的形式化描述**：

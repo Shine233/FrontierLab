@@ -102,21 +102,21 @@ updated: 2026-07-03
 
 $$ \pi_\theta(o_{l:l+H}, a_{l:l+H} \mid o_{0:l}, c, q_l) = \pi_\theta(o_{l:l+H} \mid o_{0:l}, c, q_l)\,\cdot\,\pi_\theta(a_{l:l+H} \mid o_{0:l+H}, q_l) $$
 
-- 符号： $o_{0:l}$ 是历史观测， $o_{l:l+H}$ 是未来 $H$ 步视觉状态， $a_{l:l+H}$ 是未来动作， $c$ 是语言指令， $q_l$ 是本体状态。
-- 作用：把策略拆成"以语言为条件的**视频预测**"和"以视觉未来为条件的**逆动力学**"。这解释了 WAM 的核心信念——动作是视觉计划的函数，视频未来 $o_{l:l+H}$ 是动作预测的关键条件（注意动作项条件里包含了未来观测 $o_{0:l+H}$ ）。
+- 符号： $o\_{0:l}$ 是历史观测， $o\_{l:l+H}$ 是未来 $H$ 步视觉状态， $a\_{l:l+H}$ 是未来动作， $c$ 是语言指令， $q\_l$ 是本体状态。
+- 作用：把策略拆成"以语言为条件的**视频预测**"和"以视觉未来为条件的**逆动力学**"。这解释了 WAM 的核心信念——动作是视觉计划的函数，视频未来 $o\_{l:l+H}$ 是动作预测的关键条件（注意动作项条件里包含了未来观测 $o\_{0:l+H}$ ）。
 
 **式 (2) flow matching 噪声插值**：
 
 $$ z^k_{t_k} = t_k\, z^k_1 + (1 - t_k)\, z^k_0, \qquad a^k_{t_k} = t_k\, a^k_1 + (1 - t_k)\, a^k_0 $$
 
-- 符号： $z^k$ 是第 $k$ 个 chunk 的 video latent， $a^k$ 是动作； $z^k_1 / a^k_1$ 是干净目标， $z^k_0 / a^k_0$ 是噪声（高斯先验）； $t_k \in [0,1]$ 是该 chunk 的噪声水平（ $t_k=1$ 干净、 $t_k=0$ 纯噪）。
+- 符号： $z^k$ 是第 $k$ 个 chunk 的 video latent， $a^k$ 是动作； $z^k\_1 / a^k\_1$ 是干净目标， $z^k\_0 / a^k\_0$ 是噪声（高斯先验）； $t\_k \in [0,1]$ 是该 chunk 的噪声水平（ $t\_k=1$ 干净、 $t\_k=0$ 纯噪）。
 - 作用：video 和 action 走**同一套 rectified-flow 线性插值**，为联合去噪提供统一目标。注意 DreamZero 里 video 和 action 共用同一 $t_k$ （coupled），这正是 Flash 要打破的地方。
 
 **式 (3) 联合 flow matching 损失**：
 
 $$ \mathcal{L}(\theta) = \mathbb{E}\left[ \frac{1}{K} \sum_{k} w(t_k)\, \bigl\lVert u_\theta\bigl([z^k_{t_k}, a^k_{t_k}];\, C_k, c, q_k, t_k\bigr) - v^k \bigr\rVert^2 \right] $$
 
-- 符号： $u_\theta$ 是网络预测的**联合速度场**（同时输出 video 与 action 的 velocity）， $[z^k_{t_k}, a^k_{t_k}]$ 是拼接的 noisy video-action， $C_k$ 是干净前序 chunk 上下文（teacher forcing）， $v^k$ 是真实速度目标（rectified flow 下为 $z_1 - z_0$ ）， $w(t_k)$ 是按噪声水平的加权函数。
+- 符号： $u\_\theta$ 是网络预测的**联合速度场**（同时输出 video 与 action 的 velocity）， $[z^k\_{t\_k}, a^k\_{t\_k}]$ 是拼接的 noisy video-action， $C\_k$ 是干净前序 chunk 上下文（teacher forcing）， $v^k$ 是真实速度目标（rectified flow 下为 $z\_1 - z\_0$ ）， $w(t\_k)$ 是按噪声水平的加权函数。
 - 作用：这是训练主损失。一个网络、一份 velocity 目标，同时监督视频和动作，是"联合去噪"落到实处的地方。
 
 **式 (5) DreamZero-Flash 解耦噪声日程**：

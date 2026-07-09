@@ -101,7 +101,7 @@ $$ \mathcal{L} = \mathcal{L}_{\text{camera}} + \mathcal{L}_{\text{depth}} + \mat
 
 $$ R^{(l+1)} = \text{Attn}\big(R^{(l)}_{1:N}\big), \qquad X_i^{(l+1)} = \text{Attn}\big([X_i^{(l)}; R_i^{(l+1)}]\big) $$
 
-- 符号： $R_i^{(l)}$ 第 $l$ 层第 $i$ 帧的 register token 集合（共 16 个）， $R^{(l)}_{1:N}$ 表示把 $N$ 帧的 register token 拼在一起做跨帧 attention， $X_i^{(l)}$ 第 $i$ 帧的 image token。
+- 符号： $R\_i^{(l)}$ 第 $l$ 层第 $i$ 帧的 register token 集合（共 16 个）， $R^{(l)}\_{1:N}$ 表示把 $N$ 帧的 register token 拼在一起做跨帧 attention， $X\_i^{(l)}$ 第 $i$ 帧的 image token。
 - 作用：第一步只让各帧 register token 互相看到彼此（跨帧聚合场景级信息）；第二步再用一次帧内 attention,把刚更新过的 register token 和该帧 image token 放在一起做 self-attention,把聚合到的跨帧信息广播回 image token。相比每层都对全部 image token 做跨帧 global attention,复杂度从 $O(N^2 \cdot K^2)$ （ $K$ 为每帧 image token 数）降到近似 $O(N^2 \cdot r^2 + N \cdot (K+r)^2)$ （ $r=16$ 为 register 数），这正是训练显存降到约 30% 的架构来源之一。
 
 **(3) 尺度与坐标系（沿用 VGGT 做法,论文未改变）**：VGGT-Ω 延续 VGGT「以第一帧为参考系、用点图平均欧氏距离归一化 GT 但不归一化网络输入」的做法,本笔记不重复展开,细节见 [VGGT 笔记 2.3](../3d-reconstruction/2025-vggt.md)。
