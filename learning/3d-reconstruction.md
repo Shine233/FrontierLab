@@ -11,6 +11,9 @@ updated: 2026-06-30
 结论先行：当前三维重建最活跃的子方向是「前馈式视觉几何基础模型」——给若干张（甚至无序、任意视角、视频流）图像，用一个网络一次前馈直接吐出相机位姿、深度/点图、乃至 metric 尺度的几何，取代传统 SfM/MVS 的迭代优化管线。它的吸引力在于：快、对低纹理/弱重叠鲁棒、可端到端接入定位与机器人/自动驾驶建图。代价是 metric 尺度、动态场景、长序列在线建图仍是开放难题。
 
 ## 1. 前置知识
+
+> **Beginner 从这里开始**：[前置知识地图](./3d-reconstruction-prerequisites.md) —— 把「相机模型 → 对极几何 → 三角化 → 点图 → Transformer/ViT → 自监督 → SfM/BA/NeRF」这条读序，按 deep 格式（公式逐符号 + 配图 + 「读前馈论文时该抓什么」）逐点讲清，并给出 5 步最短上手路径。缺几何/深度学习底子的先读它。
+
 - 经典管线：SfM（COLMAP）、MVS、bundle adjustment，理解前馈方法在替代/补足哪一段。
 - 表征基础：depth map、point map、camera ray、3D Gaussian Splatting 初始化的概念。
 - 骨干：DINOv2/v3 frozen features 与 ViT，见 [vision-foundation-models 学习路线](./vision-foundation-models.md)。
