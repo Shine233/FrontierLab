@@ -188,6 +188,10 @@ $$
 
 **多头注意力**把上式并行做 $h$ 次（不同投影），再拼接：让模型同时关注不同类型的关系。
 
+![缩放点积注意力与多头注意力（来源：arXiv 1706.03762, Vaswani et al. 2017）](../assets/learning/3d-reconstruction-prereq/tf-attention.png)
+
+*图：左为缩放点积注意力（ $QK^{\top}$ → 缩放 → softmax → 乘 $V$ ），右为多头注意力（ $h$ 组投影并行后拼接）。（来源：arXiv 1706.03762）*
+
 **读前馈论文时该抓什么**：
 
 - VGGT 的「**global attention**（跨所有视图的所有 token）与 **frame attention**（只在单帧内）交替」，就是把上面这个 attention 分别作用在「全部 token」和「单图 token」上。看懂 attention 才看得懂这个设计为何能聚合多视图信息。

@@ -15,13 +15,22 @@
 
 ## alternating-attention-transformer
 
+- [OmniVGGT](.././papers/3d-reconstruction/2025-omnivggt.md) （2025）
 - [VGGT](.././papers/3d-reconstruction/2025-vggt.md) （2025）
+
+## any-prior-prompting
+
+- [HunyuanWorld-Mirror](.././papers/3d-reconstruction/2025-hunyuanworld-mirror.md) （2025）
 
 ## any-view-visual-geometry-foundation-model
 
 - [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
 - [Pi3](.././papers/3d-reconstruction/2026-pi3.md) （2026）
 - [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) （2026）
+
+## associative-memory
+
+- [TTT3R](.././papers/3d-reconstruction/2025-ttt3r.md) （2025）
 
 ## attention-based-matcher
 
@@ -43,6 +52,18 @@
 
 - [X-Cache](.././papers/efficient-training-inference/2026-x-cache.md) （2026）
 
+## bev-sketch-representation
+
+- [X-Mind](.././papers/world-models/2026-x-mind.md) （2026）
+
+## camera-token-pool
+
+- [WinT3R](.././papers/3d-reconstruction/2025-wint3r.md) （2025）
+
+## causal-transformer
+
+- [STream3R](.././papers/3d-reconstruction/2025-stream3r.md) （2025）
+
 ## chunk-wise-autoregressive-vla
 
 - [X-Foresight](.././papers/world-models/2026-x-foresight.md) （2026）
@@ -59,6 +80,10 @@
 
 - [RoMa](.././papers/image-matching/2024-roma.md) （2024）
 
+## consistent-video-depth
+
+- [MegaSaM](.././papers/3d-reconstruction/2025-megasam.md) （2025）
+
 ## controllable-multi-camera-generation
 
 - [X-World](.././papers/world-models/2026-x-world.md) （2026）
@@ -66,6 +91,7 @@
 ## coordinate-mlp
 
 - [NeRF](.././papers/3d-reconstruction/2020-nerf.md) （2020）
+- [Instant-NGP](.././papers/3d-reconstruction/2022-instant-ngp.md) （2022）
 
 ## cross-chunk-block-cache
 
@@ -75,6 +101,10 @@
 
 - [DreamZero](.././papers/world-models/2026-dreamzero.md) （2026）
 
+## cuda-acceleration
+
+- [Instant-NGP](.././papers/3d-reconstruction/2022-instant-ngp.md) （2022）
+
 ## curated-data-scaling
 
 - [DINOv2](.././papers/vision-foundation-models/2023-dinov2.md) （2023）
@@ -82,6 +112,10 @@
 ## data-and-model-scaling
 
 - [LoMa](.././papers/image-matching/2026-loma.md) （2026）
+
+## deep-visual-slam
+
+- [MegaSaM](.././papers/3d-reconstruction/2025-megasam.md) （2025）
 
 ## dense-feature-learning
 
@@ -92,9 +126,17 @@
 - [RoMa](.././papers/image-matching/2024-roma.md) （2024）
 - [RoMa v2](.././papers/image-matching/2025-romav2.md) （2025）
 
+## depth-camera-slam
+
+- [KinectFusion](.././papers/3d-reconstruction/2011-kinectfusion.md) （2011）
+
 ## depth-ray-representation
 
 - [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
+
+## differentiable-bundle-adjustment
+
+- [MegaSaM](.././papers/3d-reconstruction/2025-megasam.md) （2025）
 
 ## differentiable-rendering
 
@@ -134,9 +176,17 @@
 
 - [Reloc3r](.././papers/visual-localization/2025-reloc3r.md) （2025）
 
+## dust3r-lineage
+
+- [STream3R](.././papers/3d-reconstruction/2025-stream3r.md) （2025）
+
 ## dynamic-3d-reconstruction
 
 - [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) （2026）
+
+## dynamic-4d-reconstruction
+
+- [MonST3R](.././papers/3d-reconstruction/2025-monst3r.md) （2025）
 
 ## early-multiview-fusion
 
@@ -150,6 +200,7 @@
 
 - [DUSt3R](.././papers/3d-reconstruction/2023-dust3r.md) （2023）
 - [MASt3R](.././papers/3d-reconstruction/2024-mast3r.md) （2024）
+- [MV-DUSt3R+](.././papers/3d-reconstruction/2024-mv-dust3r.md) （2024）
 
 ## feed-forward-3d-foundation-model
 
@@ -157,10 +208,17 @@
 
 ## feed-forward-3d-reconstruction
 
+- [Spann3R](.././papers/3d-reconstruction/2024-spann3r.md) （2024）
 - [CUT3R](.././papers/3d-reconstruction/2025-cut3r.md) （2025）
 - [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
+- [Fast3R](.././papers/3d-reconstruction/2025-fast3r.md) （2025）
+- [HunyuanWorld-Mirror](.././papers/3d-reconstruction/2025-hunyuanworld-mirror.md) （2025）
 - [MapAnything](.././papers/3d-reconstruction/2025-mapanything.md) （2025）
+- [MonST3R](.././papers/3d-reconstruction/2025-monst3r.md) （2025）
+- [OmniVGGT](.././papers/3d-reconstruction/2025-omnivggt.md) （2025）
+- [TTT3R](.././papers/3d-reconstruction/2025-ttt3r.md) （2025）
 - [VGGT](.././papers/3d-reconstruction/2025-vggt.md) （2025）
+- [WinT3R](.././papers/3d-reconstruction/2025-wint3r.md) （2025）
 - [Pi3](.././papers/3d-reconstruction/2026-pi3.md) （2026）
 - [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) （2026）
 
@@ -184,6 +242,8 @@
 ## gaussian-splatting
 
 - [3DGS](.././papers/3d-reconstruction/2023-3dgs.md) （2023）
+- [MV-DUSt3R+](.././papers/3d-reconstruction/2024-mv-dust3r.md) （2024）
+- [HunyuanWorld-Mirror](.././papers/3d-reconstruction/2025-hunyuanworld-mirror.md) （2025）
 
 ## generalizable-matching
 
@@ -193,9 +253,37 @@
 
 - [LingBot-Map](.././papers/3d-reconstruction/2026-lingbot-map.md) （2026）
 
+## geometric-prior-adapter
+
+- [OmniVGGT](.././papers/3d-reconstruction/2025-omnivggt.md) （2025）
+
+## global-alignment-optimization
+
+- [MonST3R](.././papers/3d-reconstruction/2025-monst3r.md) （2025）
+
+## global-fusion-transformer
+
+- [Fast3R](.././papers/3d-reconstruction/2025-fast3r.md) （2025）
+
+## gpu-real-time-reconstruction
+
+- [KinectFusion](.././papers/3d-reconstruction/2011-kinectfusion.md) （2011）
+
+## gradient-histogram-descriptor
+
+- [SIFT](.././papers/3d-reconstruction/2004-sift.md) （2004）
+
 ## gram-anchoring
 
 - [DINOv3](.././papers/vision-foundation-models/2025-dinov3.md) （2025）
+
+## hand-crafted-local-features
+
+- [SIFT](.././papers/3d-reconstruction/2004-sift.md) （2004）
+
+## hash-encoding
+
+- [Instant-NGP](.././papers/3d-reconstruction/2022-instant-ngp.md) （2022）
 
 ## incremental-structure-from-motion
 
@@ -208,6 +296,10 @@
 ## label-propagation-from-videos
 
 - [GIM](.././papers/image-matching/2024-gim.md) （2024）
+
+## layer-flow-matching
+
+- [X-Mind](.././papers/world-models/2026-x-mind.md) （2026）
 
 ## lightglue-style-matcher
 
@@ -241,9 +333,26 @@
 
 - [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) （2025）
 
+## monocular-depth-prior
+
+- [MegaSaM](.././papers/3d-reconstruction/2025-megasam.md) （2025）
+
 ## motion-averaging
 
 - [Reloc3r](.././papers/visual-localization/2025-reloc3r.md) （2025）
+
+## multi-task-geometry
+
+- [HunyuanWorld-Mirror](.././papers/3d-reconstruction/2025-hunyuanworld-mirror.md) （2025）
+
+## multi-view-transformer
+
+- [MV-DUSt3R+](.././papers/3d-reconstruction/2024-mv-dust3r.md) （2024）
+- [Fast3R](.././papers/3d-reconstruction/2025-fast3r.md) （2025）
+
+## multimodal-fusion
+
+- [OmniVGGT](.././papers/3d-reconstruction/2025-omnivggt.md) （2025）
 
 ## neural-implicit-representation
 
@@ -252,10 +361,14 @@
 ## neural-radiance-field
 
 - [NeRF](.././papers/3d-reconstruction/2020-nerf.md) （2020）
+- [Instant-NGP](.././papers/3d-reconstruction/2022-instant-ngp.md) （2022）
 
 ## online-streaming-reconstruction
 
+- [Spann3R](.././papers/3d-reconstruction/2024-spann3r.md) （2024）
 - [CUT3R](.././papers/3d-reconstruction/2025-cut3r.md) （2025）
+- [TTT3R](.././papers/3d-reconstruction/2025-ttt3r.md) （2025）
+- [WinT3R](.././papers/3d-reconstruction/2025-wint3r.md) （2025）
 
 ## patchmatch-multi-view-stereo
 
@@ -273,9 +386,16 @@
 
 - [DUSt3R](.././papers/3d-reconstruction/2023-dust3r.md) （2023）
 - [MASt3R](.././papers/3d-reconstruction/2024-mast3r.md) （2024）
+- [MV-DUSt3R+](.././papers/3d-reconstruction/2024-mv-dust3r.md) （2024）
+- [Spann3R](.././papers/3d-reconstruction/2024-spann3r.md) （2024）
 - [CUT3R](.././papers/3d-reconstruction/2025-cut3r.md) （2025）
+- [Fast3R](.././papers/3d-reconstruction/2025-fast3r.md) （2025）
+- [HunyuanWorld-Mirror](.././papers/3d-reconstruction/2025-hunyuanworld-mirror.md) （2025）
 - [MapAnything](.././papers/3d-reconstruction/2025-mapanything.md) （2025）
+- [MonST3R](.././papers/3d-reconstruction/2025-monst3r.md) （2025）
+- [STream3R](.././papers/3d-reconstruction/2025-stream3r.md) （2025）
 - [VGGT](.././papers/3d-reconstruction/2025-vggt.md) （2025）
+- [WinT3R](.././papers/3d-reconstruction/2025-wint3r.md) （2025）
 
 ## predicted-covariance
 
@@ -284,9 +404,15 @@
 ## predictive-world-model
 
 - [X-Foresight](.././papers/world-models/2026-x-foresight.md) （2026）
+- [X-Mind](.././papers/world-models/2026-x-mind.md) （2026）
+
+## projective-icp
+
+- [KinectFusion](.././papers/3d-reconstruction/2011-kinectfusion.md) （2011）
 
 ## promptable-reconstruction
 
+- [HunyuanWorld-Mirror](.././papers/3d-reconstruction/2025-hunyuanworld-mirror.md) （2025）
 - [MapAnything](.././papers/3d-reconstruction/2025-mapanything.md) （2025）
 
 ## radiance-field
@@ -300,6 +426,10 @@
 ## reconstruction-conditioned-generation
 
 - [Xiaomi Auto World Model / JointWM](.././papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
+
+## recurrent-block-diffusion
+
+- [X-Mind](.././papers/world-models/2026-x-mind.md) （2026）
 
 ## reference-free-reconstruction
 
@@ -326,6 +456,10 @@
 
 - [X-Cache](.././papers/efficient-training-inference/2026-x-cache.md) （2026）
 
+## scale-space-detector
+
+- [SIFT](.././papers/3d-reconstruction/2004-sift.md) （2004）
+
 ## scene-coordinate-regression
 
 - [MARePo](.././papers/visual-localization/2024-marepo.md) （2024）
@@ -347,6 +481,10 @@
 
 - [GIM](.././papers/image-matching/2024-gim.md) （2024）
 
+## sliding-window
+
+- [WinT3R](.././papers/3d-reconstruction/2025-wint3r.md) （2025）
+
 ## sparse-feature-matching
 
 - [LightGlue](.././papers/image-matching/2023-lightglue.md) （2023）
@@ -356,17 +494,34 @@
 
 - [Xiaomi Auto World Model / JointWM](.././papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
 
+## spatial-memory
+
+- [Spann3R](.././papers/3d-reconstruction/2024-spann3r.md) （2024）
+
 ## stateful-recurrent-model
 
 - [CUT3R](.././papers/3d-reconstruction/2025-cut3r.md) （2025）
+- [TTT3R](.././papers/3d-reconstruction/2025-ttt3r.md) （2025）
 
 ## streaming-3d-reconstruction
 
 - [LingBot-Map](.././papers/3d-reconstruction/2026-lingbot-map.md) （2026）
 
+## streaming-reconstruction
+
+- [STream3R](.././papers/3d-reconstruction/2025-stream3r.md) （2025）
+
+## structure-from-motion
+
+- [MegaSaM](.././papers/3d-reconstruction/2025-megasam.md) （2025）
+
 ## superglue-successor
 
 - [LightGlue](.././papers/image-matching/2023-lightglue.md) （2023）
+
+## test-time-training
+
+- [TTT3R](.././papers/3d-reconstruction/2025-ttt3r.md) （2025）
 
 ## transformer
 
@@ -393,13 +548,23 @@
 
 - [DreamZero](.././papers/world-models/2026-dreamzero.md) （2026）
 
+## visual-chain-of-thought-vla
+
+- [X-Mind](.././papers/world-models/2026-x-mind.md) （2026）
+
 ## visual-geometry-foundation-model
 
+- [OmniVGGT](.././papers/3d-reconstruction/2025-omnivggt.md) （2025）
 - [VGGT](.././papers/3d-reconstruction/2025-vggt.md) （2025）
 
 ## volume-rendering
 
 - [NeRF](.././papers/3d-reconstruction/2020-nerf.md) （2020）
+- [Instant-NGP](.././papers/3d-reconstruction/2022-instant-ngp.md) （2022）
+
+## volumetric-tsdf-fusion
+
+- [KinectFusion](.././papers/3d-reconstruction/2011-kinectfusion.md) （2011）
 
 ## world-action-model
 

@@ -180,7 +180,7 @@ $$ L_{\text{pointmap}} = \sum_i \left( C_i \, \big\lVert f_{\log}(\hat{X}_i / \h
 - 是否值得复现：推理级复现值得（可 prompt + 度量，适合有先验的机器人/自驾场景）；从头训练非必要，除非做数据/架构实验。商用务必用 Apache 版权重。
 
 ## 8. 后续动作
-- [ ] 更新 `indices/papers.md`
-- [ ] 更新 `indices/directions.md`
-- [ ] 更新 `reports/feedforward_3d_reconstruction_compare.md` 中的 MapAnything 条目
+- [x] 更新 `indices/papers.md`
+- [x] 更新 `indices/directions.md`
+- [x] 更新 `reports/feedforward_3d_reconstruction_compare.md` 中的 MapAnything 条目
 - [ ] 若计划复现，创建 `reproductions/3d-reconstruction/mapanything/README.md`

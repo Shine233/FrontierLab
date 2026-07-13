@@ -22,6 +22,12 @@
 - 链接：[DUSt3R](.././papers/3d-reconstruction/2023-dust3r.md)
 - 核心：把无标定两视图重建统一为回归共享坐标系下的稠密 pointmap，抛开投影相机模型的硬约束，一个前馈网络同时给出深度、匹配与位姿。
 
+## Instant-NGP （2022）
+
+- 链接：[Instant-NGP](.././papers/3d-reconstruction/2022-instant-ngp.md)
+- 核心：用多分辨率哈希表存可训练特征向量替代位置编码/大 MLP，配合全融合 CUDA 内核，把 NeRF 等神经图元的训练从数小时压到数秒，质量不降。
+- 基于：2020-nerf
+
 ## NeRF （2020）
 
 - 链接：[NeRF](.././papers/3d-reconstruction/2020-nerf.md)
@@ -31,3 +37,13 @@
 
 - 链接：[COLMAP](.././papers/3d-reconstruction/2016-colmap.md)
 - 核心：把增量式 SfM 与逐像素视图选择的 PatchMatch MVS 工程化打磨到鲁棒可用，成为无序图像三维重建的事实标准与长期 benchmark 基线。
+
+## KinectFusion （2011）
+
+- 链接：[KinectFusion](.././papers/3d-reconstruction/2011-kinectfusion.md)
+- 核心：用 GPU 把「实时 TSDF 体素融合 + 投影式 point-to-plane ICP、且始终对全局融合模型（而非上一帧）做跟踪」跑到 30Hz，开创手持深度相机的实时稠密重建范式。
+
+## SIFT （2004）
+
+- 链接：[SIFT](.././papers/3d-reconstruction/2004-sift.md)
+- 核心：用高斯差分尺度空间检测尺度/旋转不变的关键点，并以梯度方向直方图构造 128 维局部描述子，让局部特征在尺度、旋转、光照、小幅仿射变化下稳定可匹配——奠定了此后二十年特征匹配与 SfM 前端的工程范式。

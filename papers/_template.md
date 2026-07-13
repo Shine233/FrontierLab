@@ -135,7 +135,7 @@ updated: 2026-05-08
 
 ## 8. 后续动作
 
-- [ ] 更新 `indices/papers.md`
-- [ ] 更新 `indices/directions.md`
+- [x] 更新 `indices/papers.md`
+- [x] 更新 `indices/directions.md`
 - [ ] 若有相似方法，更新或创建 `comparisons/<direction>/<topic>.md`
 - [ ] 若计划复现，创建 `reproductions/<direction>/<method>/README.md`

@@ -16,7 +16,9 @@
 - 3d-reconstruction：历史脉络见 comparisons/3d-reconstruction/development-survey.md（2000-2026 全景）。
   - 已补（2026-07-01）：COLMAP/NeRF/DUSt3R/3DGS/VGGT + MASt3R/MapAnything/CUT3R；前馈链 DUSt3R→MASt3R→VGGT→MapAnything/CUT3R 成形。
   - **全 12 篇已深度化（2026-07-02）**：架构解析/核心原理/关键公式(LaTeX)/训练推理/效果性能小节 + 嵌入 arXiv 关键插图（存 assets/，标来源）。公式经 scripts/fix_inline_math.py 修复 GitHub 渲染。
-  - 仍缺（对比报告提及但无独立分析）：OmniVGGT、HunyuanWorld-Mirror、MonST3R、MegaSaM、Stream3R、Wint3R、TTT3R、Spann3R、Fast3R、MV-DUSt3R。
+  - **survey 缺口全部补齐（2026-07-10，+13 篇深度）**：SIFT/KinectFusion/Instant-NGP（历史 landmark）+ Spann3R/Fast3R/MV-DUSt3R/MonST3R/MegaSaM/Stream3R/Wint3R/TTT3R/OmniVGGT/HunyuanWorld-Mirror。development-survey.md 的 🟡/⬜ 已清零，本方向独立分析共 25 篇。注：MegaSaM 非 landmark（强但非奠基）；Fast3R 实为 CVPR 2025（slug 2025-fast3r）。
+  - beginner 前置知识地图：learning/3d-reconstruction-prerequisites.md（几何数学→Transformer/ViT→自监督→SfM/BA/NeRF/3DGS，deep 格式 + matplotlib 自绘配图，脚本 scripts/gen_prereq_figs.py）。
+- world-models：X-Mind（2026-x-mind，小鹏 X- 系列，arXiv 2606.28758）已入库并纳入 xpeng-x-series-world-models.md 对比。注意 arXiv 2604.20289 是 X-Cache（已在 efficient-training-inference），非新论文。
 - 其余方向缺口随阅读补充。
 
 ## 未完成意图

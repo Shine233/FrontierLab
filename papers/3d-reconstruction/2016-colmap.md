@@ -204,6 +204,6 @@ $$ \psi_l^m \;=\; \big\lVert \, x_l - H_l^m H_l\, x_l \, \big\rVert, \qquad \xi_
 - **是否值得复现**：作为**工具直接使用**而非「复现算法」；建议纳入评测 / 真值生成基线，与 feed-forward 方法对照。
 
 ## 8. 后续动作
-- [ ] 更新 `indices/papers.md`
-- [ ] 更新 `indices/directions.md`
-- [ ] 维护 `comparisons/3d-reconstruction/scene-representation-paradigms.md` 与 `development-survey.md` 中 COLMAP 条目
+- [x] 更新 `indices/papers.md`
+- [x] 更新 `indices/directions.md`
+- [x] 维护 `comparisons/3d-reconstruction/scene-representation-paradigms.md` 与 `development-survey.md` 中 COLMAP 条目

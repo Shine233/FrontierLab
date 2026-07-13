@@ -51,8 +51,8 @@ timeline
 
 | 状态 | 年份 | 工作 | 为什么是里程碑 | 分析文件 |
 |---|---:|---|---|---|
-| ⬜ | 2004 | SIFT + 多视图几何 | 特征匹配 + 对极几何/SfM 的理论与工程基石 | 待补 |
-| ⬜ | 2011 | KinectFusion | 实时稠密 TSDF 重建，深度相机重建代表 | 待补 |
+| ✅ | 2004 | SIFT | 尺度不变特征，特征匹配 + 对极几何/SfM 的理论与工程基石 | [2004-sift](../../papers/3d-reconstruction/2004-sift.md) |
+| ✅ | 2011 | KinectFusion | 实时稠密 TSDF 重建 + ICP 跟踪，深度相机重建代表 | [2011-kinectfusion](../../papers/3d-reconstruction/2011-kinectfusion.md) |
 | ✅ | 2016 | COLMAP | SfM/MVS 事实标准，至今是重建/位姿 benchmark 基线 | [2016-colmap](../../papers/3d-reconstruction/2016-colmap.md) |
 | ✅ | 2020 | NeRF | 神经隐式场景表示，重建/新视图合成分水岭 | [2020-nerf](../../papers/3d-reconstruction/2020-nerf.md) |
 
@@ -60,7 +60,7 @@ timeline
 
 | 状态 | 年份 | 工作 | 定位 | 分析文件 |
 |---|---:|---|---|---|
-| ⬜ | 2022 | Instant-NGP / Mip-NeRF | NeRF 加速与抗锯齿 | 待补（可选） |
+| ✅ | 2022 | Instant-NGP | 多分辨率哈希编码，把 NeRF 训练/推理加速数量级 | [2022-instant-ngp](../../papers/3d-reconstruction/2022-instant-ngp.md) |
 | ✅ | 2023 | 3D Gaussian Splatting | 显式实时可微渲染，当前主流场景表示 | [2023-3dgs](../../papers/3d-reconstruction/2023-3dgs.md) |
 | ✅ | 2023 | DUSt3R | 前馈两视图 pointmap，开启"无位姿前馈重建"范式 | [2023-dust3r](../../papers/3d-reconstruction/2023-dust3r.md) |
 
@@ -69,18 +69,23 @@ timeline
 | 状态 | 年份 | 工作 | 定位 | 分析文件 |
 |---|---:|---|---|---|
 | ✅ | 2024 | MASt3R / MASt3R-SfM | DUSt3R + 局部特征匹配 | [2024-mast3r](../../papers/3d-reconstruction/2024-mast3r.md) |
-| ⬜ | 2024 | Spann3R / Fast3R / MV-DUSt3R | 多视图 / 在线 / 加速扩展 | 待补 |
+| ✅ | 2024 | Spann3R | DUSt3R + 空间记忆，在线增量重建、去全局对齐 | [2024-spann3r](../../papers/3d-reconstruction/2024-spann3r.md) |
+| ✅ | 2025 | Fast3R | 一次前向重建 1000+ 图，多视图并行 | [2025-fast3r](../../papers/3d-reconstruction/2025-fast3r.md) |
+| ✅ | 2024 | MV-DUSt3R+ | 稀疏多视图单阶段重建（2 秒级） | [2024-mv-dust3r](../../papers/3d-reconstruction/2024-mv-dust3r.md) |
 | ✅ | 2025 | VGGT | 前馈视觉几何基础模型核心（CVPR 2025 Best Paper） | [2025-vggt](../../papers/3d-reconstruction/2025-vggt.md) |
 | ✅ | 2025 | Depth Anything 3 | 任意视角 depth-ray 几何统一输出 | [2025-depth-anything-3](../../papers/3d-reconstruction/2025-depth-anything-3.md) |
 | ✅ | 2025 | MapAnything | metric promptable 几何，自动驾驶主候选 | [2025-mapanything](../../papers/3d-reconstruction/2025-mapanything.md) |
-| 🟡 | 2025 | OmniVGGT | VGGT 几何先验 adapter | 见 [feedforward 对比](../../reports/feedforward_3d_reconstruction_compare.md) |
-| 🟡 | 2025 | HunyuanWorld-Mirror | any-prior 世界重建 / 3DGS / NVS | 见 [feedforward 对比](../../reports/feedforward_3d_reconstruction_compare.md) |
+| ✅ | 2025 | OmniVGGT | VGGT 几何先验 adapter，注入 any-prior | [2025-omnivggt](../../papers/3d-reconstruction/2025-omnivggt.md) |
+| ✅ | 2025 | HunyuanWorld-Mirror | any-prior 世界重建 / 3DGS / NVS | [2025-hunyuanworld-mirror](../../papers/3d-reconstruction/2025-hunyuanworld-mirror.md) |
 | ✅ | 2025 | CUT3R | 持续状态在线 / 流式重建 | [2025-cut3r](../../papers/3d-reconstruction/2025-cut3r.md) |
-| 🟡 | 2025 | MonST3R / MegaSaM | 动态重建 | 见 [streaming 对比](streaming-3d-reconstruction.md) |
+| ✅ | 2025 | MonST3R | 动态场景逐帧 pointmap | [2025-monst3r](../../papers/3d-reconstruction/2025-monst3r.md) |
+| ✅ | 2025 | MegaSaM | 随手拍动态视频的快速鲁棒 SfM + 一致深度 | [2025-megasam](../../papers/3d-reconstruction/2025-megasam.md) |
 | ✅ | 2026 | VGGT-Ω | VGGT scaling + register attention + 动态 | [2026-vggt-omega](../../papers/3d-reconstruction/2026-vggt-omega.md) |
 | ✅ | 2026 | Pi3 | permutation-equivariant reference-free 几何 | [2026-pi3](../../papers/3d-reconstruction/2026-pi3.md) |
 | ✅ | 2026 | LingBot-Map | streaming pose/depth/point cloud 建图 | [2026-lingbot-map](../../papers/3d-reconstruction/2026-lingbot-map.md) |
-| 🟡 | 2026 | Stream3R / Wint3R / TTT3R | streaming 重建 baseline | 见 [streaming 对比](streaming-3d-reconstruction.md) |
+| ✅ | 2025 | Stream3R | causal transformer 流式重建 | [2025-stream3r](../../papers/3d-reconstruction/2025-stream3r.md) |
+| ✅ | 2025 | Wint3R | windowed streaming 重建 | [2025-wint3r](../../papers/3d-reconstruction/2025-wint3r.md) |
+| ✅ | 2025 | TTT3R | test-time training 流式重建 | [2025-ttt3r](../../papers/3d-reconstruction/2025-ttt3r.md) |
 
 ### 跨方向关联（已分析，direction 含 3d-reconstruction）
 
@@ -91,9 +96,8 @@ timeline
 
 ## 3. 已分析 vs 待补充 小结
 
-- **已独立分析（3d-recon 主目录，12 篇）：** COLMAP、NeRF、DUSt3R、3D Gaussian Splatting、MASt3R、VGGT、Depth Anything 3、MapAnything、CUT3R、VGGT-Ω、Pi3、LingBot-Map（历史锚点 2016→2020→2023 已拉通，前馈范式链 DUSt3R→MASt3R→VGGT→MapAnything/CUT3R 已成形）。
-- **仅对比报告提及、无独立分析：** OmniVGGT、HunyuanWorld-Mirror、MonST3R、MegaSaM、Stream3R、Wint3R、TTT3R、Spann3R、Fast3R、MV-DUSt3R。
-- **完全未纳入（历史里程碑）：** KinectFusion、SIFT/SfM、Instant-NGP（可选）。
+- **已独立分析（3d-recon 主目录，25 篇）：** 历史里程碑 SIFT(2004)、KinectFusion(2011)、COLMAP(2016)、NeRF(2020)、Instant-NGP(2022)、3DGS(2023) 已补齐；前馈谱系 DUSt3R(2023)→MASt3R(2024)→{Spann3R、Fast3R、MV-DUSt3R}→VGGT(2025)→{Depth Anything 3、MapAnything、CUT3R、OmniVGGT、HunyuanWorld-Mirror}→{VGGT-Ω、Pi3、LingBot-Map}(2026) 全部入库；动态/流式分支 MonST3R、MegaSaM、Stream3R、Wint3R、TTT3R 亦已补齐。
+- **本方向 survey 已全部落地为独立分析文件**，🟡/⬜ 清零。后续新论文按 paper-read SOP 增量补入并同步本表。
 
 ## 4. 补全路线（优先级）
 

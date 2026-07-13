@@ -1,10 +1,10 @@
 ---
 type: method-comparison
-title: "XPeng X 系列自动驾驶世界模型横向对比：X-World / X-Cache / X-Foresight"
+title: "XPeng X 系列自动驾驶世界模型横向对比：X-World / X-Cache / X-Foresight / X-Mind"
 direction: [world-models, robotics-autonomous-driving, generation-diffusion, efficient-training-inference]
-methods: [X-World, X-Cache, X-Foresight, Xiaomi Auto World Model]
+methods: [X-World, X-Cache, X-Foresight, X-Mind, Xiaomi Auto World Model]
 status: initial-completed
-updated: 2026-06-08
+updated: 2026-07-10
 ---
 
 # XPeng X 系列自动驾驶世界模型横向对比
@@ -14,8 +14,9 @@ updated: 2026-06-08
 - **X-World 是核心生成式仿真器**：它把 7 相机历史和未来自车动作转成未来多相机视频，目标是 closed-loop evaluation、online RL 和可控场景编辑。
 - **X-Cache 是 X-World 的推理加速层**：不训练、不改权重，利用连续 chunk 的 DiT block residual 冗余，报告 71% skip 和 2.6-2.7x DiT wall-clock speedup。
 - **X-Foresight 是 VLA/LDM 内部预测式世界模型**：把 long-horizon future prediction 接入动作控制，报告 collision rate 相对 baseline 下降 16.2%，并用 X-World 初始化 renderer。
-- **三者是系统链路而非互斥 baseline**：X-World 提供可交互世界，X-Cache 让它更快，X-Foresight 把“预见未来”变成规划模型的训练/推理能力。
-- **共同限制**：三篇都是 2026 arXiv/项目页技术报告，代码、权重、训练数据、license 均未公开；当前复现全部 blocked，只适合方法跟踪和设计借鉴。
+- **X-Mind 把预测式世界模型做成 VLA 的「视觉思维链」**：用 Deep Compression Autoencoder 把 12 帧未来压成 96 token 的 world-model sketch，配 Recurrent Block Diffusion 在 LLM Block 间做去噪，让 Large Drive Model 在决策前先「想象」未来再规划——是 X-Foresight「预见未来」思路更进一步的高压缩、可内嵌变体。
+- **四者是系统链路而非互斥 baseline**：X-World 提供可交互世界，X-Cache 让它更快，X-Foresight 把「预见未来」接入规划，X-Mind 把这套预测压进 VLA 内部当推理。
+- **共同限制**：四篇都是 2026 arXiv/项目页技术报告，代码、权重、训练数据、license 均未公开；当前复现全部 blocked，只适合方法跟踪和设计借鉴。
 
 ## 方法定位
 
@@ -24,6 +25,7 @@ updated: 2026-06-08
 | [X-World](../../papers/world-models/2026-x-world.md) | 可控多相机闭环世界仿真 | 7 相机历史、未来 ego actions、dynamic/static controls、camera params、text prompt | 未来 7 相机视频 | WAN 2.2 / DiT latent video、view-temporal attention、decoupled conditions、causal chunk、4-step denoising、rolling KV cache | XPeng X 系列核心生成式 simulator |
 | [X-Cache](../../papers/efficient-training-inference/2026-x-cache.md) | few-step AR 世界模型推理太慢 | 当前 chunk block input、上一 chunk cached residual/fingerprint、action condition、KV update state | 跳过/计算 DiT block 的决策与近似 residual 输出 | cross-chunk residual caching、dual-metric gating、KV-update protection、adaptive threshold | X-World 部署加速层 |
 | [X-Foresight](../../papers/world-models/2026-x-foresight.md) | VLA 缺少未来预测和长时因果 | 多相机历史、instructions、action/state tokens、query/camera tokens | 未来动作/轨迹、camera tokens、未来多相机图像 | chunk-wise AR predictive world modeling、CLEF、TIS、X-World-initialized diffusion renderer | VLA/Large Drive Model 的预测式世界知识模块 |
+| [X-Mind](../../papers/world-models/2026-x-mind.md) | 端到端驾驶的高效视觉思维链 | text/status/multi-view/trajectory token | 96-token 未来 sketch + 规划动作 | Deep Compression Autoencoder（12 帧→96 token）、Recurrent Block Diffusion、Layer Flow Matching、BEV+抽象先验 mental canvas | 把预测式世界模型内嵌为 VLA 的推理步 |
 | [Xiaomi Auto World Model / JointWM](../../papers/world-models/2026-xiaomi-auto-world-model.md) | 重建与生成联合的自动驾驶世界模型 | 多相机时序、轨迹、地图/文本、WorldRec rendered priors | 4D Gaussian scene representation 和未来多相机视频 | WorldRec sparse 3D queries + WorldGen causal DiT + rendered-prior conditioning | 同方向外部参照：重建-生成耦合路线 |
 
 ## 开源与复现状态
@@ -33,6 +35,7 @@ updated: 2026-06-08
 | X-World | 无公开 GitHub | 否 | 否 | 未公开 | XPeng internal | Unknown | blocked-code-unavailable |
 | X-Cache | 无公开 GitHub | 否 | 否 | 不适用/依赖 X-World 权重，未公开 | XPeng internal held-out split | Unknown | blocked-code-unavailable |
 | X-Foresight | 无公开 GitHub | 否 | 否 | 未公开 | XPeng internal 280k hours / 34M clips / 13.8T tokens | Unknown | blocked-code-unavailable |
+| X-Mind | 无公开 GitHub | 否 | 否 | 未公开 | XPeng internal driving data | Unknown | blocked-code-unavailable |
 | Xiaomi Auto World Model | 无公开 GitHub | 否 | 否 | 未公开 | Waymo / nuScenes + private data；训练数据未公开 | Unknown | blocked-code-unavailable |
 
 ## 关键指标和证据强度
@@ -42,6 +45,7 @@ updated: 2026-06-08
 | X-World | 7 相机 12 FPS 数据 schema；81 帧 Stage-I；4-step Stage-II；24s multi-camera rollout；动作/动态体/静态元素/外观控制 demos | 中：系统设计清楚，但主要是 qualitative | 缺公开 benchmark 数值表、闭环指标协议、代码/权重 |
 | X-Cache | 13 个 22s clips；71.3-71.6% skip；2.65-2.70x DiT speedup；7-cam SSIM 约 0.999；KV protection ablation | 高：对加速目标有明确表格和 ablation | 只对 full-compute reference fidelity，不证明世界真实性；内部数据/硬件不可复跑 |
 | X-Foresight | H=1/6/21、CL/CLEF/TIS、1024 GPU production comparison；collision 0.228% -> 0.191%；Vision Renderer 6s FID/FVD 2.84/29.52 | 高：有规划和渲染表格 | 内部 baseline/CCES 不透明；数据和模型不可复跑 |
+| X-Mind | Table 1/2：Base+Sketch 仅加 96 token 把 6s ADE 从 0.2399/1.2979 降到 0.1765/1.1849，延迟仅 1.1×（vs Image 22× / 3DGS 19×）；RBD 把 FID 从 67.30 降到 9.59 | 中高：有清晰消融表证明「96-token sketch + RBD」的效率-质量优势 | 全内部数据 / baseline，无公开 benchmark、无 collision/闭环指标；DC-AE 依赖外部工作 |
 | JointWM | WorldRec Waymo/nuScenes PSNR/SSIM；WorldGen nuScenes FID/FVD/frames/time；JointWM qualitative consistency | 中高：重建/生成有表格，联合部分偏 qualitative | 无代码/权重；JointWM 稳定性缺数值协议 |
 
 ## 工程链路理解
@@ -97,4 +101,5 @@ X-Foresight:
 - X-World: <https://arxiv.org/abs/2603.19979>, <https://x-world-1.github.io>
 - X-Cache: <https://arxiv.org/abs/2604.20289>, <https://x-cache-1.github.io/en/>
 - X-Foresight: <https://arxiv.org/abs/2605.24892>, <https://x-foresight-1.github.io/en/>
+- X-Mind: <https://arxiv.org/abs/2606.28758>
 - Xiaomi Auto World Model / JointWM: <https://arxiv.org/abs/2605.18137>, <https://JointWM.github.io>

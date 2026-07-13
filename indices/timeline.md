@@ -10,31 +10,42 @@
 - [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) — 把 VGGT 类 feed-forward 视觉几何 Transformer 从静态场景推向可扩展的 foundation model：用 register attention 降低跨帧全局注意力开销，用单 dense head + 多任务损失简化架构，再靠大规模动态视频标注与 teacher-student 自监督把模型和数据都推大一个量级，让 reconstruction token 本身成为可复用的空间表征。
 - [X-Cache](.././papers/efficient-training-inference/2026-x-cache.md) — 
 - [X-Foresight](.././papers/world-models/2026-x-foresight.md) — 把预测式世界模型嵌入 VLA，用 chunk-wise 自回归同时预测未来视觉与动作，以'预见未来'提升驾驶规划的安全性与长期因果。
+- [X-Mind](.././papers/world-models/2026-x-mind.md) — 把预测式世界模型内化为 VLA 的 Visual Chain-of-Thought：先在 BEV+驾驶先验的抽象 sketch 上'脑补'12 帧未来（DC-AE 压成 96 token），再由此规划动作；用 recurrent block diffusion 把去噪折叠进大模型一次前向。
 - [X-World](.././papers/world-models/2026-x-world.md) — 
 - [Xiaomi Auto World Model / JointWM](.././papers/world-models/2026-xiaomi-auto-world-model.md) — 
 
-方向分布：3d-reconstruction: 6, dense-vision: 2, efficient-training-inference: 1, evaluation-benchmarks: 8, generation-diffusion: 5, image-matching: 1, robotics-autonomous-driving: 9, vision-foundation-models: 1, visual-localization: 2, world-models: 5
+方向分布：3d-reconstruction: 6, dense-vision: 2, efficient-training-inference: 2, evaluation-benchmarks: 8, generation-diffusion: 6, image-matching: 1, robotics-autonomous-driving: 10, vision-foundation-models: 1, visual-localization: 2, world-models: 6
 
 ## 2025
 
 - [CUT3R](.././papers/3d-reconstruction/2025-cut3r.md) — 用一个带持久状态的循环模型在线处理图像流，每来一帧就更新内部状态并读出度量尺度点图，把前馈 pointmap 重建从离线成对处理推进到流式在线累积。
 - [Depth Anything 3](.././papers/3d-reconstruction/2025-depth-anything-3.md) — 用单个预训练 plain transformer + depth-ray 双目标，把任意视角视觉几何压成两张 dense map
 - [DINOv3](.././papers/vision-foundation-models/2025-dinov3.md) — 用 Gram anchoring 约束 patch 相似度矩阵，在把 DINO 自监督扩展到 ViT-7B/1.7B 图像时防止 dense feature 退化
+- [Fast3R](.././papers/3d-reconstruction/2025-fast3r.md) — 把 DUSt3R 的成对点图回归 + 全局对齐，改成一个「所有视图并行进同一个融合 Transformer、一次前向直接输出全局对齐点图」的架构，从而在单次前向里重建 1000+ 张无序无位姿图像。
+- [HunyuanWorld-Mirror](.././papers/3d-reconstruction/2025-hunyuanworld-mirror.md) — 一个前馈 Transformer 用「任意先验提示（Any-Prior Prompting）」把内参/位姿/深度等可选几何先验编码成 token 注入网络，单次前馈同时输出稠密点云、多视深度、相机参数、表面法向与 3D Gaussians；有先验则精度进一步提升，无先验退化为纯 RGB 重建。
 - [MapAnything](.././papers/3d-reconstruction/2025-mapanything.md) — 一个统一前馈 Transformer 接收任意数量图像及可选先验（内参/位姿/深度/部分重建），用「射线方向 + 逐像素深度 + 相机位姿 + 单一度量尺度因子」的因子化表示，单次前馈直接回归全局一致的度量 3D 几何与相机。
+- [MegaSaM](.././papers/3d-reconstruction/2025-megasam.md) — 把 DROID-SLAM 式深度视觉 SLAM 用单目深度先验初始化、加不确定性感知的可微 BA 与运动概率图，做成能处理随手拍动态视频的快速鲁棒 SfM+一致视频深度系统，无需已知焦距。
+- [MonST3R](.././papers/3d-reconstruction/2025-monst3r.md) — 把 DUSt3R 的成对点图表示直接搬到动态场景——每帧输出一张 per-timestep 点图，用极少量以合成动态数据为主的微调唤醒模型对运动物体的几何先验，再配一个含光流/平滑约束的全局对齐求解相机位姿与视频深度，无需显式运动建模。
+- [OmniVGGT](.././papers/3d-reconstruction/2025-omnivggt.md) — 在冻结的 VGGT 主干上挂一个零初始化的几何先验适配器（GeoAdapter），随机丢弃/组合任意数量的深度、相机内外参先验，让同一模型在纯 RGB 与「任意先验组合」下都能前馈重建，并按先验多寡单调涨点。
 - [Reloc3r](.././papers/visual-localization/2025-reloc3r.md) — 
 - [RoMa v2](.././papers/image-matching/2025-romav2.md) — 
+- [STream3R](.././papers/3d-reconstruction/2025-stream3r.md) — 把多视图 pointmap 预测重构成 decoder-only 因果 Transformer，用 causal attention 顺序处理帧，边到达边重建，兼容 LLM 风格训练基建。
+- [TTT3R](.././papers/3d-reconstruction/2025-ttt3r.md) — 把循环式 3D 重建的状态更新重新解释成在线学习（test-time training），用状态与新观测之间的对齐置信度算出逐 token 自适应学习率，免训练地缓解 CUT3R 在长序列上的状态遗忘，从而在长程位姿上翻倍提升。
 - ★ [VGGT](.././papers/3d-reconstruction/2025-vggt.md) — 用一个纯前馈大型 Transformer 直接从 1~数百张图像回归相机参数、深度图、点图与 3D 点轨迹，在 1 秒内完成重建且无需后处理几何优化。
+- [WinT3R](.././papers/3d-reconstruction/2025-wint3r.md) — 用「大小为 4、步长 2、50% 重叠」的滑动窗口做局部帧间交互，配一个只存紧凑相机 token 的可扩展 camera token pool 做全局位姿，把流式前馈重建的质量-速度权衡推到 17 FPS 下的在线 SOTA。
 
-方向分布：3d-reconstruction: 6, dense-vision: 5, depth-estimation: 1, evaluation-benchmarks: 4, image-matching: 1, novel-view-synthesis: 1, robotics-autonomous-driving: 2, self-supervised-learning: 1, video-4d: 1, vision-foundation-models: 1, visual-localization: 2
+方向分布：3d-reconstruction: 14, dense-vision: 9, depth-estimation: 2, dynamic-scene: 1, evaluation-benchmarks: 4, image-matching: 1, novel-view-synthesis: 2, online-streaming: 1, robotics-autonomous-driving: 3, self-supervised-learning: 1, slam: 1, video-4d: 4, vision-foundation-models: 1, visual-localization: 2
 
 ## 2024
 
 - [GIM](.././papers/image-matching/2024-gim.md) — 
 - [MARePo](.././papers/visual-localization/2024-marepo.md) — 
 - ★ [MASt3R](.././papers/3d-reconstruction/2024-mast3r.md) — 在 DUSt3R 的 pointmap 前馈基座上加一个稠密局部特征匹配头与匹配损失，并用快速互易匹配（FRM）加速，把图像匹配当作 3D 问题来解，大幅提升匹配精度与视觉定位。
+- [MV-DUSt3R+](.././papers/3d-reconstruction/2024-mv-dust3r.md) — 把 DUSt3R 的两视图 pointmap 回归扩展成单阶段多视图前馈网络：多视图解码块在任意视图间交换信息、统一到一个参考视坐标系，再用 cross-reference 块融合多个参考视选择，2 秒内重建 24 视图场景，彻底去掉两两配对 + 全局优化。
 - [RoMa](.././papers/image-matching/2024-roma.md) — 
+- [Spann3R](.././papers/3d-reconstruction/2024-spann3r.md) — 给 DUSt3R 外挂一份可读写的空间记忆（spatial memory），逐帧查询已观测的 3D 信息，把成对点图直接预测到统一全局坐标系，从而去掉离线全局对齐、实现在线增量重建。
 
-方向分布：3d-reconstruction: 3, dense-vision: 1, evaluation-benchmarks: 3, image-matching: 2, robotics-autonomous-driving: 1, visual-localization: 4
+方向分布：3d-reconstruction: 5, dense-vision: 3, evaluation-benchmarks: 3, image-matching: 2, novel-view-synthesis: 1, online-streaming-reconstruction: 1, robotics-autonomous-driving: 1, visual-localization: 4
 
 ## 2023
 
@@ -44,6 +55,12 @@
 - [LightGlue](.././papers/image-matching/2023-lightglue.md) — 
 
 方向分布：3d-reconstruction: 3, dense-vision: 2, evaluation-benchmarks: 2, image-matching: 1, novel-view-synthesis: 1, self-supervised-learning: 1, vision-foundation-models: 1, visual-localization: 1
+
+## 2022
+
+- ★ [Instant-NGP](.././papers/3d-reconstruction/2022-instant-ngp.md) — 用多分辨率哈希表存可训练特征向量替代位置编码/大 MLP，配合全融合 CUDA 内核，把 NeRF 等神经图元的训练从数小时压到数秒，质量不降。
+
+方向分布：3d-reconstruction: 1, neural-rendering: 1, novel-view-synthesis: 1
 
 ## 2021
 
@@ -62,3 +79,15 @@
 - ★ [COLMAP](.././papers/3d-reconstruction/2016-colmap.md) — 把增量式 SfM 与逐像素视图选择的 PatchMatch MVS 工程化打磨到鲁棒可用，成为无序图像三维重建的事实标准与长期 benchmark 基线。
 
 方向分布：3d-reconstruction: 1, dense-vision: 1, evaluation-benchmarks: 1
+
+## 2011
+
+- ★ [KinectFusion](.././papers/3d-reconstruction/2011-kinectfusion.md) — 用 GPU 把「实时 TSDF 体素融合 + 投影式 point-to-plane ICP、且始终对全局融合模型（而非上一帧）做跟踪」跑到 30Hz，开创手持深度相机的实时稠密重建范式。
+
+方向分布：3d-reconstruction: 1, dense-vision: 1, slam: 1
+
+## 2004
+
+- ★ [SIFT](.././papers/3d-reconstruction/2004-sift.md) — 用高斯差分尺度空间检测尺度/旋转不变的关键点，并以梯度方向直方图构造 128 维局部描述子，让局部特征在尺度、旋转、光照、小幅仿射变化下稳定可匹配——奠定了此后二十年特征匹配与 SfM 前端的工程范式。
+
+方向分布：3d-reconstruction: 1, classical-computer-vision: 1, feature-matching: 1
