@@ -180,9 +180,58 @@ def depth_vs_pointmap():
     save(fig, "depth-vs-pointmap.png")
 
 
+# ------------------------------------------------ self- vs cross-attention
+def self_vs_cross_attention():
+    fig, axes = plt.subplots(1, 2, figsize=(10, 4.3))
+
+    def draw_seq(ax, x, labels, color, title):
+        ys = np.linspace(2.6, 0.4, len(labels))
+        pts = []
+        for y, lab in zip(ys, labels):
+            ax.add_patch(plt.Rectangle((x - 0.42, y - 0.16), 0.84, 0.32,
+                         fc=color, ec="black", lw=0.8, zorder=3))
+            ax.text(x, y, lab, ha="center", va="center", fontsize=9, zorder=4)
+            pts.append((x, y))
+        ax.text(x, 3.0, title, ha="center", fontsize=10, weight="bold")
+        return pts
+
+    # ---- self-attention: Q,K,V all from the SAME sequence ----
+    ax = axes[0]
+    src = draw_seq(ax, 0.8, ["tok1", "tok2", "tok3"], "#bee3f8", "同一组 token")
+    # highlight tok2 as the query, attending to all (incl. itself)
+    qx, qy = src[1]
+    for (kx, ky) in src:
+        ax.annotate("", xy=(kx + 0.42, ky), xytext=(qx, qy),
+                    arrowprops=dict(arrowstyle="->", color=RED, lw=1.3,
+                                    connectionstyle="arc3,rad=0.28"), zorder=2)
+    ax.text(qx, qy - 0.9, "Q 来自 tok2", ha="center", color=RED, fontsize=9)
+    ax.text(1.9, 1.5, "K,V 来自\n同一组", ha="center", color=BLUE, fontsize=9)
+    ax.set_title("自注意力 Self-Attention\nQ, K, V 同源（token 看自己人）", fontsize=11)
+    ax.set_xlim(0, 2.6); ax.set_ylim(0, 3.3); ax.axis("off")
+
+    # ---- cross-attention: Q from seq A, K/V from seq B ----
+    ax = axes[1]
+    a = draw_seq(ax, 0.7, ["A1", "A2"], "#fed7aa", "序列 A (Query)")
+    b = draw_seq(ax, 2.3, ["B1", "B2", "B3"], "#c6f6d5", "序列 B (Key/Value)")
+    for (qx, qy) in a:
+        for (kx, ky) in b:
+            ax.annotate("", xy=(kx - 0.42, ky), xytext=(qx + 0.42, qy),
+                        arrowprops=dict(arrowstyle="->", color=GREY, lw=0.8,
+                                        alpha=0.7), zorder=2)
+    ax.text(1.5, 0.05, "A 的 query 去看 B 的 key/value", ha="center",
+            color=ORANGE, fontsize=9)
+    ax.set_title("交叉注意力 Cross-Attention\nQ 来自 A，K/V 来自 B（跨序列对齐）", fontsize=11)
+    ax.set_xlim(0, 3.2); ax.set_ylim(-0.2, 3.3); ax.axis("off")
+
+    fig.suptitle("自注意力 vs 交叉注意力：区别只在 Q 与 K/V 是否同源",
+                 fontsize=12.5, y=1.02)
+    save(fig, "self-vs-cross-attn.png")
+
+
 if __name__ == "__main__":
     pinhole()
     epipolar()
     triangulation()
     depth_vs_pointmap()
+    self_vs_cross_attention()
     print("done")
