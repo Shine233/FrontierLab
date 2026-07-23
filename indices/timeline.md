@@ -3,8 +3,11 @@
 ## 2026
 
 - [DreamZero](.././papers/world-models/2026-dreamzero.md) — 
+- [FoundationGeo](.././papers/3d-reconstruction/2026-foundationgeo.md) — 两阶段单目度量几何：Stage-1 用 DINOv3 初始化的 ViT 在 10.2M 多域样本上训一个仿射不变（relative）点图模型；Stage-2 冻结/复用该 backbone，加一组逐像素空间标定场（scale field S + ray-direction 修正场 Δ）把 relative 几何显式桥接到 metric 尺度，产出度量一致的 3D point map。
 - [LingBot-Map](.././papers/3d-reconstruction/2026-lingbot-map.md) — 用 Geometric Context Attention 把流式状态拆成 anchor / local window / trajectory memory 三级上下文，在保持因果 streaming 的同时把每帧新增上下文从整图 token 压到少量 context token，实现万帧级实时在线 3D 重建。
 - [LoMa](.././papers/image-matching/2026-loma.md) — 
+- [MAGiSt3R](.././papers/3d-reconstruction/2026-magist3r.md) — 把 VGGT 这类前馈 3R 模型放进多智能体框架：逐 submap 前馈回归局部点图，用可学习的 MAGMA 合并模块在智能体内 (intra) 与智能体间 (inter) 统一坐标系，再用 pose graph optimization 抑制累积漂移，约 10 FPS 完成协作式重建与跟踪。
+- [MoGe-3](.././papers/3d-reconstruction/2026-moge3.md) — 把单目几何细化从 2D 图像空间搬到 3D 稀疏体素空间：coarse point map lift 成 voxel shell，用 sparse conv 按 3D 局部性聚合特征，避免跨深度不连续处特征混合，恢复细结构、输出 metric-scale point map
 - [Pi3](.././papers/3d-reconstruction/2026-pi3.md) — 去掉参考帧偏置，用置换等变架构 + 仿射不变位姿 + 尺度不变局部点图，实现任意视图 feed-forward 几何重建
 - [Reloc-VGGT](.././papers/visual-localization/2026-reloc-vggt.md) — 
 - [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) — 把 VGGT 类 feed-forward 视觉几何 Transformer 从静态场景推向可扩展的 foundation model：用 register attention 降低跨帧全局注意力开销，用单 dense head + 多任务损失简化架构，再靠大规模动态视频标注与 teacher-student 自监督把模型和数据都推大一个量级，让 reconstruction token 本身成为可复用的空间表征。
@@ -14,7 +17,7 @@
 - [X-World](.././papers/world-models/2026-x-world.md) — 
 - [Xiaomi Auto World Model / JointWM](.././papers/world-models/2026-xiaomi-auto-world-model.md) — 
 
-方向分布：3d-reconstruction: 6, dense-vision: 2, efficient-training-inference: 2, evaluation-benchmarks: 8, generation-diffusion: 6, image-matching: 1, robotics-autonomous-driving: 10, vision-foundation-models: 1, visual-localization: 2, world-models: 6
+方向分布：3d-reconstruction: 9, dense-vision: 5, depth-estimation: 1, efficient-training-inference: 2, evaluation-benchmarks: 8, generation-diffusion: 6, image-matching: 1, monocular-depth: 1, multi-agent: 1, online-streaming: 1, robotics-autonomous-driving: 10, vision-foundation-models: 1, visual-localization: 2, world-models: 6
 
 ## 2025
 

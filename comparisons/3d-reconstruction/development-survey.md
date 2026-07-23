@@ -41,6 +41,9 @@ timeline
              : CUT3R / MonST3R 在线动态
         2026 : VGGT-Omega / Pi3 scaling 与等变
              : LingBot-Map streaming 建图
+             : MoGe-3 单目几何 3D 体素细化
+             : FoundationGeo 单目 metric 标定场
+             : MAGiSt3R 多智能体协作重建
 ```
 
 > 说明：Mermaid `timeline` 在 GitHub 网页会渲染成时间轴图；在 Obsidian 中需启用 Mermaid（内置，默认开）。节点内不能放链接，具体论文链接见下方状态清单。
@@ -86,6 +89,9 @@ timeline
 | ✅ | 2025 | Stream3R | causal transformer 流式重建 | [2025-stream3r](../../papers/3d-reconstruction/2025-stream3r.md) |
 | ✅ | 2025 | Wint3R | windowed streaming 重建 | [2025-wint3r](../../papers/3d-reconstruction/2025-wint3r.md) |
 | ✅ | 2025 | TTT3R | test-time training 流式重建 | [2025-ttt3r](../../papers/3d-reconstruction/2025-ttt3r.md) |
+| ✅ | 2026 | MoGe-3 | 单目几何 2D→3D 稀疏体素细化，恢复细结构 | [2026-moge3](../../papers/3d-reconstruction/2026-moge3.md) |
+| ✅ | 2026 | FoundationGeo | 单目 metric 几何，逐像素标定场桥接 relative→metric | [2026-foundationgeo](../../papers/3d-reconstruction/2026-foundationgeo.md) |
+| ✅ | 2026 | MAGiSt3R | 多智能体协作前馈重建 + PGO 抑漂移 | [2026-magist3r](../../papers/3d-reconstruction/2026-magist3r.md) |
 
 ### 跨方向关联（已分析，direction 含 3d-reconstruction）
 
@@ -96,7 +102,7 @@ timeline
 
 ## 3. 已分析 vs 待补充 小结
 
-- **已独立分析（3d-recon 主目录，25 篇）：** 历史里程碑 SIFT(2004)、KinectFusion(2011)、COLMAP(2016)、NeRF(2020)、Instant-NGP(2022)、3DGS(2023) 已补齐；前馈谱系 DUSt3R(2023)→MASt3R(2024)→{Spann3R、Fast3R、MV-DUSt3R}→VGGT(2025)→{Depth Anything 3、MapAnything、CUT3R、OmniVGGT、HunyuanWorld-Mirror}→{VGGT-Ω、Pi3、LingBot-Map}(2026) 全部入库；动态/流式分支 MonST3R、MegaSaM、Stream3R、Wint3R、TTT3R 亦已补齐。
+- **已独立分析（3d-recon 主目录，28 篇）：** 历史里程碑 SIFT(2004)、KinectFusion(2011)、COLMAP(2016)、NeRF(2020)、Instant-NGP(2022)、3DGS(2023) 已补齐；前馈谱系 DUSt3R(2023)→MASt3R(2024)→{Spann3R、Fast3R、MV-DUSt3R}→VGGT(2025)→{Depth Anything 3、MapAnything、CUT3R、OmniVGGT、HunyuanWorld-Mirror}→{VGGT-Ω、Pi3、LingBot-Map}(2026) 全部入库；动态/流式分支 MonST3R、MegaSaM、Stream3R、Wint3R、TTT3R 亦已补齐；2026-07 新增单目几何 MoGe-3（2D→3D 体素细化）、FoundationGeo（单目 metric 标定场）与多智能体 MAGiSt3R。
 - **本方向 survey 已全部落地为独立分析文件**，🟡/⬜ 清零。后续新论文按 paper-read SOP 增量补入并同步本表。
 
 ## 4. 补全路线（优先级）

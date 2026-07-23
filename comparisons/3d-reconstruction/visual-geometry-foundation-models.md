@@ -2,10 +2,10 @@
 type: method-comparison
 title: "Any-view Visual Geometry Foundation Models"
 direction: [3d-reconstruction, dense-vision, robotics-autonomous-driving]
-methods: [Depth-Anything-3, VGGT-Omega, VGGT, Pi3, MapAnything, LingBot-Map, Depth-Anything-2, DUSt3R, MASt3R, CUT3R]
+methods: [Depth-Anything-3, VGGT-Omega, VGGT, Pi3, MapAnything, LingBot-Map, Depth-Anything-2, DUSt3R, MASt3R, CUT3R, MoGe-3, FoundationGeo]
 status: initial-completed
 confidence: medium
-updated: 2026-05-18
+updated: 2026-07-23
 ---
 
 # Any-view Visual Geometry Foundation Models 横向对比
@@ -23,6 +23,8 @@ updated: 2026-05-18
 | **reference-free 鲁棒性 baseline** | **Pi3** | permutation-equivariant / affine-invariant formulation 去掉固定参考帧；对输入顺序和 reference view 选择更稳；training/evaluation 分支已公开 | 原始 Pi3 不是 metric 主线；权重 CC BY-NC 4.0；完整训练含 internal dataset；Pi3X 与论文主结果需分开验证 |
 | **online visual mapping 主候选** | **LingBot-Map** | causal streaming、长视频、实时 pose/depth/point cloud 明确；与 DA3 的离线 any-view 范式互补 | 训练代码未开源；没有显式 loop closure；不是多先验 prompt 模型 |
 | **单目 depth baseline** | **Depth Anything 2** | 轻量、成熟、单图相对/metric depth 仍实用 | 不输出多视图一致 pose/ray/point cloud；不能替代 DA3 的 any-view geometry |
+| **单目细节保真主候选** | **MoGe-3** | 把细化从 2D 图像空间搬到 3D 稀疏体素空间（voxel shell + sparse conv），9 个 zero-shot benchmark 上细节指标（局部 point F1/boundary F1/严格 δ）明显领先 MoGe-2/Depth Pro/UniK3D 等，同时保持 metric 输出 | **代码/权重截至 2026-07-23 未发布**（仅公告 coming soon），当前不可复现；数值来自论文/项目页，未本地核实 |
+| **单目 metric 主候选（开源）** | **FoundationGeo** | 两阶段 relative→metric 显式桥接（逐像素 scale field + ray 修正场），7 个零样本基准 metric 平均 AbsRel 14.8/δ₁ 80.8，优于 MoGe-2/UniDepth V2/DepthPro，且不需真值内参；代码 MIT、训练/权重/评测全开源 | 内参分布外（极端长焦/鱼眼）泛化仍是瓶颈；「平均超基线 5.2%」聚合口径存疑 |
 
 ## 1. 方法分工
 
@@ -35,6 +37,8 @@ updated: 2026-05-18
 | feed-forward 3DGS / NVS | DA3-Giant / DA3Nested | 论文 Table 5 显示 DA3 backbone 替代 VGGT/Fast3R/MV-DUSt3R 后 NVS 指标更强 |
 | VLA/语言对齐中的空间 token | VGGT-Ω | 论文显示冻结 scene tokens 接入 OpenVLA-OFT 提升 LIBERO success rate，text-aligned checkpoint 支持 language retrieval |
 | 单图相对深度、部署简单 | DA2 或 DA3MONO-LARGE | DA2 生态成熟；DA3MONO 在论文 Table 10 中比 DA2 student 更强 |
+| 只有单张图、要 metric point map 且需要真实尺度，追求即用开源 | FoundationGeo | 单图无需内参先验即出 metric 点图；代码/训练/权重/评测全 MIT 开源，可直接跑官方 eval 复现 |
+| 只有单张图、场景含大量细结构（栏杆/树枝/物体边界），要精细几何保真 | MoGe-3（watch，待权重发布） | SSR 把细化搬进 3D 稀疏体素空间，避免 2D 解码器跨深度断层的特征混合，细节指标（Point F1/boundary F1）明显领先同类单目模型；但代码权重未发布，当前只能规划不能立即用 |
 | 研究架构机制 | DA3 vs VGGT vs Pi3 | DA3 的“plain transformer + depth-ray”与 VGGT/Pi3 是清晰对照 |
 
 ## 2. 一页总表
@@ -109,6 +113,29 @@ updated: 2026-05-18
 - **何时回看源头**：需要理解「为什么现在的前馈几何模型长这样」、或做最小可复现基线（DUSt3R/MASt3R 训练与权重开源、体量小）时，优先从 DUSt3R/MASt3R 入手。CUT3R 则是与 LingBot-Map 对照 streaming 状态设计的首选。
 - 详见分析：[DUSt3R](../../papers/3d-reconstruction/2023-dust3r.md)、[MASt3R](../../papers/3d-reconstruction/2024-mast3r.md)、[CUT3R](../../papers/3d-reconstruction/2025-cut3r.md)、[VGGT](../../papers/3d-reconstruction/2025-vggt.md)、[MapAnything](../../papers/3d-reconstruction/2025-mapanything.md)。
 
+## 3.7 单目几何分支：MoGe-3 / FoundationGeo
+
+上表主体是 any-view（多视图/任意视角）几何模型；MoGe-3 与 FoundationGeo 是**单目（单张图输入）**几何模型，解决的是不同但相关的问题——细节保真 vs. metric 尺度桥接。两者与上表主体的关系是互补而非替代：任意视角模型也能退化处理单图输入，但单目专用模型在细节/尺度上有针对性设计。
+
+| 维度 | MoGe-3 | FoundationGeo |
+|---|---|---|
+| 核心范式 | 单目 feed-forward metric 几何 + Self-Guided Sparse 3D Refinement（把细化从 2D 图像空间搬到 3D 稀疏体素空间，voxel shell + sparse conv） | 两阶段单目 metric 几何：Stage-1 仿射不变（relative）点图，Stage-2 逐像素空间标定场（scale field + ray-direction 修正场）把 relative 桥接到 metric |
+| 输入 | 单张 RGB | 单张 RGB（无需内参先验） |
+| 输出 | metric-scale point map（含深度/法向/mask），细节（边界/薄结构）保真为主打 | metric point map / metric depth / surface normal / mask，relative 分支也可单独出 affine-invariant 点图 |
+| 是否 metric | 是（继承 MoGe-2 base 的 metric 输出，SSR 只精修深度残差不改尺度定义） | 是（核心贡献即 relative→metric 桥接） |
+| 与 any-view 主表关系 | 同源于 DUSt3R/VGGT 一脉的单目几何分支，backbone 仍是 DINOv2；关注点是"细化发生的表示空间"，与 DA3/VGGT-Ω 等多视图模型的"规模化/动态场景"关注点正交 | 与 MapAnything（多视图 metric prompt）、VGGT/DA3（多视图几何 backbone）同属前馈度量几何家族，但纯单目、无先验、用显式空间场而非全局对齐 |
+| 许可证 | 仓库主体 MIT（DINOv2 部分 Apache-2.0），MoGe-3 权重许可未定 | 代码 MIT；权重许可需按 HuggingFace 各仓库逐项确认 |
+| 训练代码 | 声明将开源但**未发布**（unknown，无法核实） | 是，Stage-I/Stage-II 训练 config + accelerate 分布式脚本齐全 |
+| 权重/复现现状 | **未发布**（截至 2026-07-23，仅公告 coming soon），当前不可复现 | 已发布（HuggingFace mxliu-hku/*，推荐 v1.1），代码+训练+评测齐全，可直接复现 |
+| 当前复现建议 | Watch：等官方权重上线后跑 9 benchmark 子集（如 NYUv2/iBims-1）验证 Point F1/boundary | 可立即执行：拉 v1.1 权重跑官方 eval 脚本，复现 metric AbsRel/δ₁ |
+
+**可比性说明**：
+
+- MoGe-3 与 FoundationGeo **互相未纳入对方的 baseline 表**（MoGe-3 对比 MoGe-2/Depth Pro/Depth Anything 3/UniDepth V2/UniK3D 等；FoundationGeo 对比 Depth Anything V1/V2/Metric3D V2/UniDepth V1/V2/DepthPro/MoGe-1/2/ZoeDepth/MASt3R），因此**不存在两篇论文直接对照的数字**，只能通过共同 baseline（MoGe-2、UniDepth V2、DepthPro）间接、粗略地三角对照，且两篇论文的评测协议（对齐方式、token 预算等）未核实是否一致，**不能视为严格可比**。
+- 两者评测数据集有重叠（NYUv2、KITTI、ETH3D、DIODE、Sintel、iBims-1、HAMMER 均在双方 benchmark 列表中），但 MoGe-3 侧重局部/边界细节指标（Point F1、strict δ₀.₀₁、Boundary F1），FoundationGeo 侧重整体 metric 指标（AbsRel、δ₁，边界 F1 用 6000 tokens 设置）——即便数据集同名，具体指标定义和 evaluator 版本不保证相同，跨论文直接拿数字比较风险较高。
+- **MoGe-3 未开源，数值全部来自论文/项目页，未经本地复现**；**FoundationGeo 已开源（代码 MIT，训练/权重/评测全公开）**，具备可直接复现的条件。这一开源状态差异本身就是选型时的强约束：MoGe-3 目前只能"规划关注"，FoundationGeo 可以"立即验证接入"。
+- 拿不准的地方均标注定性判断（如"细节增益明显""metric 泛化更鲁棒"），不编造跨论文的精确数字对比。
+
 ## 4. 复现优先级
 
 1. **VGGT-Ω gated checkpoint sanity check**：申请 `facebook/VGGT-Omega` 权重，先跑 3-10 张图和一个短视频，导出 depth / cameras / GLB，记录 1B-512 显存和速度。
@@ -119,6 +146,8 @@ updated: 2026-05-18
 6. **MapAnything metric prompt 横向小场景**：同一组多视图输入，加/不加 camera/pose/LiDAR depth，比较 pose、scale、depth 和点云 F1。
 7. **DA3-Streaming 单独评估**：用 KITTI/TUM 或自有长视频测试 chunk size、overlap、VRAM、ATE；不要与 DA3 paper core metrics 混在一起。
 8. **许可证筛选**：商业相关实验优先使用 Apache 权重或仅记录 CC BY-NC / FAIR Noncommercial 权重为 research-only。
+9. **FoundationGeo inference sanity check**：拉 `mxliu-hku/FoundationGeo-1.1` 权重，跑官方 eval 脚本在公开评测集（Ruicheng/monocular-geometry-evaluation）复现 metric AbsRel/δ₁，记录与论文数字的差异。
+10. **MoGe-3 watch**：持续跟踪 `microsoft/MoGe` 仓库，待 `moge-3-vitl`/`moge-3-vitg` 权重上线后立即做 NYUv2/iBims-1 zero-shot 推理，比对 Point F1/boundary F1；发布前不建议投入复现资源。
 
 ## 5. 不确定性
 
@@ -127,6 +156,8 @@ updated: 2026-05-18
 - VGGT 当前仓库/权重许可证未在本次任务逐项核验；后续若做正式复现实验，需要锁定 commit 和 model card。
 - Pi3 main README 与 evaluation branch README 的许可证措辞不同；商用或再发布前需逐分支核验。
 - DA3 README 提到 `-1.1` 权重修复 training bug；论文表格与 refreshed checkpoints 的精确对应关系需复跑确认。
+- MoGe-3 代码/权重截至 2026-07-23 未发布，所有数值来自论文/项目页，未经本地复现；与 FoundationGeo 无共同 baseline 表，跨论文对照仅为粗略三角推断，不可视为严格可比。
+- FoundationGeo 摘要中「平均超更重 baseline 5.2%」的聚合口径与权重许可证逐仓核实情况仍待补充（见 papers 分析文件的存疑标注）。
 
 ## Sources
 
@@ -142,3 +173,9 @@ updated: 2026-05-18
 - Pi3 OpenReview: <https://openreview.net/forum?id=DTQIjngDta>
 - LingBot-Map analysis note: [`../../papers/3d-reconstruction/2026-lingbot-map.md`](../../papers/3d-reconstruction/2026-lingbot-map.md)
 - Existing feed-forward comparison: [`../../reports/feedforward_3d_reconstruction_compare.md`](../../reports/feedforward_3d_reconstruction_compare.md)
+- MoGe-3 analysis note: [`../../papers/3d-reconstruction/2026-moge3.md`](../../papers/3d-reconstruction/2026-moge3.md)
+- MoGe-3 paper: <https://arxiv.org/abs/2607.17967>
+- MoGe-3 GitHub (仓库暂未发布 MoGe-3 权重): <https://github.com/microsoft/MoGe>
+- FoundationGeo analysis note: [`../../papers/3d-reconstruction/2026-foundationgeo.md`](../../papers/3d-reconstruction/2026-foundationgeo.md)
+- FoundationGeo paper: <https://arxiv.org/abs/2607.11588>
+- FoundationGeo GitHub: <https://github.com/mx-liu6/FoundationGeo>

@@ -30,8 +30,11 @@
 - [TTT3R](.././papers/3d-reconstruction/2025-ttt3r.md) （2025）
 - [VGGT](.././papers/3d-reconstruction/2025-vggt.md) （2025）
 - [WinT3R](.././papers/3d-reconstruction/2025-wint3r.md) （2025）
+- [FoundationGeo](.././papers/3d-reconstruction/2026-foundationgeo.md) （2026）
 - [LingBot-Map](.././papers/3d-reconstruction/2026-lingbot-map.md) （2026）
 - [LoMa](.././papers/image-matching/2026-loma.md) （2026）
+- [MAGiSt3R](.././papers/3d-reconstruction/2026-magist3r.md) （2026）
+- [MoGe-3](.././papers/3d-reconstruction/2026-moge3.md) （2026）
 - [Pi3](.././papers/3d-reconstruction/2026-pi3.md) （2026）
 - [Reloc-VGGT](.././papers/visual-localization/2026-reloc-vggt.md) （2026）
 - [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) （2026）
@@ -60,6 +63,9 @@
 - [TTT3R](.././papers/3d-reconstruction/2025-ttt3r.md) （2025）
 - [VGGT](.././papers/3d-reconstruction/2025-vggt.md) （2025）
 - [WinT3R](.././papers/3d-reconstruction/2025-wint3r.md) （2025）
+- [FoundationGeo](.././papers/3d-reconstruction/2026-foundationgeo.md) （2026）
+- [MAGiSt3R](.././papers/3d-reconstruction/2026-magist3r.md) （2026）
+- [MoGe-3](.././papers/3d-reconstruction/2026-moge3.md) （2026）
 - [Pi3](.././papers/3d-reconstruction/2026-pi3.md) （2026）
 - [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) （2026）
 
@@ -67,6 +73,7 @@
 
 - [HunyuanWorld-Mirror](.././papers/3d-reconstruction/2025-hunyuanworld-mirror.md) （2025）
 - [MapAnything](.././papers/3d-reconstruction/2025-mapanything.md) （2025）
+- [FoundationGeo](.././papers/3d-reconstruction/2026-foundationgeo.md) （2026）
 
 ## dynamic-scene
 
@@ -119,6 +126,14 @@
 - [RoMa v2](.././papers/image-matching/2025-romav2.md) （2025）
 - [LoMa](.././papers/image-matching/2026-loma.md) （2026）
 
+## monocular-depth
+
+- [MoGe-3](.././papers/3d-reconstruction/2026-moge3.md) （2026）
+
+## multi-agent
+
+- [MAGiSt3R](.././papers/3d-reconstruction/2026-magist3r.md) （2026）
+
 ## neural-rendering
 
 - [Instant-NGP](.././papers/3d-reconstruction/2022-instant-ngp.md) （2022）
@@ -135,6 +150,7 @@
 ## online-streaming
 
 - [WinT3R](.././papers/3d-reconstruction/2025-wint3r.md) （2025）
+- [MAGiSt3R](.././papers/3d-reconstruction/2026-magist3r.md) （2026）
 
 ## online-streaming-reconstruction
 

@@ -13,6 +13,10 @@
 
 - [LightGlue](.././papers/image-matching/2023-lightglue.md) （2023）
 
+## affine-invariant-geometry
+
+- [FoundationGeo](.././papers/3d-reconstruction/2026-foundationgeo.md) （2026）
+
 ## alternating-attention-transformer
 
 - [OmniVGGT](.././papers/3d-reconstruction/2025-omnivggt.md) （2025）
@@ -55,6 +59,10 @@
 ## bev-sketch-representation
 
 - [X-Mind](.././papers/world-models/2026-x-mind.md) （2026）
+
+## calibration-field
+
+- [FoundationGeo](.././papers/3d-reconstruction/2026-foundationgeo.md) （2026）
 
 ## camera-token-pool
 
@@ -219,6 +227,8 @@
 - [TTT3R](.././papers/3d-reconstruction/2025-ttt3r.md) （2025）
 - [VGGT](.././papers/3d-reconstruction/2025-vggt.md) （2025）
 - [WinT3R](.././papers/3d-reconstruction/2025-wint3r.md) （2025）
+- [FoundationGeo](.././papers/3d-reconstruction/2026-foundationgeo.md) （2026）
+- [MAGiSt3R](.././papers/3d-reconstruction/2026-magist3r.md) （2026）
 - [Pi3](.././papers/3d-reconstruction/2026-pi3.md) （2026）
 - [VGGT-Omega](.././papers/3d-reconstruction/2026-vggt-omega.md) （2026）
 
@@ -229,6 +239,10 @@
 ## feed-forward-3dgs-reconstruction
 
 - [Xiaomi Auto World Model / JointWM](.././papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
+
+## feed-forward-monocular-geometry
+
+- [MoGe-3](.././papers/3d-reconstruction/2026-moge3.md) （2026）
 
 ## feed-forward-visual-relocalization
 
@@ -313,6 +327,10 @@
 
 - [Pi3](.././papers/3d-reconstruction/2026-pi3.md) （2026）
 
+## loop-closure
+
+- [MAGiSt3R](.././papers/3d-reconstruction/2026-magist3r.md) （2026）
+
 ## map-relative-pose-regression
 
 - [MARePo](.././papers/visual-localization/2024-marepo.md) （2024）
@@ -324,6 +342,11 @@
 ## metric-3d
 
 - [MapAnything](.././papers/3d-reconstruction/2025-mapanything.md) （2025）
+- [FoundationGeo](.././papers/3d-reconstruction/2026-foundationgeo.md) （2026）
+
+## metric-depth
+
+- [MoGe-3](.././papers/3d-reconstruction/2026-moge3.md) （2026）
 
 ## model-distillation
 
@@ -337,9 +360,17 @@
 
 - [MegaSaM](.././papers/3d-reconstruction/2025-megasam.md) （2025）
 
+## monocular-metric-depth
+
+- [FoundationGeo](.././papers/3d-reconstruction/2026-foundationgeo.md) （2026）
+
 ## motion-averaging
 
 - [Reloc3r](.././papers/visual-localization/2025-reloc3r.md) （2025）
+
+## multi-agent-slam
+
+- [MAGiSt3R](.././papers/3d-reconstruction/2026-magist3r.md) （2026）
 
 ## multi-task-geometry
 
@@ -369,6 +400,7 @@
 - [CUT3R](.././papers/3d-reconstruction/2025-cut3r.md) （2025）
 - [TTT3R](.././papers/3d-reconstruction/2025-ttt3r.md) （2025）
 - [WinT3R](.././papers/3d-reconstruction/2025-wint3r.md) （2025）
+- [MAGiSt3R](.././papers/3d-reconstruction/2026-magist3r.md) （2026）
 
 ## patchmatch-multi-view-stereo
 
@@ -381,6 +413,10 @@
 ## point-based-rendering
 
 - [3DGS](.././papers/3d-reconstruction/2023-3dgs.md) （2023）
+
+## point-map-estimation
+
+- [MoGe-3](.././papers/3d-reconstruction/2026-moge3.md) （2026）
 
 ## pointmap-regression
 
@@ -396,6 +432,12 @@
 - [STream3R](.././papers/3d-reconstruction/2025-stream3r.md) （2025）
 - [VGGT](.././papers/3d-reconstruction/2025-vggt.md) （2025）
 - [WinT3R](.././papers/3d-reconstruction/2025-wint3r.md) （2025）
+- [FoundationGeo](.././papers/3d-reconstruction/2026-foundationgeo.md) （2026）
+- [MAGiSt3R](.././papers/3d-reconstruction/2026-magist3r.md) （2026）
+
+## pose-graph-optimization
+
+- [MAGiSt3R](.././papers/3d-reconstruction/2026-magist3r.md) （2026）
 
 ## predicted-covariance
 
@@ -493,6 +535,10 @@
 ## sparse-scene-query
 
 - [Xiaomi Auto World Model / JointWM](.././papers/world-models/2026-xiaomi-auto-world-model.md) （2026）
+
+## sparse-voxel-refinement
+
+- [MoGe-3](.././papers/3d-reconstruction/2026-moge3.md) （2026）
 
 ## spatial-memory
 

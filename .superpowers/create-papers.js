@@ -22,7 +22,7 @@ const SCHEMA = {
   required: ['slug', 'dir', 'markdown', 'figures', 'uncertainties'],
 }
 
-const REPO_SLUGS = '2016-colmap,2020-nerf,2023-3dgs,2023-dust3r,2024-mast3r,2025-vggt,2025-cut3r,2025-depth-anything-3,2025-mapanything,2026-pi3,2026-lingbot-map,2026-vggt-omega'
+const REPO_SLUGS = '2004-sift,2011-kinectfusion,2016-colmap,2020-nerf,2022-instant-ngp,2023-3dgs,2023-dust3r,2024-mast3r,2024-mv-dust3r,2024-spann3r,2025-cut3r,2025-depth-anything-3,2025-fast3r,2025-hunyuanworld-mirror,2025-mapanything,2025-megasam,2025-monst3r,2025-omnivggt,2025-stream3r,2025-ttt3r,2025-vggt,2025-wint3r,2026-lingbot-map,2026-pi3,2026-vggt-omega'
 
 const results = await pipeline(
   PAPERS,
@@ -35,7 +35,7 @@ const results = await pipeline(
 步骤：
 1. 用 WebSearch/WebFetch 核实：确切论文标题、发表年份、venue、arXiv id（经典论文可能无 arXiv，用官方/会议链接）、官方代码仓库、license、训练是否开源、权重/数据可用性，以及 2-3 个代表性数值/基准。不要凭记忆编数字。
 2. 按深度模板写完整 markdown（含 YAML frontmatter，字段参照 papers/_template.md）：
-   - frontmatter：type: paper-analysis；title/short_name/year(整数)/venue/arxiv/paper_url/code/github/open_source/license/training_open_source/direction(含${p.dir})/method_family/tasks/datasets/metrics/status: analyzed/reproduction/confidence/landmark(判断)/org/key_idea/supersedes/builds_on/updated: 2026-07-02。
+   - frontmatter：type: paper-analysis；title/short_name/year(整数)/venue/arxiv/paper_url/code/github/open_source/license/training_open_source/direction(含${p.dir})/method_family/tasks/datasets/metrics/status: analyzed/reproduction/confidence/landmark(判断)/org/key_idea/supersedes/builds_on/updated: 2026-07-23。
    - 正文：结论先行(3-5)；1 问题；2 方法概览 + 2.1 架构解析(配图) + 2.2 核心原理 + 2.3 关键公式解析(LaTeX 逐符号；无严格公式则形式化并注明) + 2.4 训练推理；3 贡献；4 实验 + 4.1 效果性能解析；5 局限；方法谱系(只链接仓库真实存在的 slug：${REPO_SLUGS}，无则省略链接)；6 与相似方法对比(指向 comparisons/3d-reconstruction/ 下相关对比文件)；7 复现判断；8 后续动作。
 3. 公式渲染规范(GitHub MathJax)：行内 $...$ 与中文间留 ASCII 空格(「： $x$ 」)；math mode 禁用 #；\\text{} 不放中文；$$ 成对、花括号平衡。返回前自查。
 4. 图片：从 arXiv HTML(https://arxiv.org/html/<id>) 或项目页找架构/pipeline 图，下载到 assets/${p.dir}/<slug>/（curl -sL "<url>" -o assets/${p.dir}/<slug>/arch.png，file 确认有效）。取图失败超过 2 次就跳过，正文注明"原文图未获取"，不编造路径。每篇 1-3 张。正文用 ../../assets/${p.dir}/<slug>/xxx.png 嵌入并标来源。
